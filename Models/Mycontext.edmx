@@ -1,0 +1,1010 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OldPhoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="account_id" />
+          </Key>
+          <Property Name="account_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_first_name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="account_last_name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="account_email" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="account_gender" Type="bit" Nullable="false" />
+          <Property Name="account_date" Type="datetime" Nullable="false" />
+          <Property Name="account_password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="role_id" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="blog_id" />
+          </Key>
+          <Property Name="blog_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="blog_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="blog_author" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="blog_link" Type="ntext" Nullable="false" />
+          <Property Name="blog_time" Type="datetime" Nullable="false" />
+          <Property Name="blog_img" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="account_id" />
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="account_id" Type="int" Nullable="false" />
+          <Property Name="variant_id" Type="int" Nullable="false" />
+          <Property Name="cart_count" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="company_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="company_desc" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Detail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="order_id" Type="int" />
+          <Property Name="variant_id" Type="int" />
+          <Property Name="detail_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="detail_count" Type="int" Nullable="false" />
+          <Property Name="detail_total_price" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hotline">
+          <Key>
+            <PropertyRef Name="hotline_id" />
+          </Key>
+          <Property Name="hotline_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_id" Type="int" />
+          <Property Name="hotline_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="hotline_address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="hotline_phonenumber" Type="bigint" Nullable="false" />
+          <Property Name="hotline_default" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order_">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_id" Type="int" />
+          <Property Name="hotline_id" Type="int" />
+          <Property Name="order_buy_time" Type="datetime" Nullable="false" />
+          <Property Name="order_rec_time" Type="datetime" Nullable="false" />
+          <Property Name="order_type_pay" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="order_state" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="order_total_price" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Phone">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="phone_chip" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_screen_size" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="phone_front_cam" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_behind_cam" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_battery" Type="int" Nullable="false" />
+          <Property Name="phone_system" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_charging_port" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_sim_card" Type="int" Nullable="false" />
+          <Property Name="phone_nfc" Type="bit" Nullable="false" />
+          <Property Name="phone_ear_phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone_memory_card" Type="bit" Nullable="false" />
+          <Property Name="phone_desc" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="product_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="product_desc" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product_Image">
+          <Key>
+            <PropertyRef Name="image_id" />
+          </Key>
+          <Property Name="image_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="image_url" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="sale_id" />
+          </Key>
+          <Property Name="sale_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sale_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="sale_start" Type="datetime" Nullable="false" />
+          <Property Name="sale_end" Type="datetime" Nullable="false" />
+          <Property Name="variant_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="variant_id" Type="int" Nullable="false" />
+          <Property Name="stock_count" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Variant_Phone">
+          <Key>
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="variant_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="variant_ph_ram" Type="int" Nullable="false" />
+          <Property Name="variant_ph_rom" Type="int" Nullable="false" />
+          <Property Name="variant_ph_color" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="variant_ph_org_price" Type="bigint" Nullable="false" />
+          <Property Name="variant_ph_new_price" Type="bigint" Nullable="false" />
+          <Property Name="variant_ph_final_price" Type="bigint" Nullable="false" />
+          <Property Name="variant_ph_img" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK__Cart__account_id__6754599E">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__variant_id__68487DD7">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__order_id__6EF57B66">
+          <End Role="Order_" Type="Self.Order_" Multiplicity="0..1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__variant___6FE99F9F">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="0..1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hotline__account__628FA481">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Hotline">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order___account___6C190EBB">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Order_">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order___hotline___6B24EA82">
+          <End Role="Hotline" Type="Self.Hotline" Multiplicity="0..1" />
+          <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotline">
+              <PropertyRef Name="hotline_id" />
+            </Principal>
+            <Dependent Role="Order_">
+              <PropertyRef Name="hotline_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Phone__product_i__59063A47">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__company__534D60F1">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product_I__produ__5629CD9C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product_Image" Type="Self.Product_Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Product_Image">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Sale__variant_id__74AE54BC">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="0..1" />
+          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Stock__variant_i__5FB337D6">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Variant_P__produ__5BE2A6F2">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Variant_Phone">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_Role">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OldPhoneModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Blog" EntityType="Self.Blog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Detail" EntityType="Self.Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hotline" EntityType="Self.Hotline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_" EntityType="Self.Order_" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Phone" EntityType="Self.Phone" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_Image" EntityType="Self.Product_Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Variant_Phone" EntityType="Self.Variant_Phone" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Cart__account_id__6754599E" Association="Self.FK__Cart__account_id__6754599E">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__variant_id__68487DD7" Association="Self.FK__Cart__variant_id__68487DD7">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__order_id__6EF57B66" Association="Self.FK__Detail__order_id__6EF57B66">
+            <End Role="Order_" EntitySet="Order_" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__variant___6FE99F9F" Association="Self.FK__Detail__variant___6FE99F9F">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hotline__account__628FA481" Association="Self.FK__Hotline__account__628FA481">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Hotline" EntitySet="Hotline" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order___account___6C190EBB" Association="Self.FK__Order___account___6C190EBB">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Order_" EntitySet="Order_" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order___hotline___6B24EA82" Association="Self.FK__Order___hotline___6B24EA82">
+            <End Role="Hotline" EntitySet="Hotline" />
+            <End Role="Order_" EntitySet="Order_" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Phone__product_i__59063A47" Association="Self.FK__Phone__product_i__59063A47">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Phone" EntitySet="Phone" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__company__534D60F1" Association="Self.FK__Product__company__534D60F1">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product_I__produ__5629CD9C" Association="Self.FK__Product_I__produ__5629CD9C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Product_Image" EntitySet="Product_Image" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Sale__variant_id__74AE54BC" Association="Self.FK__Sale__variant_id__74AE54BC">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Stock__variant_i__5FB337D6" Association="Self.FK__Stock__variant_i__5FB337D6">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Stock" EntitySet="Stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Variant_P__produ__5BE2A6F2" Association="Self.FK__Variant_P__produ__5BE2A6F2">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_Role" Association="Self.FK_Account_Role">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OldPhoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="account_id" />
+          </Key>
+          <Property Name="account_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_first_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="account_last_name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="account_email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="account_gender" Type="Boolean" Nullable="false" />
+          <Property Name="account_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="account_password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role_id" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__account_id__6754599E" FromRole="Account" ToRole="Cart" />
+          <NavigationProperty Name="Hotlines" Relationship="Self.FK__Hotline__account__628FA481" FromRole="Account" ToRole="Hotline" />
+          <NavigationProperty Name="Order_" Relationship="Self.FK__Order___account___6C190EBB" FromRole="Account" ToRole="Order_" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Account_Role" FromRole="Account" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="blog_id" />
+          </Key>
+          <Property Name="blog_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="blog_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="blog_author" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="blog_link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="blog_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="blog_img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="account_id" />
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="account_id" Type="Int32" Nullable="false" />
+          <Property Name="variant_id" Type="Int32" Nullable="false" />
+          <Property Name="cart_count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Cart__account_id__6754599E" FromRole="Cart" ToRole="Account" />
+          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Cart__variant_id__68487DD7" FromRole="Cart" ToRole="Variant_Phone" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="company_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="company_desc" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__company__534D60F1" FromRole="Company" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Detail">
+          <Key>
+            <PropertyRef Name="detail_id" />
+          </Key>
+          <Property Name="detail_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="order_id" Type="Int32" />
+          <Property Name="variant_id" Type="Int32" />
+          <Property Name="detail_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="detail_count" Type="Int32" Nullable="false" />
+          <Property Name="detail_total_price" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Order_" Relationship="Self.FK__Detail__order_id__6EF57B66" FromRole="Detail" ToRole="Order_" />
+          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Detail__variant___6FE99F9F" FromRole="Detail" ToRole="Variant_Phone" />
+        </EntityType>
+        <EntityType Name="Hotline">
+          <Key>
+            <PropertyRef Name="hotline_id" />
+          </Key>
+          <Property Name="hotline_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int32" />
+          <Property Name="hotline_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="hotline_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="hotline_phonenumber" Type="Int64" Nullable="false" />
+          <Property Name="hotline_default" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Hotline__account__628FA481" FromRole="Hotline" ToRole="Account" />
+          <NavigationProperty Name="Order_" Relationship="Self.FK__Order___hotline___6B24EA82" FromRole="Hotline" ToRole="Order_" />
+        </EntityType>
+        <EntityType Name="Order_">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int32" />
+          <Property Name="hotline_id" Type="Int32" />
+          <Property Name="order_buy_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="order_rec_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="order_type_pay" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="order_state" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="order_total_price" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Order___account___6C190EBB" FromRole="Order_" ToRole="Account" />
+          <NavigationProperty Name="Details" Relationship="Self.FK__Detail__order_id__6EF57B66" FromRole="Order_" ToRole="Detail" />
+          <NavigationProperty Name="Hotline" Relationship="Self.FK__Order___hotline___6B24EA82" FromRole="Order_" ToRole="Hotline" />
+        </EntityType>
+        <EntityType Name="Phone">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="phone_chip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_screen_size" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_front_cam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_behind_cam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_battery" Type="Int32" Nullable="false" />
+          <Property Name="phone_system" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_charging_port" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_sim_card" Type="Int32" Nullable="false" />
+          <Property Name="phone_nfc" Type="Boolean" Nullable="false" />
+          <Property Name="phone_ear_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_memory_card" Type="Boolean" Nullable="false" />
+          <Property Name="phone_desc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Phone__product_i__59063A47" FromRole="Phone" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="product_desc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Product__company__534D60F1" FromRole="Product" ToRole="Company" />
+          <NavigationProperty Name="Phone" Relationship="Self.FK__Phone__product_i__59063A47" FromRole="Product" ToRole="Phone" />
+          <NavigationProperty Name="Product_Image" Relationship="Self.FK__Product_I__produ__5629CD9C" FromRole="Product" ToRole="Product_Image" />
+          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Variant_P__produ__5BE2A6F2" FromRole="Product" ToRole="Variant_Phone" />
+        </EntityType>
+        <EntityType Name="Product_Image">
+          <Key>
+            <PropertyRef Name="image_id" />
+          </Key>
+          <Property Name="image_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="image_url" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Product_I__produ__5629CD9C" FromRole="Product_Image" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_Role" FromRole="Roles" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="sale_id" />
+          </Key>
+          <Property Name="sale_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sale_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sale_start" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sale_end" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="variant_id" Type="Int32" />
+          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Sale__variant_id__74AE54BC" FromRole="Sale" ToRole="Variant_Phone" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="variant_id" Type="Int32" Nullable="false" />
+          <Property Name="stock_count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Stock__variant_i__5FB337D6" FromRole="Stock" ToRole="Variant_Phone" />
+        </EntityType>
+        <EntityType Name="Variant_Phone">
+          <Key>
+            <PropertyRef Name="variant_id" />
+          </Key>
+          <Property Name="variant_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="variant_ph_ram" Type="Int32" Nullable="false" />
+          <Property Name="variant_ph_rom" Type="Int32" Nullable="false" />
+          <Property Name="variant_ph_color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="variant_ph_org_price" Type="Int64" Nullable="false" />
+          <Property Name="variant_ph_new_price" Type="Int64" Nullable="false" />
+          <Property Name="variant_ph_final_price" Type="Int64" Nullable="false" />
+          <Property Name="variant_ph_img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__variant_id__68487DD7" FromRole="Variant_Phone" ToRole="Cart" />
+          <NavigationProperty Name="Details" Relationship="Self.FK__Detail__variant___6FE99F9F" FromRole="Variant_Phone" ToRole="Detail" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Variant_P__produ__5BE2A6F2" FromRole="Variant_Phone" ToRole="Product" />
+          <NavigationProperty Name="Sales" Relationship="Self.FK__Sale__variant_id__74AE54BC" FromRole="Variant_Phone" ToRole="Sale" />
+          <NavigationProperty Name="Stock" Relationship="Self.FK__Stock__variant_i__5FB337D6" FromRole="Variant_Phone" ToRole="Stock" />
+        </EntityType>
+        <Association Name="FK__Cart__account_id__6754599E">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hotline__account__628FA481">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Hotline">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order___account___6C190EBB">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Order_">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_Role">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__variant_id__68487DD7">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__company__534D60F1">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__order_id__6EF57B66">
+          <End Role="Order_" Type="Self.Order_" Multiplicity="0..1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__variant___6FE99F9F">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="0..1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order___hotline___6B24EA82">
+          <End Role="Hotline" Type="Self.Hotline" Multiplicity="0..1" />
+          <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotline">
+              <PropertyRef Name="hotline_id" />
+            </Principal>
+            <Dependent Role="Order_">
+              <PropertyRef Name="hotline_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Phone__product_i__59063A47">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product_I__produ__5629CD9C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product_Image" Type="Self.Product_Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Product_Image">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Variant_P__produ__5BE2A6F2">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="Variant_Phone">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Sale__variant_id__74AE54BC">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="0..1" />
+          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Stock__variant_i__5FB337D6">
+          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OldPhoneEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Blogs" EntityType="Self.Blog" />
+          <EntitySet Name="Carts" EntityType="Self.Cart" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Details" EntityType="Self.Detail" />
+          <EntitySet Name="Hotlines" EntityType="Self.Hotline" />
+          <EntitySet Name="Order_" EntityType="Self.Order_" />
+          <EntitySet Name="Phones" EntityType="Self.Phone" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Product_Image" EntityType="Self.Product_Image" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Sales" EntityType="Self.Sale" />
+          <EntitySet Name="Stocks" EntityType="Self.Stock" />
+          <EntitySet Name="Variant_Phone" EntityType="Self.Variant_Phone" />
+          <AssociationSet Name="FK__Cart__account_id__6754599E" Association="Self.FK__Cart__account_id__6754599E">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hotline__account__628FA481" Association="Self.FK__Hotline__account__628FA481">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Hotline" EntitySet="Hotlines" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order___account___6C190EBB" Association="Self.FK__Order___account___6C190EBB">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Order_" EntitySet="Order_" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_Role" Association="Self.FK_Account_Role">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__variant_id__68487DD7" Association="Self.FK__Cart__variant_id__68487DD7">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__company__534D60F1" Association="Self.FK__Product__company__534D60F1">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__order_id__6EF57B66" Association="Self.FK__Detail__order_id__6EF57B66">
+            <End Role="Order_" EntitySet="Order_" />
+            <End Role="Detail" EntitySet="Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__variant___6FE99F9F" Association="Self.FK__Detail__variant___6FE99F9F">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Detail" EntitySet="Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order___hotline___6B24EA82" Association="Self.FK__Order___hotline___6B24EA82">
+            <End Role="Hotline" EntitySet="Hotlines" />
+            <End Role="Order_" EntitySet="Order_" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Phone__product_i__59063A47" Association="Self.FK__Phone__product_i__59063A47">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Phone" EntitySet="Phones" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product_I__produ__5629CD9C" Association="Self.FK__Product_I__produ__5629CD9C">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product_Image" EntitySet="Product_Image" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Variant_P__produ__5BE2A6F2" Association="Self.FK__Variant_P__produ__5BE2A6F2">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Sale__variant_id__74AE54BC" Association="Self.FK__Sale__variant_id__74AE54BC">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Sale" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Stock__variant_i__5FB337D6" Association="Self.FK__Stock__variant_i__5FB337D6">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Stock" EntitySet="Stocks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OldPhoneModelStoreContainer" CdmEntityContainer="OldPhoneEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="OldPhoneModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="account_first_name" ColumnName="account_first_name" />
+                <ScalarProperty Name="account_last_name" ColumnName="account_last_name" />
+                <ScalarProperty Name="account_email" ColumnName="account_email" />
+                <ScalarProperty Name="account_gender" ColumnName="account_gender" />
+                <ScalarProperty Name="account_date" ColumnName="account_date" />
+                <ScalarProperty Name="account_password" ColumnName="account_password" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Blogs">
+            <EntityTypeMapping TypeName="OldPhoneModel.Blog">
+              <MappingFragment StoreEntitySet="Blog">
+                <ScalarProperty Name="blog_id" ColumnName="blog_id" />
+                <ScalarProperty Name="blog_name" ColumnName="blog_name" />
+                <ScalarProperty Name="blog_author" ColumnName="blog_author" />
+                <ScalarProperty Name="blog_link" ColumnName="blog_link" />
+                <ScalarProperty Name="blog_time" ColumnName="blog_time" />
+                <ScalarProperty Name="blog_img" ColumnName="blog_img" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="OldPhoneModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+                <ScalarProperty Name="cart_count" ColumnName="cart_count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="OldPhoneModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="company_name" ColumnName="company_name" />
+                <ScalarProperty Name="company_desc" ColumnName="company_desc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Details">
+            <EntityTypeMapping TypeName="OldPhoneModel.Detail">
+              <MappingFragment StoreEntitySet="Detail">
+                <ScalarProperty Name="detail_id" ColumnName="detail_id" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+                <ScalarProperty Name="detail_name" ColumnName="detail_name" />
+                <ScalarProperty Name="detail_count" ColumnName="detail_count" />
+                <ScalarProperty Name="detail_total_price" ColumnName="detail_total_price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hotlines">
+            <EntityTypeMapping TypeName="OldPhoneModel.Hotline">
+              <MappingFragment StoreEntitySet="Hotline">
+                <ScalarProperty Name="hotline_id" ColumnName="hotline_id" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="hotline_name" ColumnName="hotline_name" />
+                <ScalarProperty Name="hotline_address" ColumnName="hotline_address" />
+                <ScalarProperty Name="hotline_phonenumber" ColumnName="hotline_phonenumber" />
+                <ScalarProperty Name="hotline_default" ColumnName="hotline_default" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order_">
+            <EntityTypeMapping TypeName="OldPhoneModel.Order_">
+              <MappingFragment StoreEntitySet="Order_">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="hotline_id" ColumnName="hotline_id" />
+                <ScalarProperty Name="order_buy_time" ColumnName="order_buy_time" />
+                <ScalarProperty Name="order_rec_time" ColumnName="order_rec_time" />
+                <ScalarProperty Name="order_type_pay" ColumnName="order_type_pay" />
+                <ScalarProperty Name="order_state" ColumnName="order_state" />
+                <ScalarProperty Name="order_total_price" ColumnName="order_total_price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Phones">
+            <EntityTypeMapping TypeName="OldPhoneModel.Phone">
+              <MappingFragment StoreEntitySet="Phone">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="phone_chip" ColumnName="phone_chip" />
+                <ScalarProperty Name="phone_screen_size" ColumnName="phone_screen_size" />
+                <ScalarProperty Name="phone_front_cam" ColumnName="phone_front_cam" />
+                <ScalarProperty Name="phone_behind_cam" ColumnName="phone_behind_cam" />
+                <ScalarProperty Name="phone_battery" ColumnName="phone_battery" />
+                <ScalarProperty Name="phone_system" ColumnName="phone_system" />
+                <ScalarProperty Name="phone_charging_port" ColumnName="phone_charging_port" />
+                <ScalarProperty Name="phone_sim_card" ColumnName="phone_sim_card" />
+                <ScalarProperty Name="phone_nfc" ColumnName="phone_nfc" />
+                <ScalarProperty Name="phone_ear_phone" ColumnName="phone_ear_phone" />
+                <ScalarProperty Name="phone_memory_card" ColumnName="phone_memory_card" />
+                <ScalarProperty Name="phone_desc" ColumnName="phone_desc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="OldPhoneModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_desc" ColumnName="product_desc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Image">
+            <EntityTypeMapping TypeName="OldPhoneModel.Product_Image">
+              <MappingFragment StoreEntitySet="Product_Image">
+                <ScalarProperty Name="image_id" ColumnName="image_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="OldPhoneModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="OldPhoneModel.Sale">
+              <MappingFragment StoreEntitySet="Sale">
+                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="sale_name" ColumnName="sale_name" />
+                <ScalarProperty Name="sale_start" ColumnName="sale_start" />
+                <ScalarProperty Name="sale_end" ColumnName="sale_end" />
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stocks">
+            <EntityTypeMapping TypeName="OldPhoneModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+                <ScalarProperty Name="stock_count" ColumnName="stock_count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Variant_Phone">
+            <EntityTypeMapping TypeName="OldPhoneModel.Variant_Phone">
+              <MappingFragment StoreEntitySet="Variant_Phone">
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="variant_ph_ram" ColumnName="variant_ph_ram" />
+                <ScalarProperty Name="variant_ph_rom" ColumnName="variant_ph_rom" />
+                <ScalarProperty Name="variant_ph_color" ColumnName="variant_ph_color" />
+                <ScalarProperty Name="variant_ph_org_price" ColumnName="variant_ph_org_price" />
+                <ScalarProperty Name="variant_ph_new_price" ColumnName="variant_ph_new_price" />
+                <ScalarProperty Name="variant_ph_final_price" ColumnName="variant_ph_final_price" />
+                <ScalarProperty Name="variant_ph_img" ColumnName="variant_ph_img" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

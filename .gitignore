@@ -1,0 +1,35 @@
+﻿# --- Visual Studio & Build output (QUAN TRỌNG NHẤT) ---
+.vs/
+[Bb]in/
+[Oo]bj/
+
+# --- User specific settings ---
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# --- NuGet Packages (Không up thư viện nặng lên, server tự tải về) ---
+*.nupkg
+**/packages/
+!**/packages/build/
+
+# --- Temporary files ---
+*.log
+*.bak
+*.cache
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.pdb
+*.tlb
+*.tlh
+
+# --- OS specific ---
+Thumbs.db
+.DS_Store
+
+# --- ASP.NET Core / Web Specific ---
+wwwroot/lib/
+node_modules/

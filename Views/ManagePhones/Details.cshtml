@@ -1,0 +1,123 @@
+﻿@model old_phone.Models.Phone
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Phone</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_chip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_chip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_screen_size)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_screen_size)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_front_cam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_front_cam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_behind_cam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_behind_cam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_battery)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_battery)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_system)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_system)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_charging_port)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_charging_port)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_sim_card)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_sim_card)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_nfc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_nfc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_ear_phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_ear_phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_memory_card)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_memory_card)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone_desc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone_desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.product_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.product_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.product_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<old_phone.Models.Phone>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_chip)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_screen_size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_front_cam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_behind_cam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_battery)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_system)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_charging_port)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_sim_card)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_nfc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_ear_phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_memory_card)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone_desc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.product_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_chip)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_screen_size)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_front_cam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_behind_cam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_battery)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_system)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_charging_port)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_sim_card)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_nfc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_ear_phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_memory_card)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone_desc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.product_name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.product_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.product_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.product_id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,292 @@
+﻿@model old_phone.ViewModels.ProductDetailsViewModel
+@{
+    ViewBag.Title = Model.Product.product_name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        @* --- CỘT TRÁI: ẢNH SẢN PHẨM (CAROUSEL BOOTSTRAP) --- *@
+        <div class="col-md-6 animate__animated animate__fadeInLeft">
+            @if (Model.ListImages != null && Model.ListImages.Any())
+            {
+                <div id="productCarousel" class="carousel slide border rounded shadow-sm" data-bs-ride="carousel">
+
+                    @* 1. Phần hiển thị Ảnh (Slides) *@
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.ListImages.Count; i++)
+                        {
+                            // Ảnh đầu tiên phải có class 'active'
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@Model.ListImages[i]" class="d-block w-100"
+                                     style="height: 450px; object-fit: contain; background-color: #fff;"
+                                     alt="Ảnh sản phẩm @(i+1)">
+                            </div>
+                        }
+                    </div>
+
+                    @* 2. Nút điều hướng (Next/Prev) - Chỉ hiện khi có > 1 ảnh *@
+                    @if (Model.ListImages.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            @* Icon mặc định của Bootstrap (hoặc bạn có thể style lại màu đen nếu muốn) *@
+                            <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    }
+
+                    @* 3. Các dấu chấm chỉ số (Indicators) - Tùy chọn, thêm vào cho chuyên nghiệp *@
+                    @if (Model.ListImages.Count > 1)
+                    {
+                        <div class="carousel-indicators">
+                            @for (int i = 0; i < Model.ListImages.Count; i++)
+                            {
+                                <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="@i"
+                                        class="@(i == 0 ? "active" : "") bg-dark" aria-current="@(i == 0 ? "true" : "false")"
+                                        aria-label="Slide @(i+1)"></button>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                // Ảnh placeholder nếu không có ảnh nào
+                <div class="text-center p-5 border rounded bg-light h-100 d-flex align-items-center justify-content-center" style="min-height: 450px;">
+                    <div>
+                        <i class="bi bi-image text-muted display-1"></i>
+                        <p class="mt-2 text-muted">Chưa có hình ảnh</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @* --- CỘT PHẢI: THÔNG TIN --- *@
+        <div class="col-md-6 animate__animated animate__fadeInRight">
+            <h2 class="fw-bold text-dark">@Model.Product.product_name</h2>
+
+            @* Hiển thị cấu hình đang chọn *@
+            <p class="text-muted fs-5">
+                @Model.Variant.variant_ph_ram GB / @Model.Variant.variant_ph_rom GB - @Model.Variant.variant_ph_color
+            </p>
+
+            @* Giá tiền *@
+            <h3 class="text-danger fw-bold mb-3">
+                @Model.Variant.variant_ph_new_price.ToString("N0") đ
+                <small class="text-muted text-decoration-line-through fs-6 ms-2">
+                    @Model.Variant.variant_ph_org_price.ToString("N0") đ
+                </small>
+            </h3>
+
+            @* Trạng thái hàng *@
+            <div class="mb-4">
+                <strong>Tình trạng: </strong>
+                @if (Model.StockCount > 0)
+                {
+                    <span class="badge bg-success">Còn hàng (@Model.StockCount)</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Hết hàng</span>
+                }
+            </div>
+
+            @* Mô tả ngắn *@
+            <p class="text-secondary">@Model.Product.product_desc</p>
+
+            @* Nút Mua (Chỉ hiện khi còn hàng) *@
+            @if (Model.StockCount > 0)
+            {
+                <div class="d-flex gap-2 mt-4">
+                    <a href="#" class="btn btn-warning btn-lg flex-grow-1 text-dark fw-bold shadow-sm">
+                        <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                    </a>
+                    <a href="#" class="btn btn-danger btn-lg flex-grow-1 fw-bold shadow-sm">
+                        <i class="bi bi-lightning-fill"></i> Mua ngay
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @* --- PHẦN DƯỚI: BẢNG THÔNG SỐ KỸ THUẬT CHI TIẾT (Giao diện mới) --- *@
+    <div class="mt-5 rounded-4 overflow-hidden shadow-sm animate__animated animate__fadeInUp">
+
+        @* 1. Tiêu đề màu Cam *@
+        <div class="p-3 text-center text-white" style="background-color: #ff5722;">
+            <h3 class="fw-bold mb-0 text-uppercase">Chi tiết sản phẩm</h3>
+        </div>
+
+        @* 2. Lưới thông số *@
+        <div class="bg-light p-4">
+            @if (Model.Phone != null)
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+
+                    @* Chip xử lý *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-cpu fs-1 text-primary me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Chip</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_chip</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Pin *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-battery-charging fs-1 text-success me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Pin</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_battery mAh</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Hệ điều hành *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-gear-wide-connected fs-1 text-secondary me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Hệ điều hành</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_system</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Màn hình *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-phone fs-1 text-info me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Màn hình</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_screen_size</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Camera trước *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-camera fs-1 text-danger me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Camera trước</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_front_cam</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Camera sau *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-camera-fill fs-1 text-danger me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Camera sau</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_behind_cam</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Cổng sạc *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-lightning-charge fs-1 text-warning me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Cổng sạc</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_charging_port</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Sim *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-sim fs-1 text-dark me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Sim</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_sim_card Sim</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* NFC (Chuyển từ true/false sang Có/Không) *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-broadcast fs-1 text-primary me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">NFC</small>
+                                <span class="fw-bold text-dark">@(Model.Phone.phone_nfc ? "Có" : "Không")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* RAM (Lấy từ Model.Variant) *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-memory fs-1 text-success me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">RAM</small>
+                                <span class="fw-bold text-dark">@Model.Variant.variant_ph_ram GB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* ROM (Lấy từ Model.Variant) *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-device-hdd fs-1 text-success me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Bộ nhớ trong</small>
+                                <span class="fw-bold text-dark">@Model.Variant.variant_ph_rom GB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Màu sắc (Lấy từ Model.Variant) *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-palette fs-1 text-danger me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Màu sắc</small>
+                                <span class="fw-bold text-dark">@Model.Variant.variant_ph_color</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Tai nghe *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-headset fs-1 text-dark me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Tai nghe</small>
+                                <span class="fw-bold text-dark">@Model.Phone.phone_ear_phone</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Thẻ nhớ (Memory Card) *@
+                    <div class="col">
+                        <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm h-100 border">
+                            <i class="bi bi-sd-card fs-1 text-secondary me-3"></i>
+                            <div>
+                                <small class="text-muted d-block fw-semibold">Thẻ nhớ</small>
+                                <span class="fw-bold text-dark">@(Model.Phone.phone_memory_card ? "Có hỗ trợ" : "Không")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-muted">Đang cập nhật thông tin cấu hình...</p>
+            }
+        </div>
+    </div>
+</div>

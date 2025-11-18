@@ -1,0 +1,82 @@
+﻿@model IEnumerable<old_phone.Models.Variant_Phone>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_ram)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_rom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_org_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_new_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_final_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variant_ph_img)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.product_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stock.variant_id)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_ram)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_rom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_color)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_org_price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_new_price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_final_price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variant_ph_img)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.product_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Stock.variant_id)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.variant_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.variant_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.variant_id })
+        </td>
+    </tr>
+}
+
+</table>
