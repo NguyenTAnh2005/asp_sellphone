@@ -1,0 +1,39 @@
+﻿@model old_phone.Models.Variant_Phone
+
+<div class="col">
+    <div class="card h-100 shadow-sm product-card border-0">
+
+        @* Tính % Giảm giá *@
+        @{
+            var discount = 0;
+            if (Model.variant_ph_org_price > 0)
+            {
+                discount = (int)((Model.variant_ph_org_price - Model.variant_ph_final_price) * 100 / Model.variant_ph_org_price);
+            }
+        }
+        @if (discount > 0)
+        {
+            <span class="position-absolute top-0 start-0 badge bg-main-CL m-2 rounded-pill">Giảm @discount%</span>
+        }
+
+        @* Ảnh sản phẩm *@
+        <img src="@Model.variant_ph_img" class="card-img-top p-3" alt="@Model.Product.product_name" style="height: 160px; object-fit: contain;">
+
+        <div class="card-body d-flex flex-column p-2">
+            @{
+                string variant_name = $"{Model.Product.product_name} {Model.variant_ph_ram} GB/ {Model.variant_ph_rom} GB";
+            }
+
+            <h6 class="card-title text-truncate fw-bold" style="font-size: 0.9rem;" title="@variant_name">
+                <a href="@Url.Action("ProductDetails", "Shop", new { id = Model.variant_id })" class="text-decoration-none text-dark stretched-link">
+                    @variant_name
+                </a>
+            </h6>
+
+            <div class="mt-auto">
+                <p class="card-text text-main-CL fw-bold mb-0">@Model.variant_ph_final_price.ToString("N0") đ</p>
+                <p class="card-text text-muted text-decoration-line-through small fw-semibold mb-0 ">@Model.variant_ph_org_price.ToString("N0") đ</p>
+            </div>
+        </div>
+    </div>
+</div>

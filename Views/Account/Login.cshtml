@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden animate__animated animate__fadeInDown">
+
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="fw-bold mb-0">Đăng Nhập</h3>
+                    <p class="mb-0 opacity-75 small">Chào mừng bạn quay trở lại!</p>
+                </div>
+
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @* Thông báo lỗi *@
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger text-center py-2 mb-3" style="font-size: 0.9rem;">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> @ViewBag.Error
+                            </div>
+                        }
+
+                        @* Input Email *@
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-pill" id="emailInput" name="account_email" placeholder="name@example.com" required>
+                            <label for="emailInput" class="ps-4">Email đăng nhập</label>
+                        </div>
+
+                        @* Input Password *@
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-pill" id="passInput" name="account_password" placeholder="Password" required>
+                            <label for="passInput" class="ps-4">Mật khẩu</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm mt-2">
+                            Đăng Nhập <i class="bi bi-box-arrow-in-right ms-1"></i>
+                        </button>
+                    }
+                </div>
+
+                <div class="card-footer text-center bg-white border-0 pb-4">
+                    <p class="mb-1 small text-muted">Chưa có tài khoản?</p>
+                    <a href="@Url.Action("Signup", "Account")" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        Đăng ký ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

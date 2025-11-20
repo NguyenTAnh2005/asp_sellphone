@@ -1,0 +1,84 @@
+﻿@model old_phone.Models.Account
+
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                @* Header màu đỏ *@
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h3 class="fw-bold mb-0"><i class="bi bi-person-plus-fill"></i> Đăng Ký</h3>
+                    <p class="mb-0 opacity-75">Trở thành thành viên của SellPhone TA</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-light">
+
+                    @* Form nhập liệu *@
+                    @using (Html.BeginForm("Signup", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @* Hiện lỗi nếu có *@
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger text-center rounded-pill mb-3">
+                                <i class="bi bi-exclamation-circle-fill"></i> @ViewBag.Error
+                            </div>
+                        }
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Họ đệm</label>
+                                @Html.TextBoxFor(m => m.account_last_name, new { @class = "form-control rounded-pill", @placeholder = "Nguyễn Văn", @required = "required" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Tên</label>
+                                @Html.TextBoxFor(m => m.account_first_name, new { @class = "form-control rounded-pill", @placeholder = "A", @required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            @Html.TextBoxFor(m => m.account_email, new { @class = "form-control rounded-pill", @type = "email", @placeholder = "name@example.com", @required = "required" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Giới tính</label>
+                            <div class="d-flex gap-3 ms-2">
+                                <div class="form-check">
+                                    @Html.RadioButtonFor(m => m.account_gender, true, new { @class = "form-check-input", @id = "male", @checked = "checked" })
+                                    <label class="form-check-label" for="male">Nam</label>
+                                </div>
+                                <div class="form-check">
+                                    @Html.RadioButtonFor(m => m.account_gender, false, new { @class = "form-check-input", @id = "female" })
+                                    <label class="form-check-label" for="female">Nữ</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Mật khẩu</label>
+                            @Html.PasswordFor(m => m.account_password, new { @class = "form-control rounded-pill", @placeholder = "••••••••", @required = "required" })
+                        </div>
+
+                        <button type="submit" class="btn btn-danger w-100 rounded-pill fw-bold py-2 shadow-sm mb-3">
+                            Đăng Ký Ngay
+                        </button>
+                    }
+
+                    <div class="text-center">
+                        <span class="text-muted">Đã có tài khoản?</span>
+                        <a href="@Url.Action("Login", "Account")" class="text-danger fw-bold text-decoration-none">
+                            Đăng nhập tại đây
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

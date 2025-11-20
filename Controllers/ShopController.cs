@@ -6,26 +6,33 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using old_phone.ViewModels;
+using PagedList;
 
 namespace old_phone.Controllers
 {
     public class ShopController : Controller
     {
         private OldPhoneEntities db = new OldPhoneEntities();
-
+        //TRa ve view cua HOme 
         public ActionResult Index()
         {
-            // 1. Lấy sản phẩm HOT SALE (Có giá mới < giá cũ, hoặc nằm trong bảng Sale)
-            var hotSales = db.Variant_Phone
-                             .Include(v => v.Product)
-                             .OrderBy(v => v.variant_ph_new_price)
-                             .Take(6)
-                             .ToList();
+            //1.Lấy sản phẩm HOT SALE
+            var hotSales = db.Sales
+                            .Where(s => s.sale_start <= DateTime.Now && DateTime.Now <= s.sale_end)
+
+                            // Include bảng Variant và Product để dùng trong View
+                            .Include(s => s.Variant_Phone)          // Lấy thông tin biến thể
+                            .Include(s => s.Variant_Phone.Product)  // Lấy thông tin tên máy gốc
+
+                            .OrderBy(s => s.Variant_Phone.variant_ph_final_price)
+                            .Take(6)
+                            .ToList();
 
             // 2. Lấy sản phẩm NỔI BẬT (Ví dụ lấy các dòng máy đắt tiền hoặc mới nhất)
             var featured = db.Variant_Phone
+                             .Where(v => v.variant_ph_new_price==v.variant_ph_final_price)
                              .Include(v => v.Product)
-                             .OrderByDescending(v => v.variant_id) // Lấy máy mới nhập
+                             .OrderBy(v => v.variant_id) // Lấy máy mới nhập
                              .Take(12)
                              .ToList();
 
@@ -45,12 +52,7 @@ namespace old_phone.Controllers
             return View(model);
         }
 
-        public ActionResult Phones()
-        {
-            return View("Phones");
-        }
-
-        // GET: ProductDetails
+        // Tra ve view chi tiet sp
         public ActionResult ProductDetails(int id)
         {
             var variant = db.Variant_Phone
@@ -82,6 +84,94 @@ namespace old_phone.Controllers
             };
 
             return View( model);
+        }
+
+        // Tra ve du lieu cho trang PHONES
+        public ActionResult Phones
+            (string searchQuery, int? companyId, int? minPrice, int? maxPrice,
+            string sort, int? ram, int? rom, string os, int? page)
+        {
+            // Truy vans chung nhat, queryable dam bao rang day chi la len ke hoach chua thuc thi ngay 
+            // No se them dieu kien truy van where ben duoi 
+            var queryVariant = db.Variant_Phone
+                                .Include(v => v.Product)
+                                .Include(v => v.Product.Phone)
+                                .AsQueryable();
+            // Neu nhu search co string khac null hay ""
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                queryVariant = queryVariant.Where(v => v.Product.product_name.Contains(searchQuery));
+            }
+            // Neu nhu co loc hang 
+            if (companyId.HasValue)
+            {
+                queryVariant = queryVariant.Where(v => v.Product.company_id == companyId.Value);
+            }
+            // Neu nhu co min price
+            if (minPrice.HasValue)
+            {
+                queryVariant = queryVariant.Where(v => v.variant_ph_final_price >= minPrice.Value);
+            }
+            // Neu nhu co max price
+            if (maxPrice.HasValue)
+            {
+                queryVariant = queryVariant.Where(v => v.variant_ph_final_price <= maxPrice.Value);
+            }
+            // Neu nhu co sort (de sau where - logic sql)
+            // Neu nhu co ram
+            if (ram.HasValue)
+            {
+                queryVariant = queryVariant.Where(v => v.variant_ph_ram == ram.Value);
+            }
+            // Neu nhu co rom
+            if (rom.HasValue)
+            {
+                queryVariant = queryVariant.Where(v => v.variant_ph_ram == rom.Value);
+            }
+            // Neu nhu co he dieu hanh
+            if (!string.IsNullOrEmpty(os))
+            {
+                queryVariant = queryVariant.Where(v => v.Product.Phone.phone_system.Contains(os));
+            }
+            //Sap xep
+            switch (sort)
+            {
+                case "price_desc":
+                    queryVariant = queryVariant.OrderByDescending(v => v.variant_ph_final_price);
+                    break;
+
+                case "price_asc":
+                    queryVariant = queryVariant.OrderBy(v => v.variant_ph_final_price);
+                    break;
+                default:
+                    queryVariant = queryVariant.OrderByDescending(v => v.variant_id);
+                    break;
+            }
+            // CHUAN BI DU LIEU TRA VE VIEW 
+            var ramList = db.Variant_Phone.Select(v => v.variant_ph_ram).Distinct().OrderBy(x => x).ToList();
+            var romList = db.Variant_Phone.Select(v => v.variant_ph_rom).Distinct().OrderBy(x => x).ToList();
+            var osList = new List<String> { "IOS", "Android" };
+            int pageSize = 9;
+            int pageNumber = (page ?? 1);
+
+            var model = new PhonesPageViewModel
+            {
+                Phones = queryVariant.ToPagedList(pageNumber, pageSize),
+                Companies = db.Companies.ToList(),
+
+                RamOptions = ramList,
+                RomOptions = romList,
+                OsOptions = osList,
+
+                SearchQuery = searchQuery,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                Sort = sort,
+                Ram = ram,
+                Rom = rom,
+                Os = os
+            };
+            return View(model);
         }
     }
 }

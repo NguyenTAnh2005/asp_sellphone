@@ -1,8 +1,246 @@
-﻿
+﻿@using PagedList.Mvc;
+@model old_phone.ViewModels.PhonesPageViewModel
+
 @{
-    ViewBag.Title = "Phones";
+    ViewBag.Title = "Danh sách điện thoại";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Phones</h2>
+<div class="container mt-4 mb-5">
+    <div class="row">
+        
+        @* ========================================================= *@
+        @* CỘT TRÁI: BỘ LỌC TÌM KIẾM (SIDEBAR)                       *@
+        @* ========================================================= *@
+        <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                <h5 class="fw-bold text-uppercase mb-3 text-danger">
+                    <i class="bi bi-funnel-fill"></i> Bộ lọc
+                </h5>
+                
+                @* Form gửi GET để giữ tham số trên URL *@
+                <form method="get" action="@Url.Action("Phones", "Shop")">
+                    
+                    @* 1. Tìm kiếm *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Tên sản phẩm</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 rounded-start-pill"><i class="bi bi-search"></i></span>
+                            <input type="text" name="search" class="form-control border-start-0 rounded-end-pill" 
+                                   value="@Model.SearchQuery" placeholder="iPhone 15...">
+                        </div>
+                    </div>
 
+                    @* 2. Hãng sản xuất *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Hãng sản xuất</label>
+                        <select name="companyId" class="form-select rounded-pill cursor-pointer">
+                            <option value="">-- Tất cả hãng --</option>
+                            @foreach (var comp in Model.Companies)
+                            {
+                                <option value="@comp.company_id" selected="@(comp.company_id == Model.CompanyId)">
+                                    @comp.company_name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    @* 3. Mức giá *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Khoảng giá (VNĐ)</label>
+                        <div class="d-flex gap-1">
+                            <input type="number" name="minPrice" class="form-control rounded-pill fs-6" placeholder="Từ" value="@Model.MinPrice">
+                            <span class="align-self-center">-</span>
+                            <input type="number" name="maxPrice" class="form-control rounded-pill fs-6" placeholder="Đến" value="@Model.MaxPrice">
+                        </div>
+                    </div>
+
+                    @* 4. RAM (Mới) *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Dung lượng RAM</label>
+                        <select name="ram" class="form-select rounded-pill cursor-pointer">
+                            <option value="">-- Tất cả --</option>
+                            @foreach (var r in Model.RamOptions)
+                            {
+                                <option value="@r" selected="@(r == Model.Ram)">@r GB</option>
+                            }
+                        </select>
+                    </div>
+
+                    @* 5. ROM (Mới) *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Bộ nhớ trong</label>
+                        <select name="rom" class="form-select rounded-pill cursor-pointer">
+                            <option value="">-- Tất cả --</option>
+                            @foreach (var r in Model.RomOptions)
+                            {
+                                <option value="@r" selected="@(r == Model.Rom)">@r GB</option>
+                            }
+                        </select>
+                    </div>
+
+                    @* 6. Hệ điều hành (Mới) *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Hệ điều hành</label>
+                        <select name="os" class="form-select rounded-pill cursor-pointer">
+                            <option value="">-- Tất cả --</option>
+                            @foreach (var o in Model.OsOptions)
+                            {
+                                <option value="@o" selected="@(o == Model.Os)">@o</option>
+                            }
+                        </select>
+                    </div>
+
+                    @* 7. Sắp xếp *@
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Sắp xếp theo</label>
+                        <select name="sortOrder" class="form-select rounded-pill cursor-pointer">
+                            <option value="">Mới nhất</option>
+                            <option value="price_asc" selected="@(Model.Sort == "price_asc")">Giá: Thấp đến Cao</option>
+                            <option value="price_desc" selected="@(Model.Sort == "price_desc")">Giá: Cao đến Thấp</option>
+                        </select>
+                    </div>
+
+                    <hr class="my-4 text-muted">
+
+                    @* Nút hành động *@
+                    <button type="submit" class="btn btn-danger w-100 rounded-pill fw-bold mb-2 shadow-sm">
+                        Áp dụng lọc <i class="bi bi-check2-circle"></i>
+                    </button>
+                    
+                    <a href="@Url.Action("Phones", "Shop")" class="btn btn-light w-100 rounded-pill border text-muted">
+                        <i class="bi bi-arrow-counterclockwise"></i> Đặt lại
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        @* ========================================================= *@
+        @* CỘT PHẢI: DANH SÁCH SẢN PHẨM                              *@
+        @* ========================================================= *@
+        <div class="col-lg-9">
+            
+            @* Tiêu đề kết quả *@
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold text-dark mb-0">
+                    Kết quả tìm kiếm 
+                    <span class="fs-6 text-muted fw-normal">(@Model.Phones.TotalItemCount sản phẩm)</span>
+                </h4>
+            </div>
+
+            @* Grid Sản Phẩm *@
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @if (Model.Phones != null && Model.Phones.Any())
+                {
+                    foreach (var item in Model.Phones)
+                    {
+                        <div class="col">
+                            <div class="card h-100 shadow-sm product-card border-0 rounded-3 overflow-hidden">
+                                @* Tính % Giảm giá *@
+                                @{
+                                    var discount = 0;
+                                    if (item.variant_ph_org_price > 0)
+                                    {
+                                        discount = (int)((item.variant_ph_org_price - item.variant_ph_final_price) * 100 / item.variant_ph_org_price);
+                                    }
+                                }
+                                @if (discount > 0)
+                                {
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-2 rounded-pill shadow-sm z-1">-@discount%</span>
+                                }
+
+                                @* Ảnh sản phẩm *@
+                                <div class="position-relative bg-white p-3 text-center">
+                                    <img src="@item.variant_ph_img" class="img-fluid" alt="@item.Product.product_name" style="height: 180px; object-fit: contain;">
+                                </div>
+                                
+                                <div class="card-body d-flex flex-column p-3 bg-light bg-opacity-10">
+                                    @{
+                                        string variant_name = $"{item.Product.product_name} {item.variant_ph_ram}GB/{item.variant_ph_rom}GB";
+                                    }
+                                    <h6 class="card-title text-truncate fw-bold mb-1" style="font-size: 0.95rem;" title="@variant_name">
+                                        <a href="@Url.Action("Detail", "Shop", new { id = item.variant_id })" class="text-decoration-none text-dark stretched-link">
+                                            @item.Product.product_name
+                                        </a>
+                                    </h6>
+                                    <small class="text-muted mb-2 d-block">
+                                        @item.variant_ph_ram GB / @item.variant_ph_rom GB • @item.variant_ph_color
+                                    </small>
+
+                                    <div class="mt-auto">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="text-danger fw-bold fs-5">@item.variant_ph_final_price.ToString("N0")₫</span>
+                                            @if (discount > 0)
+                                            {
+                                                <span class="text-muted text-decoration-line-through small">@item.variant_ph_org_price.ToString("N0")₫</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
+                        <i class="bi bi-search display-1 text-muted opacity-25"></i>
+                        <h5 class="mt-3 fw-bold text-secondary">Không tìm thấy sản phẩm nào</h5>
+                        <p class="text-muted">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm.</p>
+                        <a href="@Url.Action("Phones", "Shop")" class="btn btn-outline-primary rounded-pill mt-2 px-4">
+                            Xem tất cả sản phẩm
+                        </a>
+                    </div>
+                }
+            </div>
+
+            @* --- THANH PHÂN TRANG (Pagination) --- *@
+            @* Quan trọng: Phải truyền đủ tham số để giữ bộ lọc khi chuyển trang *@
+            <div class="mt-5 d-flex justify-content-center">
+                @Html.PagedListPager(Model.Phones, page => Url.Action("Phones", 
+                    new { 
+                        page, 
+                        search = Model.SearchQuery, 
+                        companyId = Model.CompanyId, 
+                        minPrice = Model.MinPrice, 
+                        maxPrice = Model.MaxPrice, 
+                        sortOrder = Model.Sort,
+                        ram = Model.Ram, // <--- Tham số mới
+                        rom = Model.Rom, // <--- Tham số mới
+                        os = Model.Os    // <--- Tham số mới
+                    }),
+                    new PagedListRenderOptions {
+                        LiElementClasses = new string[] { "page-item" },
+                        LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                        LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                        ClassToApplyToFirstListItemInPager = "page-item",
+                        ClassToApplyToLastListItemInPager = "page-item",
+                        ContainerDivClasses = new[] { "pagination-container" }
+                    }
+                )
+            </div>
+            
+            @* CSS riêng cho Pagination đẹp hơn *@
+            <style>
+                .pagination-container ul.pagination { justify-content: center; }
+                .pagination .page-link { 
+                    color: #333; 
+                    border: 1px solid #eee; 
+                    margin: 0 3px; 
+                    border-radius: 8px;
+                    padding: 0.5rem 1rem;
+                }
+                .pagination .page-item.active .page-link { 
+                    background-color: #dc3545; 
+                    border-color: #dc3545; 
+                    color: white; 
+                }
+                .pagination .page-link:hover { 
+                    background-color: #f8f9fa; 
+                    color: #dc3545;
+                }
+            </style>
+
+        </div>
+    </div>
+</div>

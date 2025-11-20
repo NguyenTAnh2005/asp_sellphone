@@ -43,60 +43,17 @@
 
 @* --- PHẦN 2: HOT SALE (Dữ liệu động từ Model.HotSales) --- *@
 <div class="container-fluid mt-5 px-0 px-xl-2 border-danger rounded-5 animate__animated animate__zoomIn">
-    <div class="row main-bg-color g-0 text-light rounded-top-5">
-        <div class="col-12 col-md-9 text-md-start text-center text-uppercase">
-            <span class="fs-2 fw-semibold ms-4 text-main-CL"><i class="bi bi-fire me-2"></i>HOT SALE</span>
-        </div>
-        <div class="col-12 col-md-3 align-content-center text-center text-md-end">
-            <span class="fs-5 fw-semibold text-end text-main-CL me-4">
-                <i class="bi bi-calendar-check-fill me-2"></i>
-                @DateTime.Now.ToString("dd/MM/yyyy")
-            </span>
-        </div>
+    <div class="text-center text-uppercase">
+        <span class="fs-2 fw-semibold text-main-CL"><i class="bi bi-fire me-2"></i>Giảm giá sốc</span>
     </div>
 
     <div class="card container-fluid main-border border-2 rounded-bottom-5 rounded-top-0 bg-light">
         <div class="px-2 py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-5 g-md-3 px-5 px-sm-0">
-
-            @* KIỂM TRA NẾU CÓ DỮ LIỆU *@
-            @if (Model.HotSales != null )
+            @if (Model.HotSales != null)
             {
                 foreach (var item in Model.HotSales)
                 {
-                    <div class="col">
-                        <div class="card h-100 shadow-sm product-card border-0">
-                            @* Tính % Giảm giá *@
-                            @{
-                                var discount = 0;
-                                if (item.variant_ph_org_price > 0)
-                                {
-                                    discount = (int)((item.variant_ph_org_price - item.variant_ph_new_price) * 100 / item.variant_ph_org_price);
-                                }
-                            }
-                            @if (discount > 0)
-                            {
-                                <span class="position-absolute top-0 start-0 badge bg-main-CL m-2 rounded-pill">Giảm @discount%</span>
-                            }
-
-                            @* Ảnh sản phẩm *@
-                            <img src="@item.variant_ph_img" class="card-img-top p-3" alt="@item.Product.product_name" style="height: 160px; object-fit: contain;">
-                            <div class="card-body d-flex flex-column p-2">
-                                @{
-                                    string variant_name = $"{item.Product.product_name} {item.variant_ph_ram} GB/ {item.variant_ph_rom} GB";
-                                }
-                                <h6 class="card-title text-truncate fw-bold" style="font-size: 0.9rem;" title="@variant_name">
-                                    @* Link đến chi tiết *@
-                                    <a href="@Url.Action("ProductDetails","Shop", new { id = item.variant_id })" class="text-decoration-none text-dark stretched-link">
-                                        @variant_name
-                                    </a>
-                                </h6>
-                                <div class="mt-auto">
-                                    <p class="card-text text-danger fw-bold mb-0">@item.variant_ph_new_price.ToString("N0") đ</p>
-                                    <p class="card-text text-muted text-decoration-line-through small">@item.variant_ph_org_price.ToString("N0") đ</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @Html.Partial("_SaleCard", item);
                 }
             }
             else
@@ -120,10 +77,12 @@
     <div class="row main-bg-color g-0 text-light rounded-top-5">
         <div class="col text-center text-capitalize">
             <span class="fs-2 fw-semibold ms-4 text-main-CL">
-                <i class="bi bi-star-fill me-2 text-main-CL"></i>SẢN PHẨM NỔI BẬT
+                <i class="bi bi-star-fill me-2 text-main-CL"></i>
+                SẢN PHẨM NỔI BẬT
             </span>
         </div>
     </div>
+
     <div class="card container-fluid main-border border-2 rounded-bottom-5 rounded-top-0 bg-light">
         <div class="px-2 py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-5 g-md-3 px-5 px-sm-0">
 
@@ -131,24 +90,7 @@
             {
                 foreach (var item in Model.FeaturedPhones)
                 {
-                    <div class="col">
-                        <div class="card h-100 shadow-sm border-0">
-                            <img src="@item.variant_ph_img" class="card-img-top p-3" alt="@item.Product.product_name" style="height: 160px; object-fit: contain;">
-                            <div class="card-body d-flex flex-column p-2">
-                                <h6 class="card-title text-truncate fw-bold" style="font-size: 0.9rem;">
-                                    <a href="@Url.Action("Detail", "Product", new { id = item.variant_id })" class="text-decoration-none text-dark stretched-link">
-                                        @item.Product.product_name
-                                    </a>
-                                </h6>
-                                <div class="mt-auto">
-                                    <p class="card-text text-danger fw-bold mb-0">@item.variant_ph_new_price.ToString("N0") đ</p>
-                                    <span class="badge bg-secondary bg-opacity-10 text-dark border">
-                                        RAM @item.variant_ph_ram GB
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @Html.Partial("_VariantCard", item);
                 }
             }
             else
@@ -180,30 +122,7 @@
 
             @if (Model.Blogs != null && Model.Blogs.Any())
             {
-                foreach (var blog in Model.Blogs)
-                {
-                    <div class="col">
-                        <div class="card h-100 shadow-sm border-0">
-                            @* Giả sử bạn có cột blog_img trong DB, nếu chưa có thì dùng ảnh mẫu *@
-                            @{
-                                var imgUrl = blog.blog_img ?? "https://res.cloudinary.com/df5mtvzkn/image/upload/WEB_SELL_PHONE__PROJECT/TEST/Test_IMG/eg_article.jpg";
-                            }
-                            <img src="@imgUrl" class="card-img-top" alt="@blog.blog_name" style="height: 140px; object-fit: cover;">
-
-                            <div class="card-body p-2">
-                                <h6 class="card-title fw-bold text-truncate-2" style="font-size: 0.95rem; height: 2.8em; overflow: hidden;">
-                                    <a href="@blog.blog_link" class="text-decoration-none text-dark stretched-link">
-                                        @blog.blog_name
-                                    </a>
-                                </h6>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <small class="text-muted"><i class="bi bi-person"></i> @blog.blog_author</small>
-                                    <small class="text-muted">@blog.blog_time.ToString("dd/MM")</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+                foreach (var blog in Model.Blogs) { @Html.Partial("_ArticleCard", blog); }
             }
             else
             {

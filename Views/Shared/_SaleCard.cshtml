@@ -1,0 +1,64 @@
+﻿@model old_phone.Models.Sale
+
+<div class="col">
+    <div class="card h-100 shadow-sm product-card border-0 position-relative">
+        @* --- 1. TÍNH TOÁN GIẢM GIÁ (Đã sửa lỗi) --- *@
+        @{
+            int discount = 0;
+            // Ép kiểu sang double (số thực) để giữ phần thập phân khi chia
+            double orgPrice = (double)Model.Variant_Phone.variant_ph_org_price;
+            double finalPrice = (double)Model.Variant_Phone.variant_ph_final_price;
+
+            if (orgPrice > 0 && orgPrice > finalPrice)
+            {
+                // Công thức chuẩn: (1 - (Giá bán / Giá gốc)) * 100
+                // Ví dụ: 1 - (15tr / 40tr) = 1 - 0.375 = 0.625 -> Nhân 100 = 62.5%
+                discount = (int)Math.Round((1 - (finalPrice / orgPrice)) * 100);
+            }
+        }
+
+        @* Chỉ hiện badge nếu > 0 *@
+        @if (discount >= 0)
+        {
+            <span class="position-absolute m-2 top-0 badge start-0 bg-primary rounded-pill shadow-sm z-1" style="z-index:1">
+                Giảm @discount%
+            </span>
+        }
+        @* --- 2. ẢNH SẢN PHẨM --- *@
+        <div class="position-relative bg-white p-3 text-center">
+            <img src="@Model.Variant_Phone.variant_ph_img" class="img-fluid"
+                 alt="@Model.Variant_Phone.Product.product_name"
+                 style="height: 160px; object-fit: contain;">
+        </div>
+
+        @* --- 3. NỘI DUNG --- *@
+        <div class="card-body d-flex flex-column p-2 bg-light bg-opacity-10">
+            @{
+                string variant_name = $"{Model.Variant_Phone.Product.product_name} {Model.Variant_Phone.variant_ph_ram}GB/{Model.Variant_Phone.variant_ph_rom}GB";
+            }
+
+            @* Tên máy *@
+            <h6 class="card-title text-truncate fw-bold mb-1" style="font-size: 0.9rem;" title="@variant_name">
+                <a href="@Url.Action("ProductDetails", "Shop", new { id = Model.variant_id })" class="text-decoration-none text-dark stretched-link">
+                    @variant_name
+                </a>
+            </h6>
+
+            @* --- ĐÂY LÀ PHẦN KHÁC BIỆT: THÔNG TIN SALE --- *@
+            <div class="mb-2">
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                    <i class="bi bi-lightning-fill"></i> @Model.sale_name
+                </span>
+                <div class="text-muted mt-1" style="font-size: 0.7rem;">
+                    <i class="bi bi-clock"></i> @Model.sale_start.ToString("dd/MM") - @Model.sale_end.ToString("dd/MM")
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                @* Giá tiền *@
+                <p class="card-text text-main-CL fw-bold mb-0">@Model.Variant_Phone.variant_ph_final_price.ToString("N0") đ</p>
+                <p class="card-text text-muted text-decoration-line-through small fw-semibold mb-0 ">@Model.Variant_Phone.variant_ph_org_price.ToString("N0") đ</p>
+            </div>
+        </div>
+    </div>
+</div>

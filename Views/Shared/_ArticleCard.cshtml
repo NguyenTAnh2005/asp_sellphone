@@ -1,0 +1,23 @@
+﻿@model old_phone.Models.Blog
+
+<div class="col">
+    <div class="card h-100 shadow-sm border-0">
+        @* Giả sử bạn có cột blog_img trong DB, nếu chưa có thì dùng ảnh mẫu *@
+        @{
+            var imgUrl = Model.blog_img ?? "https://res.cloudinary.com/df5mtvzkn/image/upload/WEB_SELL_PHONE__PROJECT/TEST/Test_IMG/eg_article.jpg";
+        }
+        <img src="@imgUrl" class="card-img-top" alt="@Model.blog_name" style="height: 140px; object-fit: cover;">
+
+        <div class="card-body p-2">
+            <h6 class="card-title fw-bold text-truncate-2" style="font-size: 0.95rem; height: 2.8em; overflow: hidden;">
+                <a href="@Model.blog_link" class="text-decoration-none text-dark stretched-link">
+                    @Model.blog_name
+                </a>
+            </h6>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <small class="text-muted"><i class="bi bi-person"></i> @Model.blog_author</small>
+                <small class="text-muted">@Model.blog_time.ToString("dd/MM")</small>
+            </div>
+        </div>
+    </div>
+</div>
