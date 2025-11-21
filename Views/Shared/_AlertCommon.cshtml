@@ -1,0 +1,29 @@
+﻿@if (TempData["Message"] != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var msg = '@TempData["Message"]';
+            var type = '@TempData["MsgType"]'; // success, error, warning, info
+
+            if (msg !== '') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: type,
+                    title: msg
+                })
+            }
+        });
+    </script>
+}

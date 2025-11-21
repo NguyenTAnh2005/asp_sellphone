@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="OldPhoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OldPhoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="account_id" />
@@ -17,6 +17,8 @@
           <Property Name="account_date" Type="datetime" Nullable="false" />
           <Property Name="account_password" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="role_id" Type="tinyint" Nullable="false" />
+          <Property Name="RememberMeToken" Type="nvarchar" MaxLength="100" />
+          <Property Name="TokenExpiryDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Blog">
           <Key>
@@ -31,9 +33,9 @@
         </EntityType>
         <EntityType Name="Cart">
           <Key>
-            <PropertyRef Name="account_id" />
-            <PropertyRef Name="variant_id" />
+            <PropertyRef Name="cart_id" />
           </Key>
+          <Property Name="cart_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="account_id" Type="int" Nullable="false" />
           <Property Name="variant_id" Type="int" Nullable="false" />
           <Property Name="cart_count" Type="int" Nullable="false" />
@@ -154,7 +156,7 @@
           <Property Name="variant_ph_final_price" Type="bigint" Nullable="false" />
           <Property Name="variant_ph_img" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK__Cart__account_id__6754599E">
+        <Association Name="FK__Cart__account_id__2BFE89A6">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -166,7 +168,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__variant_id__68487DD7">
+        <Association Name="FK__Cart__variant_id__2CF2ADDF">
           <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -337,11 +339,11 @@
           <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Variant_Phone" EntityType="Self.Variant_Phone" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Cart__account_id__6754599E" Association="Self.FK__Cart__account_id__6754599E">
+          <AssociationSet Name="FK__Cart__account_id__2BFE89A6" Association="Self.FK__Cart__account_id__2BFE89A6">
             <End Role="Account" EntitySet="Account" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__variant_id__68487DD7" Association="Self.FK__Cart__variant_id__68487DD7">
+          <AssociationSet Name="FK__Cart__variant_id__2CF2ADDF" Association="Self.FK__Cart__variant_id__2CF2ADDF">
             <End Role="Variant_Phone" EntitySet="Variant_Phone" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
@@ -394,8 +396,7 @@
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OldPhoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -411,10 +412,12 @@
           <Property Name="account_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="account_password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="role_id" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__account_id__6754599E" FromRole="Account" ToRole="Cart" />
           <NavigationProperty Name="Hotlines" Relationship="Self.FK__Hotline__account__628FA481" FromRole="Account" ToRole="Hotline" />
           <NavigationProperty Name="Order_" Relationship="Self.FK__Order___account___6C190EBB" FromRole="Account" ToRole="Order_" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Account_Role" FromRole="Account" ToRole="Roles" />
+          <Property Name="RememberMeToken" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TokenExpiryDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Carts" Relationship="OldPhoneModel.FK__Cart__account_id__2BFE89A6" FromRole="Account" ToRole="Cart" />
         </EntityType>
         <EntityType Name="Blog">
           <Key>
@@ -426,17 +429,6 @@
           <Property Name="blog_link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="blog_time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="blog_img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Cart">
-          <Key>
-            <PropertyRef Name="account_id" />
-            <PropertyRef Name="variant_id" />
-          </Key>
-          <Property Name="account_id" Type="Int32" Nullable="false" />
-          <Property Name="variant_id" Type="Int32" Nullable="false" />
-          <Property Name="cart_count" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="Self.FK__Cart__account_id__6754599E" FromRole="Cart" ToRole="Account" />
-          <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Cart__variant_id__68487DD7" FromRole="Cart" ToRole="Variant_Phone" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -570,24 +562,12 @@
           <Property Name="variant_ph_new_price" Type="Int64" Nullable="false" />
           <Property Name="variant_ph_final_price" Type="Int64" Nullable="false" />
           <Property Name="variant_ph_img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__variant_id__68487DD7" FromRole="Variant_Phone" ToRole="Cart" />
           <NavigationProperty Name="Details" Relationship="Self.FK__Detail__variant___6FE99F9F" FromRole="Variant_Phone" ToRole="Detail" />
           <NavigationProperty Name="Product" Relationship="Self.FK__Variant_P__produ__5BE2A6F2" FromRole="Variant_Phone" ToRole="Product" />
           <NavigationProperty Name="Sales" Relationship="Self.FK__Sale__variant_id__74AE54BC" FromRole="Variant_Phone" ToRole="Sale" />
           <NavigationProperty Name="Stock" Relationship="Self.FK__Stock__variant_i__5FB337D6" FromRole="Variant_Phone" ToRole="Stock" />
+          <NavigationProperty Name="Carts" Relationship="OldPhoneModel.FK__Cart__variant_id__2CF2ADDF" FromRole="Variant_Phone" ToRole="Cart" />
         </EntityType>
-        <Association Name="FK__Cart__account_id__6754599E">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="account_id" />
-            </Principal>
-            <Dependent Role="Cart">
-              <PropertyRef Name="account_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Hotline__account__628FA481">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
@@ -621,18 +601,6 @@
             </Principal>
             <Dependent Role="Account">
               <PropertyRef Name="role_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Cart__variant_id__68487DD7">
-          <End Role="Variant_Phone" Type="Self.Variant_Phone" Multiplicity="1" />
-          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Variant_Phone">
-              <PropertyRef Name="variant_id" />
-            </Principal>
-            <Dependent Role="Cart">
-              <PropertyRef Name="variant_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -747,7 +715,6 @@
         <EntityContainer Name="OldPhoneEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="Blogs" EntityType="Self.Blog" />
-          <EntitySet Name="Carts" EntityType="Self.Cart" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="Details" EntityType="Self.Detail" />
           <EntitySet Name="Hotlines" EntityType="Self.Hotline" />
@@ -759,10 +726,6 @@
           <EntitySet Name="Sales" EntityType="Self.Sale" />
           <EntitySet Name="Stocks" EntityType="Self.Stock" />
           <EntitySet Name="Variant_Phone" EntityType="Self.Variant_Phone" />
-          <AssociationSet Name="FK__Cart__account_id__6754599E" Association="Self.FK__Cart__account_id__6754599E">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
           <AssociationSet Name="FK__Hotline__account__628FA481" Association="Self.FK__Hotline__account__628FA481">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Hotline" EntitySet="Hotlines" />
@@ -774,10 +737,6 @@
           <AssociationSet Name="FK_Account_Role" Association="Self.FK_Account_Role">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Account" EntitySet="Accounts" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Cart__variant_id__68487DD7" Association="Self.FK__Cart__variant_id__68487DD7">
-            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
-            <End Role="Cart" EntitySet="Carts" />
           </AssociationSet>
           <AssociationSet Name="FK__Product__company__534D60F1" Association="Self.FK__Product__company__534D60F1">
             <End Role="Company" EntitySet="Companies" />
@@ -815,7 +774,51 @@
             <End Role="Variant_Phone" EntitySet="Variant_Phone" />
             <End Role="Stock" EntitySet="Stocks" />
           </AssociationSet>
+          <EntitySet Name="Carts" EntityType="OldPhoneModel.Cart" />
+          <AssociationSet Name="FK__Cart__account_id__2BFE89A6" Association="OldPhoneModel.FK__Cart__account_id__2BFE89A6">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__variant_id__2CF2ADDF" Association="OldPhoneModel.FK__Cart__variant_id__2CF2ADDF">
+            <End Role="Variant_Phone" EntitySet="Variant_Phone" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="cart_id" />
+          </Key>
+          <Property Name="cart_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int32" Nullable="false" />
+          <Property Name="variant_id" Type="Int32" Nullable="false" />
+          <Property Name="cart_count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="OldPhoneModel.FK__Cart__account_id__2BFE89A6" FromRole="Cart" ToRole="Account" />
+          <NavigationProperty Name="Variant_Phone" Relationship="OldPhoneModel.FK__Cart__variant_id__2CF2ADDF" FromRole="Cart" ToRole="Variant_Phone" />
+        </EntityType>
+        <Association Name="FK__Cart__account_id__2BFE89A6">
+          <End Type="OldPhoneModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="OldPhoneModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__variant_id__2CF2ADDF">
+          <End Type="OldPhoneModel.Variant_Phone" Role="Variant_Phone" Multiplicity="1" />
+          <End Type="OldPhoneModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variant_Phone">
+              <PropertyRef Name="variant_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -825,6 +828,8 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="OldPhoneModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="TokenExpiryDate" ColumnName="TokenExpiryDate" />
+                <ScalarProperty Name="RememberMeToken" ColumnName="RememberMeToken" />
                 <ScalarProperty Name="account_id" ColumnName="account_id" />
                 <ScalarProperty Name="account_first_name" ColumnName="account_first_name" />
                 <ScalarProperty Name="account_last_name" ColumnName="account_last_name" />
@@ -845,15 +850,6 @@
                 <ScalarProperty Name="blog_link" ColumnName="blog_link" />
                 <ScalarProperty Name="blog_time" ColumnName="blog_time" />
                 <ScalarProperty Name="blog_img" ColumnName="blog_img" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Carts">
-            <EntityTypeMapping TypeName="OldPhoneModel.Cart">
-              <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="account_id" ColumnName="account_id" />
-                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
-                <ScalarProperty Name="cart_count" ColumnName="cart_count" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -981,6 +977,16 @@
                 <ScalarProperty Name="variant_ph_new_price" ColumnName="variant_ph_new_price" />
                 <ScalarProperty Name="variant_ph_final_price" ColumnName="variant_ph_final_price" />
                 <ScalarProperty Name="variant_ph_img" ColumnName="variant_ph_img" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="OldPhoneModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="cart_count" ColumnName="cart_count" />
+                <ScalarProperty Name="variant_id" ColumnName="variant_id" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="cart_id" ColumnName="cart_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -16,6 +16,32 @@ namespace old_phone.Controllers
         //TRa ve view cua HOme 
         public ActionResult Index()
         {
+            if (Request.Cookies["KeepLogin"] != null)
+            {
+                // Lays token de kiem tra trong db 
+                var token = Request.Cookies["KeepLogin"].Values["token"];
+                var account = db.Accounts.FirstOrDefault(a => a.RememberMeToken == token);
+                // Neu nhu co token do trong DB va con han su dung 
+                if (account != null && account.TokenExpiryDate > DateTime.Now)
+                {
+                    // Phuc hoi session 
+                    Session["account"] = account;
+                    Session["acc_id"] = account.account_id;
+                    Session["acc_name"] = account.account_last_name + " " + account.account_first_name;
+                    Session["acc_role"] = account.role_id;
+                }
+                else
+                {
+                    // Phong TH khi dang nhap may tinh, sau do dang nhap them va ghi nho dang nhap o thiet bi khac
+                    // se tao ra token moi => ghi de vao database, thi o tren trinh duyet may tinh cookie luc nay co
+                    // gia tri token khac voi token trong DB, nen neu nhu truy cap lai tren may tinh, sever se kiem tra token de cho dang nhap
+                    // nhung luc nay token tren may tinh da khac so voi trong db do do  cookie tren may tinh se bi bo 
+                    // bang cach tao 1 cookie trung ten nhung set han expried la ngay hom qua => trinh duyet check => xoa Cookie
+                    var expriedCookie = new HttpCookie("KeepLogin");
+                    expriedCookie.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(expriedCookie);
+                }
+            }
             //1.Lấy sản phẩm HOT SALE
             var hotSales = db.Sales
                             .Where(s => s.sale_start <= DateTime.Now && DateTime.Now <= s.sale_end)
@@ -164,12 +190,49 @@ namespace old_phone.Controllers
                 OsOptions = osList,
 
                 SearchQuery = searchQuery,
+                CompanyId = companyId,
                 MinPrice = minPrice,
                 MaxPrice = maxPrice,
                 Sort = sort,
                 Ram = ram,
                 Rom = rom,
                 Os = os
+            };
+            return View(model);
+        }
+
+        // TRa ve danh sach cac san pham sale 
+        public ActionResult Sales(int?page)
+        {
+            var listSales= db.Sales
+                           .Where(s => s.sale_start <= DateTime.Now && s.sale_end >= DateTime.Now)
+                           .Include(s => s.Variant_Phone)
+                           .Include(s => s.Variant_Phone.Product)
+                           .ToList();
+            int pageSize = 18;
+            int pageNumber = (page ?? 1);
+            var model = new SalesPageViewModel
+            {
+                SalesList = listSales.ToPagedList(pageNumber, pageSize)
+            };
+            return View(model);
+        }
+
+        // Tra ve cac danh sach Blog 
+        public ActionResult Blogs(string search, int? page)
+        {
+            var query = db.Blogs.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(b => b.blog_name.Contains(search) || b.blog_author.Contains(search));
+            }
+            query = query.OrderByDescending(b => b.blog_time);
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+            var model = new BlogsPageViewModel
+            {
+                Blogs = query.ToPagedList(pageNumber, pageSize),
+                Search = search
             };
             return View(model);
         }

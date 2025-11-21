@@ -102,9 +102,15 @@
             @if (Model.StockCount > 0)
             {
                 <div class="d-flex gap-2 mt-4">
-                    <a href="#" class="btn btn-warning btn-lg flex-grow-1 text-dark fw-bold shadow-sm">
-                        <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-                    </a>
+                    @using (Html.BeginForm("AddToCart", "Carts", FormMethod.Post, new { @class = "flex-grow-1" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="variant_id" value="@Model.Variant.variant_id" />
+                        <button type="submit" class="btn btn-warning btn-lg w-100 text-dark fw-bold shadow-sm ">
+                            <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
+                        </button>
+                    }
+
                     <a href="#" class="btn btn-danger btn-lg flex-grow-1 fw-bold shadow-sm">
                         <i class="bi bi-lightning-fill"></i> Mua ngay
                     </a>

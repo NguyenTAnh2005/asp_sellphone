@@ -14,6 +14,7 @@ namespace old_phone.Models
     
     public partial class Cart
     {
+        public int cart_id { get; set; }
         public int account_id { get; set; }
         public int variant_id { get; set; }
         public int cart_count { get; set; }

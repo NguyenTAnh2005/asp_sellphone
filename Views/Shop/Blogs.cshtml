@@ -1,0 +1,98 @@
+﻿@using PagedList.Mvc;
+@model old_phone.ViewModels.BlogsPageViewModel
+
+@{
+    ViewBag.Title = "Tin tức công nghệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4 mb-5 animate__animated animate__zoomIn">
+
+    @* --- PHẦN HEADER & TÌM KIẾM --- *@
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-danger text-uppercase border-start border-4 border-danger ps-3">
+                <i class="bi bi-newspaper"></i> Tin tức công nghệ
+            </h3>
+        </div>
+        <div class="col-md-6 mt-3 mt-md-0">
+            @* Form Tìm kiếm *@
+            <form method="get" action="@Url.Action("Blogs", "Shop")">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control rounded-pill rounded-end"
+                           placeholder="Tìm kiếm bài viết..." value="@Model.Search">
+                    <button class="btn btn-danger rounded-pill rounded-start px-4" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* --- DANH SÁCH BÀI VIẾT --- *@
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @if (Model.Blogs != null && Model.Blogs.Any())
+        {
+            foreach (var item in Model.Blogs)
+            {
+                // Tái sử dụng Partial View _ArticleCard bạn đã có
+                @Html.Partial("_ArticleCard", item)
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-journal-x display-1 text-muted opacity-25"></i>
+                <h4 class="mt-3 fw-bold text-secondary">Không tìm thấy bài viết nào</h4>
+                <p class="text-muted">Hãy thử từ khóa khác xem sao.</p>
+                <a href="@Url.Action("Blogs", "Shop")" class="btn btn-outline-danger rounded-pill mt-2">
+                    Xem tất cả bài viết
+                </a>
+            </div>
+        }
+    </div>
+
+    @* --- THANH PHÂN TRANG --- *@
+    @if (Model.Blogs != null && Model.Blogs.PageCount > 1)
+    {
+        <div class="mt-5 d-flex justify-content-center">
+            @* Truyền tham số 'search' để khi chuyển trang không bị mất tìm kiếm *@
+            @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page, search = Model.Search }),
+                new PagedListRenderOptions
+                     {
+                    LiElementClasses = new string[] { "page-item" },
+                    LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                    LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                    ClassToApplyToFirstListItemInPager = "page-item",
+                    ClassToApplyToLastListItemInPager = "page-item",
+                    ContainerDivClasses = new[] { "pagination-container" }
+                }
+            )
+        </div>
+
+        @* CSS Phân trang (Màu đỏ cho hợp Blog) *@
+        <style>
+            .pagination-container ul.pagination {
+                justify-content: center;
+            }
+
+            .pagination .page-link {
+                color: #dc3545;
+                border: 1px solid #f8d7da;
+                margin: 0 3px;
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                color: white;
+            }
+
+            .pagination .page-link:hover {
+                background-color: #ffebe9;
+            }
+        </style>
+    }
+</div>

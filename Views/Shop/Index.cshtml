@@ -5,9 +5,9 @@
 }
 
 @* --- PHẦN 1: BANNER VÀ GIỚI THIỆU (Phần Tĩnh) --- *@
-<div class="row d-flex justify-content-evenly align-items-center mb-4">
+<div class="row d-flex justify-content-evenly align-items-center mb-4 mt-4">
     @* SLide Banner *@
-    <div class="col-12 col-xl-7 animate__animated animate__zoomIn">
+    <div class="col-10 col-xl-7 animate__animated animate__zoomIn">
         <div class="border border-3 border-light rounded-4 overflow-hidden shadow-sm">
             <div class="carousel slide" id="index_banner" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -30,7 +30,7 @@
     </div>
 
     @* GT WEB *@
-    <div class="col-12 col-xl-4 mt-3 mt-xl-0 d-flex align-items-center animate__animated animate__zoomIn">
+    <div class="col-12 col-xl-4 mt-3 mt-xl-0 d-flex justify-content-center align-items-center animate__animated animate__zoomIn">
         <div class="card border-2 main-border rounded-4 shadow-sm h-100">
             <div class="card-body text-center">
                 <i class="bi bi-emoji-smile-fill text-warning display-1 mb-3"></i>
@@ -65,7 +65,7 @@
 
         </div>
         <div class="text-center py-3">
-            <a href="@Url.Action("Index", "Product", new { filter = "sale" })" class="btn btn-outline-primary rounded-pill px-4">
+            <a href="@Url.Action("Sales", "Shop", new { filter = "sale" })" class="btn btn-outline-primary rounded-pill px-4">
                 Xem tất cả Sale <i class="bi bi-arrow-right"></i>
             </a>
         </div>
@@ -101,7 +101,7 @@
             }
         </div>
         <div class="text-center py-3">
-            <a href="@Url.Action("Index", "Product")" class="btn btn-outline-primary rounded-pill px-4">
+            <a href="@Url.Action("Phones", "Shop")" class="btn btn-outline-primary rounded-pill px-4">
                 Xem kho máy <i class="bi bi-phone"></i>
             </a>
         </div>
@@ -132,7 +132,7 @@
             }
         </div>
         <div class="text-center py-3">
-            <a href="@Url.Action("Index", "Blog")" class="btn btn-outline-primary rounded-pill px-4">
+            <a href="@Url.Action("Blogs", "Shop")" class="btn btn-outline-primary rounded-pill px-4">
                 Đọc thêm tin tức <i class="bi bi-arrow-right"></i>
             </a>
         </div>

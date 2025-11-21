@@ -33,14 +33,44 @@
                         </div>
 
                         @* Input Password *@
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control rounded-pill" id="passInput" name="account_password" placeholder="Password" required>
+                        <div class="form-floating mb-3 position-relative">
+                            @* Thêm class pe-5 (padding-end) để chữ không bị đè lên icon *@
+                            <input type="password" class="form-control rounded-pill pe-5" id="passInput" name="account_password" placeholder="Password" required>
                             <label for="passInput" class="ps-4">Mật khẩu</label>
+
+                            @* Icon Mắt - Đặt vị trí tuyệt đối bên phải *@
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"
+                                  onclick="togglePassword()"
+                                  style="cursor: pointer; z-index: 10;">
+                                <i class="bi bi-eye-slash" id="iconEye"></i>
+                            </span>
+                            <script>
+                                function togglePassword() {
+                                    // 1. Lấy các thẻ HTML cần thiết
+                                    var input = document.getElementById("passInput");
+                                    var icon = document.getElementById("iconEye");
+
+                                    // 2. Kiểm tra trạng thái hiện tại
+                                    if (input.type === "password") {
+                                        input.type = "text";
+                                        icon.classList.remove("bi-eye-slash");
+                                        icon.classList.add("bi-eye");
+                                    } else {
+                                        input.type = "password";
+                                        icon.classList.remove("bi-eye");
+                                        icon.classList.add("bi-eye-slash");
+                                    }
+                                }
+                            </script>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm mt-2">
                             Đăng Nhập <i class="bi bi-box-arrow-in-right ms-1"></i>
                         </button>
+                        <div class=" d-flex justify-content-center mt-4">
+                            <input type="checkbox" name="rememberMe" id="rememberInput" value="true"/>
+                            <label for="remeberInput" class="ps-1">Lưu thông tin đăng nhập!</label>
+                        </div>
                     }
                 </div>
 

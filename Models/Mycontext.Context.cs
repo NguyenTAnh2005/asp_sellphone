@@ -27,7 +27,6 @@ namespace old_phone.Models
     
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Blog> Blogs { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Detail> Details { get; set; }
         public virtual DbSet<Hotline> Hotlines { get; set; }
@@ -39,5 +38,6 @@ namespace old_phone.Models
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<Variant_Phone> Variant_Phone { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace old_phone.Common
 {
-    public class HashPassword
+    public class Utility
     {
         public static string Encrypt(string pass)
         {
@@ -36,6 +36,13 @@ namespace old_phone.Common
             }
 
             return byte2String;
+        }
+
+        // Ham tao token ngau nhien 
+        public static string GenerateNewToken()
+        {
+            // Tạo một chuỗi GUID ngẫu nhiên và loại bỏ dấu gạch ngang (N)
+            return Guid.NewGuid().ToString("N");
         }
     }
 }

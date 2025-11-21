@@ -1,0 +1,84 @@
+﻿@using PagedList.Mvc;
+@model old_phone.ViewModels.SalesPageViewModel
+
+@{
+    ViewBag.Title = "Săn Sale Giá Sốc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4 mb-5 animate__animated animate__zoomIn">
+
+    @* --- BANNER TIÊU ĐỀ --- *@
+    <div class="text-center mb-5 ">
+        <h1 class="fw-bold text-danger text-uppercase display-4">
+            <i class="bi bi-lightning-fill"></i> Săn Sale Mỗi Ngày
+        </h1>
+        <p class="text-muted fs-5">Hàng ngàn ưu đãi hấp dẫn đang chờ bạn</p>
+        <hr class="w-25 mx-auto text-danger border-2 opacity-100">
+    </div>
+
+    @* --- DANH SÁCH SẢN PHẨM --- *@
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @if (Model.SalesList != null && Model.SalesList.Any())
+        {
+            foreach (var item in Model.SalesList)
+            {
+                // Tái sử dụng Partial View _SaleCard xịn xò mà bạn đã sửa lỗi
+                @Html.Partial("_SaleCard", item)
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-cart-x display-1 text-muted opacity-25"></i>
+                <h4 class="mt-3 fw-bold text-secondary">Chưa có chương trình khuyến mãi nào</h4>
+                <p class="text-muted">Vui lòng quay lại sau nhé!</p>
+            </div>
+        }
+    </div>
+
+    @* --- THANH PHÂN TRANG --- *@
+    @if (Model.SalesList != null && Model.SalesList.PageCount > 1)
+    {
+        <div class="mt-5 d-flex justify-content-center">
+            @Html.PagedListPager(Model.SalesList, page => Url.Action("Sales", new { page }),
+                new PagedListRenderOptions
+                     {
+                    LiElementClasses = new string[] { "page-item" },
+                    LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                    LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                    ClassToApplyToFirstListItemInPager = "page-item",
+                    ClassToApplyToLastListItemInPager = "page-item",
+                    ContainerDivClasses = new[] { "pagination-container" }
+                }
+            )
+        </div>
+
+        @* CSS cho phân trang *@
+        <style>
+            .pagination-container ul.pagination {
+                justify-content: center;
+            }
+
+            .pagination .page-link {
+                color: #dc3545;
+                border: 1px solid #f8d7da;
+                margin: 0 3px;
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-weight: bold;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                color: white;
+            }
+
+            .pagination .page-link:hover {
+                background-color: #ffebe9;
+                border-color: #dc3545;
+            }
+        </style>
+    }
+</div>
