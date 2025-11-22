@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
+using old_phone.Models;
 
 namespace old_phone.Common
 {
@@ -44,5 +46,6 @@ namespace old_phone.Common
             // Tạo một chuỗi GUID ngẫu nhiên và loại bỏ dấu gạch ngang (N)
             return Guid.NewGuid().ToString("N");
         }
+       
     }
 }

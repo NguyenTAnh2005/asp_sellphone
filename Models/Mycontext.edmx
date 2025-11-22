@@ -64,10 +64,10 @@
             <PropertyRef Name="hotline_id" />
           </Key>
           <Property Name="hotline_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="account_id" Type="int" />
-          <Property Name="hotline_name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="hotline_address" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="hotline_phonenumber" Type="bigint" Nullable="false" />
+          <Property Name="account_id" Type="int" Nullable="false" />
+          <Property Name="hotline_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="hotline_address" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="hotline_phonenumber" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="hotline_default" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Order_">
@@ -204,18 +204,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Hotline__account__628FA481">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="account_id" />
-            </Principal>
-            <Dependent Role="Hotline">
-              <PropertyRef Name="account_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Order___account___6C190EBB">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
@@ -324,6 +312,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Hotline_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Hotline">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="OldPhoneModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Blog" EntityType="Self.Blog" Schema="dbo" store:Type="Tables" />
@@ -354,10 +356,6 @@
           <AssociationSet Name="FK__Detail__variant___6FE99F9F" Association="Self.FK__Detail__variant___6FE99F9F">
             <End Role="Variant_Phone" EntitySet="Variant_Phone" />
             <End Role="Detail" EntitySet="Detail" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Hotline__account__628FA481" Association="Self.FK__Hotline__account__628FA481">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="Hotline" EntitySet="Hotline" />
           </AssociationSet>
           <AssociationSet Name="FK__Order___account___6C190EBB" Association="Self.FK__Order___account___6C190EBB">
             <End Role="Account" EntitySet="Account" />
@@ -395,6 +393,10 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Account" EntitySet="Account" />
           </AssociationSet>
+          <AssociationSet Name="FK_Hotline_Account" Association="Self.FK_Hotline_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Hotline" EntitySet="Hotline" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -412,12 +414,12 @@
           <Property Name="account_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="account_password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="role_id" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="Hotlines" Relationship="Self.FK__Hotline__account__628FA481" FromRole="Account" ToRole="Hotline" />
           <NavigationProperty Name="Order_" Relationship="Self.FK__Order___account___6C190EBB" FromRole="Account" ToRole="Order_" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Account_Role" FromRole="Account" ToRole="Roles" />
           <Property Name="RememberMeToken" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="TokenExpiryDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Carts" Relationship="OldPhoneModel.FK__Cart__account_id__2BFE89A6" FromRole="Account" ToRole="Cart" />
+          <NavigationProperty Name="Hotlines" Relationship="OldPhoneModel.FK_Hotline_Account" FromRole="Account" ToRole="Hotline" />
         </EntityType>
         <EntityType Name="Blog">
           <Key>
@@ -452,19 +454,6 @@
           <NavigationProperty Name="Order_" Relationship="Self.FK__Detail__order_id__6EF57B66" FromRole="Detail" ToRole="Order_" />
           <NavigationProperty Name="Variant_Phone" Relationship="Self.FK__Detail__variant___6FE99F9F" FromRole="Detail" ToRole="Variant_Phone" />
         </EntityType>
-        <EntityType Name="Hotline">
-          <Key>
-            <PropertyRef Name="hotline_id" />
-          </Key>
-          <Property Name="hotline_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="account_id" Type="Int32" />
-          <Property Name="hotline_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="hotline_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="hotline_phonenumber" Type="Int64" Nullable="false" />
-          <Property Name="hotline_default" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="Self.FK__Hotline__account__628FA481" FromRole="Hotline" ToRole="Account" />
-          <NavigationProperty Name="Order_" Relationship="Self.FK__Order___hotline___6B24EA82" FromRole="Hotline" ToRole="Order_" />
-        </EntityType>
         <EntityType Name="Order_">
           <Key>
             <PropertyRef Name="order_id" />
@@ -479,7 +468,7 @@
           <Property Name="order_total_price" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK__Order___account___6C190EBB" FromRole="Order_" ToRole="Account" />
           <NavigationProperty Name="Details" Relationship="Self.FK__Detail__order_id__6EF57B66" FromRole="Order_" ToRole="Detail" />
-          <NavigationProperty Name="Hotline" Relationship="Self.FK__Order___hotline___6B24EA82" FromRole="Order_" ToRole="Hotline" />
+          <NavigationProperty Name="Hotline" Relationship="OldPhoneModel.FK__Order___hotline___6B24EA82" FromRole="Order_" ToRole="Hotline" />
         </EntityType>
         <EntityType Name="Phone">
           <Key>
@@ -568,18 +557,6 @@
           <NavigationProperty Name="Stock" Relationship="Self.FK__Stock__variant_i__5FB337D6" FromRole="Variant_Phone" ToRole="Stock" />
           <NavigationProperty Name="Carts" Relationship="OldPhoneModel.FK__Cart__variant_id__2CF2ADDF" FromRole="Variant_Phone" ToRole="Cart" />
         </EntityType>
-        <Association Name="FK__Hotline__account__628FA481">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="Hotline" Type="Self.Hotline" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="account_id" />
-            </Principal>
-            <Dependent Role="Hotline">
-              <PropertyRef Name="account_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Order___account___6C190EBB">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
@@ -637,18 +614,6 @@
             </Principal>
             <Dependent Role="Detail">
               <PropertyRef Name="variant_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Order___hotline___6B24EA82">
-          <End Role="Hotline" Type="Self.Hotline" Multiplicity="0..1" />
-          <End Role="Order_" Type="Self.Order_" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Hotline">
-              <PropertyRef Name="hotline_id" />
-            </Principal>
-            <Dependent Role="Order_">
-              <PropertyRef Name="hotline_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -717,7 +682,6 @@
           <EntitySet Name="Blogs" EntityType="Self.Blog" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="Details" EntityType="Self.Detail" />
-          <EntitySet Name="Hotlines" EntityType="Self.Hotline" />
           <EntitySet Name="Order_" EntityType="Self.Order_" />
           <EntitySet Name="Phones" EntityType="Self.Phone" />
           <EntitySet Name="Products" EntityType="Self.Product" />
@@ -726,10 +690,6 @@
           <EntitySet Name="Sales" EntityType="Self.Sale" />
           <EntitySet Name="Stocks" EntityType="Self.Stock" />
           <EntitySet Name="Variant_Phone" EntityType="Self.Variant_Phone" />
-          <AssociationSet Name="FK__Hotline__account__628FA481" Association="Self.FK__Hotline__account__628FA481">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Hotline" EntitySet="Hotlines" />
-          </AssociationSet>
           <AssociationSet Name="FK__Order___account___6C190EBB" Association="Self.FK__Order___account___6C190EBB">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Order_" EntitySet="Order_" />
@@ -749,10 +709,6 @@
           <AssociationSet Name="FK__Detail__variant___6FE99F9F" Association="Self.FK__Detail__variant___6FE99F9F">
             <End Role="Variant_Phone" EntitySet="Variant_Phone" />
             <End Role="Detail" EntitySet="Details" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Order___hotline___6B24EA82" Association="Self.FK__Order___hotline___6B24EA82">
-            <End Role="Hotline" EntitySet="Hotlines" />
-            <End Role="Order_" EntitySet="Order_" />
           </AssociationSet>
           <AssociationSet Name="FK__Phone__product_i__59063A47" Association="Self.FK__Phone__product_i__59063A47">
             <End Role="Product" EntitySet="Products" />
@@ -782,6 +738,15 @@
           <AssociationSet Name="FK__Cart__variant_id__2CF2ADDF" Association="OldPhoneModel.FK__Cart__variant_id__2CF2ADDF">
             <End Role="Variant_Phone" EntitySet="Variant_Phone" />
             <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <EntitySet Name="Hotlines" EntityType="OldPhoneModel.Hotline" />
+          <AssociationSet Name="FK_Hotline_Account" Association="OldPhoneModel.FK_Hotline_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Hotline" EntitySet="Hotlines" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order___hotline___6B24EA82" Association="OldPhoneModel.FK__Order___hotline___6B24EA82">
+            <End Role="Hotline" EntitySet="Hotlines" />
+            <End Role="Order_" EntitySet="Order_" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Cart">
@@ -816,6 +781,45 @@
             </Principal>
             <Dependent Role="Cart">
               <PropertyRef Name="variant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Hotline">
+          <Key>
+            <PropertyRef Name="hotline_id" />
+          </Key>
+          <Property Name="hotline_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int32" Nullable="false" />
+          <Property Name="hotline_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="hotline_address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="hotline_phonenumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="hotline_default" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="OldPhoneModel.FK_Hotline_Account" FromRole="Hotline" ToRole="Account" />
+          <NavigationProperty Name="Order_" Relationship="OldPhoneModel.FK__Order___hotline___6B24EA82" FromRole="Hotline" ToRole="Order_" />
+        </EntityType>
+        <Association Name="FK_Hotline_Account">
+          <End Type="OldPhoneModel.Account" Role="Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OldPhoneModel.Hotline" Role="Hotline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Hotline">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order___hotline___6B24EA82">
+          <End Type="OldPhoneModel.Hotline" Role="Hotline" Multiplicity="0..1" />
+          <End Type="OldPhoneModel.Order_" Role="Order_" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotline">
+              <PropertyRef Name="hotline_id" />
+            </Principal>
+            <Dependent Role="Order_">
+              <PropertyRef Name="hotline_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -871,18 +875,6 @@
                 <ScalarProperty Name="detail_name" ColumnName="detail_name" />
                 <ScalarProperty Name="detail_count" ColumnName="detail_count" />
                 <ScalarProperty Name="detail_total_price" ColumnName="detail_total_price" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Hotlines">
-            <EntityTypeMapping TypeName="OldPhoneModel.Hotline">
-              <MappingFragment StoreEntitySet="Hotline">
-                <ScalarProperty Name="hotline_id" ColumnName="hotline_id" />
-                <ScalarProperty Name="account_id" ColumnName="account_id" />
-                <ScalarProperty Name="hotline_name" ColumnName="hotline_name" />
-                <ScalarProperty Name="hotline_address" ColumnName="hotline_address" />
-                <ScalarProperty Name="hotline_phonenumber" ColumnName="hotline_phonenumber" />
-                <ScalarProperty Name="hotline_default" ColumnName="hotline_default" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -987,6 +979,18 @@
                 <ScalarProperty Name="variant_id" ColumnName="variant_id" />
                 <ScalarProperty Name="account_id" ColumnName="account_id" />
                 <ScalarProperty Name="cart_id" ColumnName="cart_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hotlines">
+            <EntityTypeMapping TypeName="OldPhoneModel.Hotline">
+              <MappingFragment StoreEntitySet="Hotline">
+                <ScalarProperty Name="hotline_default" ColumnName="hotline_default" />
+                <ScalarProperty Name="hotline_phonenumber" ColumnName="hotline_phonenumber" />
+                <ScalarProperty Name="hotline_address" ColumnName="hotline_address" />
+                <ScalarProperty Name="hotline_name" ColumnName="hotline_name" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="hotline_id" ColumnName="hotline_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

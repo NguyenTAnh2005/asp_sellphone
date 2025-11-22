@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using old_phone.Models;
+using old_phone.Common;
 
 namespace old_phone.Controllers.Manage
 {
@@ -15,6 +16,7 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: ManageProducts
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Index()
         {
             var products = db.Products.Include(p => p.Company).Include(p => p.Phone);

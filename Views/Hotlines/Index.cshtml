@@ -1,0 +1,148 @@
+﻿@model IEnumerable<old_phone.Models.Hotline>
+@{
+    ViewBag.Title = "Sổ địa chỉ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <h3 class="fw-bold mb-4">Sổ địa chỉ</h3>
+    <button type="button" class="btn text-white fw-bold mb-4 rounded-3 px-4 py-2 shadow-sm"
+            style="background-color: #ff5722;" onclick="openModal()">
+        <i class="bi bi-house-add-fill me-2"></i> Thêm địa chỉ mới
+    </button>
+
+    <div class="row g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-12">
+                <div class="card border shadow-sm rounded-3 @(item.hotline_default == true ? "border-danger border-opacity-50" : "")">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            @* Thông tin bên trái *@
+                            <div>
+                                <div class="d-flex align-items-center gap-3 mb-1">
+                                    <h5 class="fw-bold mb-0 text-uppercase">@item.hotline_name</h5>
+                                    @if (item.hotline_default == true)
+                                    {
+                                        <span class="badge bg-danger rounded-pill">Mặc định</span>
+                                    }
+                                </div>
+                                <p class="text-muted mb-1"><span class="fw-bold text-dark">SĐT:</span> @item.hotline_phonenumber</p>
+                                <p class="text-muted mb-0"><span class="fw-bold text-dark">Địa chỉ:</span> @item.hotline_address</p>
+                            </div>
+
+                            @* Nút thao tác bên phải *@
+                            <div class="d-flex flex-column align-items-end gap-2">
+                                <div>
+                                    @* Nút Sửa: Gọi hàm JS openModal kèm dữ liệu *@
+                                    <button class="btn btn-link text-warning text-decoration-none fw-bold p-0 me-3"
+                                            onclick="openModal('@item.hotline_id', '@item.hotline_name', '@item.hotline_phonenumber', '@item.hotline_address', '@item.hotline_default')">
+                                        Sửa
+                                    </button>
+
+                                    @* Nút Xóa (Chỉ hiện nếu ko phải mặc định) *@
+                                    @if (item.hotline_default != true)
+                                    {
+                                        <a href="@Url.Action("Delete", new { id = item.hotline_id })" class="btn btn-link text-danger text-decoration-none fw-bold p-0" onclick="return confirm('Xóa địa chỉ này?')">Xóa</a>
+                                    }
+                                </div>
+
+                                @* Nút Set Default (Chỉ hiện khi chưa phải default) *@
+                                @if (item.hotline_default != true)
+                                {
+                                    <a href="@Url.Action("SetDefault", new { id = item.hotline_id })" class="btn btn-outline-secondary btn-sm rounded-pill">
+                                        Đặt làm mặc định
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@* --- MODAL (POPUP) THÊM / SỬA --- *@
+<div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-danger" id="modalTitle">Thêm địa chỉ mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            @using (Html.BeginForm("AddOrEdit", "Hotlines", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    @* Input ẩn chứa ID (để biết là Sửa hay Thêm) *@
+                    <input type="hidden" name="hotline_id" id="inpId" value="0" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Tên Người Nhận</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control border-start-0" name="hotline_name" id="inpName" required placeholder="VD: Nguyễn Văn A">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Số Điện Thoại</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-telephone"></i></span>
+                            <input type="text" class="form-control border-start-0" name="hotline_phonenumber" id="inpPhone" required placeholder="VD: 0988xxxxxx">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Địa Chỉ Chi Tiết</label>
+                        <textarea class="form-control" name="hotline_address" id="inpContent" rows="3" required placeholder="Số nhà, tên đường, phường/xã..."></textarea>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="hotline_default" value="true" id="inpDefault">
+                        <label class="form-check-label user-select-none" for="inpDefault">
+                            Đặt làm địa chỉ mặc định
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: #ff5722; border:none;">Lưu thay đổi</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@* --- SCRIPT XỬ LÝ MODAL --- *@
+<script>
+    // Hàm mở Modal: Dùng chung cho cả Thêm và Sửa
+    // Nếu gọi openModal() không tham số -> Là Thêm mới
+    // Nếu gọi có tham số -> Là Sửa -> Điền dữ liệu vào ô input
+    function openModal(id = 0, name = '', phone = '', content = '', isDefault = 'False') {
+
+        // 1. Cập nhật dữ liệu vào Form
+        document.getElementById('inpId').value = id;
+        document.getElementById('inpName').value = name;
+        document.getElementById('inpPhone').value = phone;
+        document.getElementById('inpContent').value = content;
+
+        // Xử lý checkbox (C# trả về chuỗi 'True'/'False', JS cần true/false)
+        document.getElementById('inpDefault').checked = (isDefault === 'True');
+
+        // 2. Đổi tiêu đề Modal cho hợp lý
+        var title = document.getElementById('modalTitle');
+        if (id == 0) {
+            title.innerText = "Thêm địa chỉ mới";
+        } else {
+            title.innerText = "Chỉnh sửa địa chỉ";
+        }
+
+        // 3. Mở Modal Bootstrap
+        var myModal = new bootstrap.Modal(document.getElementById('addressModal'));
+        myModal.show();
+    }
+</script>
+

@@ -28,7 +28,7 @@
                     <div class="col-12 col-lg-6">
                         <div class="card border-0 shadow-sm rounded-4 h-100 p-2 hover-shadow transition-all">
                             <div class="card-body d-flex align-items-center">
-                                
+                                @*Du lieu input gui sang controller*@
                                 <div class="form-check me-3">
                                     <input class="form-check-input border-2 scale-125"
                                            type="checkbox" name="selectedItems" value="@item.cart_id">
@@ -86,9 +86,9 @@
                         <button type="submit" class="btn btn-success rounded-3 fw-bold px-4 text-white">
                             Lưu thay đổi số lượng
                         </button>
-                        <a href="@Url.Action("Checkout", "Carts")" class="btn btn-danger rounded-3 fw-bold px-5 shadow-sm">
+                        <button type="button" class="btn btn-danger rounded-3 fw-bold px-5 shadow-sm" onclick="checkoutSelected()">
                             Mua ngay
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -129,5 +129,18 @@
             form.action = "/Carts/DeleteCart"
             form.submit();
         }
+    }
+    function checkoutSelected() {
+        var listChecked = document.querySelectorAll('input[name="selectedItems"]:checked');
+        if (listChecked.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
+            return;
+        }
+        var form = document.getElementById("cartForm");
+        form.action = "/Carts/ProceedToCheckout"
+        // Tắt các input số lượng đi
+        // Điều này đảm bảo chỉ các checkbox (selectedCartIds) được gửi đi.
+        document.querySelectorAll('input[name^="carts"]').forEach(el => el.disabled = true);
+        form.submit();
     }
 </script>

@@ -15,6 +15,7 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: ManagePhones
+        
         public ActionResult Index()
         {
             var phones = db.Phones.Include(p => p.Product);

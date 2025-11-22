@@ -21,10 +21,10 @@ namespace old_phone.Models
         }
     
         public int hotline_id { get; set; }
-        public Nullable<int> account_id { get; set; }
+        public int account_id { get; set; }
         public string hotline_name { get; set; }
         public string hotline_address { get; set; }
-        public long hotline_phonenumber { get; set; }
+        public string hotline_phonenumber { get; set; }
         public bool hotline_default { get; set; }
     
         public virtual Account Account { get; set; }

@@ -18,6 +18,10 @@ namespace old_phone.Controllers
         [HttpGet]
         public ActionResult Signup()
         {
+            if (Session["account"] != null)
+            {
+                return RedirectToAction("Index", "Shop");
+            }
             return View();
         }
 
@@ -57,6 +61,10 @@ namespace old_phone.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (Session["account"] != null)
+            {
+                return RedirectToAction("Index", "Shop");
+            }
             return View();
         }
         // Dang nhap gui Post de check va tra ve view tuong ung 

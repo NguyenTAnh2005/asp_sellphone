@@ -1,0 +1,149 @@
+﻿@model old_phone.ViewModels.OrderViewModel
+
+@{
+    ViewBag.Title = "Thanh Toán Đơn Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Tính tổng tiền tạm thời
+    decimal totalPrice = Model.OrderItems.Sum(i => (i.price* i.count));
+}
+
+<div class="container py-5">
+    <h3 class="fw-bold text-danger text-uppercase mb-4">
+        <i class="bi bi-receipt"></i> Đặt Hàng & Thanh Toán
+    </h3>
+
+    @* Form POST để gửi thông tin thanh toán về OrderController/ProcessOrder *@
+    @using (Html.BeginForm("ProcessOrder", "Order", FormMethod.Post, new { @class = "row g-4" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-lg-8">
+
+            @* --- KHỐI 1: CHỌN ĐỊA CHỈ GIAO HÀNG (HOTLINE) --- *@
+            <div class="card shadow-sm border-0 rounded-4 mb-4 p-4">
+                <h5 class="fw-bold mb-3 text-danger">1. Chọn Địa Chỉ Nhận Hàng</h5>
+
+                @if (Model.listHotlines != null && Model.listHotlines.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var hotline in Model.listHotlines)
+                        {
+                            <label class="list-group-item d-flex align-items-center mb-2 border rounded-3 @(hotline.hotline_default == true ? "border-danger bg-light" : "")">
+                                @* Input Radio Button - QUAN TRỌNG: Gắn vào SelectedHotlineId *@
+                                <input class="form-check-input me-3" type="radio"
+                                       name="SelectedHotlineId" value="@hotline.hotline_id"
+                                       @(hotline.hotline_default == true ? "checked" : "") required>
+
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-bold">@hotline.hotline_name @(hotline.hotline_default == true ? " (Mặc định)" : "")</p>
+                                    <small class="text-muted d-block">Điện thoại: @hotline.hotline_phonenumber</small>
+                                    <small class="text-muted d-block">Địa chỉ: @hotline.hotline_address</small>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-secondary ms-auto">Sửa</a>
+                            </label>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Bạn chưa có địa chỉ giao hàng nào. Vui lòng thêm địa chỉ!
+                        @* Thêm link đến trang thêm địa chỉ *@
+                        <a href="@Url.Action("AddHotline", "Account")" class="alert-link">Thêm ngay</a>
+                    </div>
+                }
+
+            </div>
+
+            @* --- KHỐI 2: DANH SÁCH SẢN PHẨM ĐẶT MUA --- *@
+            <div class="card shadow-sm border-0 rounded-4 mb-4 p-4">
+                <h5 class="fw-bold mb-3 text-danger">2. Xác Nhận Sản Phẩm (@Model.OrderItems.Count() sản phẩm)</h5>
+
+                @foreach (var item in Model.OrderItems)
+                {
+                    <div class="d-flex mb-3 border-bottom pb-3">
+                        <img src="@item.image_url" alt="@item.name" style="width: 70px; height: 70px; object-fit: contain;" class="rounded border p-1 me-3">
+
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold">@item.name</h6>
+                            <small class="text-muted d-block">
+                                @item.ram GB / @item.rom GB
+                                @* Hiện tại OrderItemViewModel không có color, nếu có thì thêm @item.color *@
+                            </small>
+                            <span class="d-block text-danger fw-bold">@string.Format("{0:N0} đ", item.price)</span>
+                        </div>
+
+                        <div class="text-end">
+                            <span class="d-block text-muted">SL: @item.count</span>
+                            <span class="d-block fw-bold">
+                                @string.Format("{0:N0} đ", (item.price * item.count))
+                            </span>
+                        </div>
+
+                        @* TẠO INPUT ẨN ĐỂ GỬI LẠI THÔNG TIN SẢN PHẨM ĐÃ CHỌN *@
+                        @* Mục đích là để Controller biết chính xác những item nào được mua và số lượng của chúng *@
+                        @* Bạn có thể bỏ qua bước này nếu bạn đã lưu toàn bộ thông tin cần thiết trong Session/DB khi đặt hàng *@
+                        @* Ở đây ta chỉ cần gửi ID đi để ProcessOrder xử lý. Ta sẽ dùng input ẩn để làm giả ID *@
+                        <input type="hidden" name="SelectedVariantIds" value="@item.variant_id" />
+                    </div>
+                }
+            </div>
+
+            @* --- KHỐI 3: THANH TOÁN VÀ GHI CHÚ --- *@
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h5 class="fw-bold mb-3 text-danger">3. Thanh Toán & Thông Tin Bổ Sung</h5>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Phương thức thanh toán:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="1" id="paymentCOD" checked>
+                        <label class="form-check-label" for="paymentCOD">
+                            Thanh toán khi nhận hàng (COD)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="PaymentMethod" value="2" id="paymentTransfer">
+                        <label class="form-check-label" for="paymentTransfer">
+                            Chuyển khoản ngân hàng
+                        </label>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        @* --- CỘT PHẢI: TỔNG KẾT ĐƠN HÀNG --- *@
+        <div class="col-lg-4">
+            <div class="card shadow-lg border-danger rounded-4 p-4 position-sticky" style="top: 100px;">
+                <h5 class="fw-bold mb-3">Tóm Tắt Thanh Toán</h5>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tạm tính (@Model.OrderItems.Count() SP):</span>
+                    <span class="fw-bold">@string.Format("{0:N0} đ", totalPrice)</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Phí vận chuyển:</span>
+                    <span class="text-success fw-bold">FREE</span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <h5 class="fw-bold text-danger">Tổng thanh toán:</h5>
+                    <h5 class="fw-bold text-danger">@string.Format("{0:N0} đ", totalPrice)</h5>
+                </div>
+
+                @* NÚT ĐẶT HÀNG CUỐI CÙNG *@
+                <button type="submit" class="btn btn-lg btn-danger w-100 rounded-pill fw-bold text-uppercase shadow">
+                    Đặt Hàng Ngay
+                </button>
+
+                <p class="text-center text-muted small mt-2">Bấm Đặt Hàng là bạn đã đồng ý với Điều khoản mua hàng</p>
+            </div>
+        </div>
+    }
+</div>
+
+@* Bạn cần tạo Action ProcessOrder trong OrderController để nhận Form POST này *@

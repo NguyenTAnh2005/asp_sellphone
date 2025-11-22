@@ -130,51 +130,7 @@
                 {
                     foreach (var item in Model.Phones)
                     {
-                        <div class="col">
-                            <div class="card h-100 shadow-sm product-card border-0 rounded-3 overflow-hidden">
-                                @* Tính % Giảm giá *@
-                                @{
-                                    var discount = 0;
-                                    if (item.variant_ph_org_price > 0)
-                                    {
-                                        discount = (int)((item.variant_ph_org_price - item.variant_ph_final_price) * 100 / item.variant_ph_org_price);
-                                    }
-                                }
-                                @if (discount > 0)
-                                {
-                                    <span class="position-absolute top-0 start-0 badge bg-danger m-2 rounded-pill shadow-sm z-1">-@discount%</span>
-                                }
-
-                                @* Ảnh sản phẩm *@
-                                <div class="position-relative bg-white p-3 text-center">
-                                    <img src="@item.variant_ph_img" class="img-fluid" alt="@item.Product.product_name" style="height: 180px; object-fit: contain;">
-                                </div>
-                                
-                                <div class="card-body d-flex flex-column p-3 bg-light bg-opacity-10">
-                                    @{
-                                        string variant_name = $"{item.Product.product_name} {item.variant_ph_ram}GB/{item.variant_ph_rom}GB";
-                                    }
-                                    <h6 class="card-title text-truncate fw-bold mb-1" style="font-size: 0.95rem;" title="@variant_name">
-                                        <a href="@Url.Action("Detail", "Shop", new { id = item.variant_id })" class="text-decoration-none text-dark stretched-link">
-                                            @item.Product.product_name
-                                        </a>
-                                    </h6>
-                                    <small class="text-muted mb-2 d-block">
-                                        @item.variant_ph_ram GB / @item.variant_ph_rom GB • @item.variant_ph_color
-                                    </small>
-
-                                    <div class="mt-auto">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="text-danger fw-bold fs-5">@item.variant_ph_final_price.ToString("N0")₫</span>
-                                            @if (discount > 0)
-                                            {
-                                                <span class="text-muted text-decoration-line-through small">@item.variant_ph_org_price.ToString("N0")₫</span>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @Html.Partial("_VariantCard",item)
                     }
                 }
                 else
