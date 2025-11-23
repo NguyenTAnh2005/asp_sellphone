@@ -68,31 +68,51 @@ namespace old_phone.Controllers.User
             return RedirectToAction("Index");
         }
 
-        // Add CartItem tu trang chi tiet san pham
-        [AuthorizeCheck]
+        // Add CartItem tu trang chi tiet san pham 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddToCart(int variant_id)
+        public  JsonResult AddToCartJS(int variant_id)
         {
-            var account_id = Session["acc_id"] as int?;
-            var cart_item = db.Carts.FirstOrDefault(c => c.account_id == account_id && c.variant_id == variant_id);
-            if (cart_item != null)
+            var acc_id = Session["acc_id"] as int?;
+            if (acc_id == null)
             {
-                cart_item.cart_count += 1;
-                db.SaveChanges();
-                TempData["Message"] = "Sản phẩm đã có sẵn trong giỏ hàng!!";
-                TempData["MsgType"] = "info";
-                return RedirectToAction("ProductDetails", "Shop", new { id = variant_id });
+                return Json(new
+                {
+                    success = false,
+                    requireLogin = true, // Cờ hiệu để JS biết mà chuyển trang
+                    message = "Vui lòng đăng nhập để thực hiện chức năng này!"
+                });
             }
-            Cart newCartItem = new Cart();
-            newCartItem.account_id = account_id.Value;
-            newCartItem.variant_id = variant_id;
-            newCartItem.cart_count = 1;
-            db.Carts.Add(newCartItem);
-            db.SaveChanges();
-            TempData["Message"] = "Đã thêm sản phẩm vào giỏ hàng!!";
-            TempData["MsgType"] = "success";
-            return RedirectToAction("ProductDetails", "Shop", new { id = variant_id });
+            try
+            {
+                var cart_item = db.Carts.FirstOrDefault(c => c.account_id == acc_id && c.variant_id == variant_id);
+                string msg = "";
+
+                if (cart_item != null)
+                {
+                    cart_item.cart_count += 1;
+                    msg = "Đã cập nhật số lượng sản phẩm!";
+                }
+                else
+                {
+                    Cart newCartItem = new Cart();
+                    newCartItem.account_id = acc_id.Value;
+                    newCartItem.variant_id = variant_id;
+                    newCartItem.cart_count = 1;
+                    db.Carts.Add(newCartItem);
+                    msg = "Đã thêm mới vào giỏ hàng!";
+                }
+                db.SaveChanges();
+
+                // Đếm tổng số lượng sản phẩm trong giỏ (để cập nhật số trên icon giỏ hàng)
+                int totalCount = db.Carts.Where(c => c.account_id == acc_id).Count(); // Hoặc Sum(cart_count) tùy bạn
+
+                // Trả về kết quả thành công
+                return Json(new { success = true, message = msg, totalCartItem = totalCount });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi server: " + ex.Message });
+            }
         }
 
         // Nhan danh sach cart item duoc chon de mua => chuyen den trang Checkout
@@ -121,11 +141,13 @@ namespace old_phone.Controllers.User
         [ValidateAntiForgeryToken]
         [AuthorizeCheck]
 
-        public ActionResult BuyNow(int variant_id)
+        public ActionResult BuyNow(int variant_id, int quantity = 1)
         {
-            // Luu thong tin sp can mua ngay vao TempData
-            TempData["SelectedItems"] = new List<int> { variant_id };
-            // Chuyen huong den trang Checkout
+            // 1. Lưu trực tiếp ID và Số lượng
+            TempData["BuyNow_ID"] = variant_id;
+            TempData["BuyNow_Qty"] = quantity;
+
+            // 2. Chuyển hướng
             return RedirectToAction("Checkout", "Order");
         }
     }

@@ -16,32 +16,32 @@ namespace old_phone.Controllers
         //TRa ve view cua HOme 
         public ActionResult Index()
         {
-            if (Request.Cookies["KeepLogin"] != null)
-            {
-                // Lays token de kiem tra trong db 
-                var token = Request.Cookies["KeepLogin"].Values["token"];
-                var account = db.Accounts.FirstOrDefault(a => a.RememberMeToken == token);
-                // Neu nhu co token do trong DB va con han su dung 
-                if (account != null && account.TokenExpiryDate > DateTime.Now)
-                {
-                    // Phuc hoi session 
-                    Session["account"] = account;
-                    Session["acc_id"] = account.account_id;
-                    Session["acc_name"] = account.account_last_name + " " + account.account_first_name;
-                    Session["acc_role"] = account.role_id;
-                }
-                else
-                {
-                    // Phong TH khi dang nhap may tinh, sau do dang nhap them va ghi nho dang nhap o thiet bi khac
-                    // se tao ra token moi => ghi de vao database, thi o tren trinh duyet may tinh cookie luc nay co
-                    // gia tri token khac voi token trong DB, nen neu nhu truy cap lai tren may tinh, sever se kiem tra token de cho dang nhap
-                    // nhung luc nay token tren may tinh da khac so voi trong db do do  cookie tren may tinh se bi bo 
-                    // bang cach tao 1 cookie trung ten nhung set han expried la ngay hom qua => trinh duyet check => xoa Cookie
-                    var expriedCookie = new HttpCookie("KeepLogin");
-                    expriedCookie.Expires = DateTime.Now.AddDays(-1);
-                    Response.Cookies.Add(expriedCookie);
-                }
-            }
+            //if (Request.Cookies["KeepLogin"] != null)
+            //{
+            //    // Lays token de kiem tra trong db 
+            //    var token = Request.Cookies["KeepLogin"].Values["token"];
+            //    var account = db.Accounts.FirstOrDefault(a => a.RememberMeToken == token);
+            //    // Neu nhu co token do trong DB va con han su dung 
+            //    if (account != null && account.TokenExpiryDate > DateTime.Now)
+            //    {
+            //        // Phuc hoi session 
+            //        Session["account"] = account;
+            //        Session["acc_id"] = account.account_id;
+            //        Session["acc_name"] = account.account_last_name + " " + account.account_first_name;
+            //        Session["acc_role"] = account.role_id;
+            //    }
+            //    else
+            //    {
+            //        // Phong TH khi dang nhap may tinh, sau do dang nhap them va ghi nho dang nhap o thiet bi khac
+            //        // se tao ra token moi => ghi de vao database, thi o tren trinh duyet may tinh cookie luc nay co
+            //        // gia tri token khac voi token trong DB, nen neu nhu truy cap lai tren may tinh, sever se kiem tra token de cho dang nhap
+            //        // nhung luc nay token tren may tinh da khac so voi trong db do do  cookie tren may tinh se bi bo 
+            //        // bang cach tao 1 cookie trung ten nhung set han expried la ngay hom qua => trinh duyet check => xoa Cookie
+            //        var expriedCookie = new HttpCookie("KeepLogin");
+            //        expriedCookie.Expires = DateTime.Now.AddDays(-1);
+            //        Response.Cookies.Add(expriedCookie);
+            //    }
+            //}
             //1.Lấy sản phẩm HOT SALE
             var hotSales = db.Sales
                             .Where(s => s.sale_start <= DateTime.Now && DateTime.Now <= s.sale_end)
@@ -236,5 +236,7 @@ namespace old_phone.Controllers
             };
             return View(model);
         }
+
+        
     }
 }

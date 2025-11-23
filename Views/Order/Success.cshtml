@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Đặt Hàng Thành Công";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Giữ nguyên layout chính
+
+    // Định nghĩa màu chủ đạo (giống như màu bạn dùng trước đó)
+    var mainColor = "#0d6efd";
+}
+
+<style>
+    .bg-main-CL {
+        background-color: @mainColor !important;
+    }
+    .text-main-CL {
+        color: @mainColor !important;
+    }
+    .success-card {
+        border-top: 5px solid @mainColor;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-3 p-4 p-md-5 text-center success-card">
+
+                <div class="mb-4">
+                    @* Biểu tượng checkmark lớn để tạo ấn tượng *@
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                </div>
+
+                <h2 class="fw-bold mb-3 text-main-CL">
+                    Cảm Ơn Bạn Đã Đặt Hàng!
+                </h2>
+
+                <p class="lead text-muted">
+                    Đơn hàng của bạn đã được tiếp nhận thành công.
+                </p>
+
+                <hr class="my-4">
+
+                <div class="text-start">
+                    <p class="fw-bold mb-1">Chi tiết đơn hàng:</p>
+                    <ul class="list-unstyled small text-muted">
+                        <li><i class="bi bi-calendar-check me-2"></i> Ngày đặt: @DateTime.Now.ToString("dd/MM/yyyy")</li>
+                        <li><i class="bi bi-truck me-2"></i> Dự kiến giao: @DateTime.Now.AddDays(3).ToString("dd/MM/yyyy")</li>
+                        <li><i class="bi bi-envelope me-2"></i> Thông tin sẽ được gửi qua Email xác nhận.</li>
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    @* Button quay lại trang chủ *@
+                    <a href="@Url.Action("Index", "Shop")" class="btn bg-main-CL text-white w-100 fw-bold py-2 rounded-pill shadow-sm">
+                        <i class="bi bi-house-door me-2"></i> Quay Lại Trang Chủ
+                    </a>
+                </div>
+
+                <p class="small text-secondary mt-3">
+                    Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ bộ phận hỗ trợ của chúng tôi.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>

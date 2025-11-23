@@ -145,7 +145,6 @@
     <Compile Include="Controllers\User\CartsController.cs" />
     <Compile Include="Controllers\User\HotlinesController.cs" />
     <Compile Include="Controllers\User\OrderController.cs" />
-    <Compile Include="Controllers\VariantPhoneController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -348,6 +347,9 @@
     <Content Include="Views\Carts\Index.cshtml" />
     <Content Include="Views\Hotlines\Index.cshtml" />
     <Content Include="Views\Order\Checkout.cshtml" />
+    <Content Include="Views\Order\Success.cshtml" />
+    <Content Include="Views\Order\History.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

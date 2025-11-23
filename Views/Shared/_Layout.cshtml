@@ -43,6 +43,36 @@
             transform: scale(.85) translateY(-1.15rem) translateX(.15rem) !important;
         }
     </style>
+    @* KIỂM TRA COOKIE "KEEP LOGIN" ĐỂ PHỤC HỒI SESSION NẾU CÓ *@
+    @{
+        old_phone.Models.OldPhoneEntities db = new old_phone.Models.OldPhoneEntities();
+        if (Request.Cookies["KeepLogin"] != null)
+        {
+            // Lays token de kiem tra trong db
+            var token = Request.Cookies["KeepLogin"].Values["token"];
+            var account = db.Accounts.FirstOrDefault(a => a.RememberMeToken == token);
+            // Neu nhu co token do trong DB va con han su dung
+            if (account != null && account.TokenExpiryDate > DateTime.Now)
+            {
+                // Phuc hoi session
+                Session["account"] = account;
+                Session["acc_id"] = account.account_id;
+                Session["acc_name"] = account.account_last_name + " " + account.account_first_name;
+                Session["acc_role"] = account.role_id;
+            }
+            else
+            {
+                // Phong TH khi dang nhap may tinh, sau do dang nhap them va ghi nho dang nhap o thiet bi khac
+                // se tao ra token moi => ghi de vao database, thi o tren trinh duyet may tinh cookie luc nay co
+                // gia tri token khac voi token trong DB, nen neu nhu truy cap lai tren may tinh, sever se kiem tra token de cho dang nhap
+                // nhung luc nay token tren may tinh da khac so voi trong db do do  cookie tren may tinh se bi bo
+                // bang cach tao 1 cookie trung ten nhung set han expried la ngay hom qua => trinh duyet check => xoa Cookie
+                var expriedCookie = new HttpCookie("KeepLogin");
+                expriedCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(expriedCookie);
+            }
+        }
+    }
     <nav class="navbar navbar-expand-lg bg-body-tertiary ">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,6 +120,12 @@
                                         @Html.ActionLink("Sổ địa chỉ", "Index", "Hotlines", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="dropdown-item text-main-CL ">
+                                        <i class="bi bi-house-check me-1"></i>
+                                        @Html.ActionLink("Lịch sử đơn hàng", "History", "Order", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
+                                    </div>
+                                </li>
                             }
                             @if (role == 2)
                             {
@@ -122,7 +158,6 @@
     </nav>
 
     <div class="container-fluid">
-
         @RenderBody()
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
