@@ -1,0 +1,252 @@
+﻿@model old_phone.Models.Account
+
+@{
+    ViewBag.Title = "Hồ Sơ Cá Nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <div class="d-flex align-items-center mb-4 animate__animated animate__fadeInDown">
+                <div class="bg-main-CL text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow"
+                     style="width: 64px; height: 64px; font-size: 1.8rem;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold text-main-CL mb-0">Hồ Sơ Của Tôi</h3>
+                    <p class="text-muted mb-0">Quản lý thông tin hồ sơ và bảo mật</p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-bottom-0 p-0">
+                    <ul class="nav nav-tabs nav-fill fw-bold" id="profileTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-3" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                                <i class="bi bi-person-vcard me-2"></i> Thông tin chung
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-3" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button">
+                                <i class="bi bi-shield-lock me-2"></i> Bảo mật & Email
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <div class="tab-content">
+
+                        @* --- TAB 1: THÔNG TIN CHUNG --- *@
+                        <div class="tab-pane fade show active" id="info" role="tabpanel">
+                            <form id="updateProfileForm">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Họ đệm</label>
+                                        <input type="text" class="form-control" name="lastName" value="@Model.account_last_name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Tên</label>
+                                        <input type="text" class="form-control" name="firstName" value="@Model.account_first_name" required>
+                                    </div> 
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small d-block">Giới tính</label>
+                                        <div class="d-flex gap-4 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="genderMale" value="true" @(Model.account_gender == true ? "checked" : "")>
+                                                <label class="form-check-label" for="genderMale">Nam</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="false" @(Model.account_gender == false ? "checked" : "")>
+                                                <label class="form-check-label" for="genderFemale">Nữ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Ngày sinh</label>
+                                        <input type="date" class="form-control" name="birthday" value="@Model.account_date.ToString("yyyy-MM-dd")" required>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="button" onclick="submitProfile()" class="btn bg-main-CL text-white px-4 rounded-pill fw-bold shadow-sm">
+                                            <i class="bi bi-save me-2"></i> Lưu Thông Tin
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        @* --- TAB 2: BẢO MẬT (Logic mới) --- *@
+                        <div class="tab-pane fade" id="security" role="tabpanel">
+                            <div class="alert alert-info small">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                Vui lòng xác thực mật khẩu cũ để mở khóa tính năng thay đổi Email và Mật khẩu.
+                            </div>
+
+                            @* Form xác thực *@
+                            <div class="row g-3 mb-4 align-items-end" id="verifySection">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-bold text-muted small">Mật khẩu hiện tại (Xác thực)</label>
+
+                                    @* --- DÙNG INPUT GROUP --- *@
+                                    <div class="input-group">
+                                        <input type="password" class="form-control border-primary" id="verifyOldPass" placeholder="Nhập mật khẩu cũ...">
+                                        <button class="btn btn-outline-primary" type="button" onclick="togglePass('verifyOldPass', this)">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" onclick="verifyPassword()" class="btn btn-outline-primary w-100 fw-bold">
+                                        <i class="bi bi-check-circle me-2"></i> Xác thực ngay
+                                    </button>
+                                </div>
+                            </div>
+
+                            <hr class="text-muted opacity-25 my-4">
+
+                            @* Form chỉnh sửa (Ban đầu bị Disabled) *@
+                            <form id="securityForm">
+                                <div class="row g-4 position-relative">
+                                    @* Lớp phủ khóa (Visual effect) *@
+                                    <div id="formOverlay" class="position-absolute w-100 h-100 bg-white opacity-50" style="z-index: 10;"></div>
+
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-bold text-muted small">Email đăng nhập</label>
+                                        <input type="email" class="form-control" name="newEmail" id="inpEmail" value="@Model.account_email" disabled>
+                                    </div>
+
+                                    @* --- MẬT KHẨU MỚI --- *@
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Mật khẩu mới</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" name="newPassword" id="inpNewPass" disabled placeholder="••••••">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('inpNewPass', this)" disabled id="btnToggleNew">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    @* --- XÁC NHẬN MẬT KHẨU MỚI --- *@
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold text-muted small">Xác nhận mật khẩu mới</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="inpConfirmPass" disabled placeholder="••••••">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('inpConfirmPass', this)" disabled id="btnToggleConfirm">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="button" id="btnSaveSecurity" onclick="submitSecurity()" class="btn btn-danger px-4 rounded-pill fw-bold shadow-sm" disabled>
+                                            <i class="bi bi-shield-check me-2"></i> Lưu Thay Đổi Bảo Mật
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- HÀM MỚI: ẨN/HIỆN MẬT KHẨU ---
+    function togglePass(inputId, btn) {
+        var input = document.getElementById(inputId);
+        var icon = btn.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash"); // Đổi icon thành mắt gạch chéo
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+    // 1. Lưu thông tin cơ bản
+    async function submitProfile() {
+        var form = document.getElementById('updateProfileForm');
+        var formData = new FormData(form);
+
+        try {
+            const response = await fetch('/Account/UpdateProfileJS', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (data.success) location.reload();
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+
+    // 2. Xác thực mật khẩu cũ để mở khóa
+    async function verifyPassword() {
+        var oldPass = document.getElementById('verifyOldPass').value;
+        if(!oldPass) { alert("Vui lòng nhập mật khẩu cũ!"); return; }
+
+        var formData = new FormData();
+        formData.append('oldPassword', oldPass);
+
+        try {
+            const response = await fetch('@Url.Action("VerifyPasswordJS", "Account")', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                // Mở khóa Form
+                document.getElementById('formOverlay').style.display = 'none'; // Ẩn lớp phủ
+                document.getElementById('inpEmail').disabled = false;
+                document.getElementById('inpNewPass').disabled = false;
+                document.getElementById('inpConfirmPass').disabled = false;
+                document.getElementById('btnSaveSecurity').disabled = false;
+                document.getElementById('btnToggleNew').disabled = false;
+                document.getElementById('btnToggleConfirm').disabled = false;
+
+                // Khóa ô nhập pass cũ lại để user không sửa lung tung
+                document.getElementById('verifyOldPass').disabled = true;
+                document.getElementById('verifyOldPass').classList.add("is-valid");
+
+                alert("Xác thực thành công! Bạn có thể thay đổi thông tin bên dưới.");
+            } else {
+                alert(data.message);
+                document.getElementById('verifyOldPass').classList.add("is-invalid");
+            }
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+
+    // 3. Lưu thay đổi bảo mật (Email + Pass mới)
+    async function submitSecurity() {
+        var newPass = document.getElementById('inpNewPass').value;
+        var confirmPass = document.getElementById('inpConfirmPass').value;
+
+        // Nếu có nhập pass mới thì phải check trùng khớp
+        if (newPass && newPass !== confirmPass) {
+            alert("Mật khẩu xác nhận không khớp!");
+            return;
+        }
+
+        var form = document.getElementById('securityForm');
+        var formData = new FormData(form);
+
+        try {
+            const response = await fetch('@Url.Action("UpdateSecurityJS", "Account")', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            alert(data.message);
+            if (data.success) location.reload();
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+</script>

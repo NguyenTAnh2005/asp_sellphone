@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using old_phone.Common;
 
@@ -12,7 +11,8 @@ namespace old_phone.Controllers.User
     public class CartsController : Controller
     {
         OldPhoneEntities db = new OldPhoneEntities();
-        // GET: 
+
+        // GET: Giỏ hàng
         [AuthorizeCheck]
         public ActionResult Index()
         {
@@ -25,88 +25,118 @@ namespace old_phone.Controllers.User
                                   .ToList();
             return View(listCartItems);
         }
-
-        // Xu ly cap nhat So luong 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateCount(List<Cart> carts)
+        // --- CÁC HÀM API JSON (Xử lý ngầm) ---
+        // Model nhận dữ liệu cập nhật số lượng
+        public class CartUpdateModel
         {
-            // MVC tự động gom các input name="carts[0].cart_id"... thành List<Cart>
-            if(carts != null)
-            {
-                foreach(var item in carts)
-                {
-                    var cartitem = db.Carts.Find(item.cart_id);
-                    if(cartitem != null)
-                    {
-                        cartitem.cart_count = item.cart_count;
-                    }
-                }
-                db.SaveChanges();
-                TempData["Message"] = "Cập nhật số lượng thành công!";
-                TempData["MsgType"] = "success";
-            }
-            return RedirectToAction("Index");
+            public int cart_id { get; set; }
+            public int cart_count { get; set; }
         }
-
-        // XU ly xoa cart item 
+        // Cập nhật số lượng (JSON)
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteCart(int[] selectedItems)
-        {
-            if(selectedItems != null && selectedItems.Length > 0)
-            {
-                // Chon tat cac cac item ma cart_id nam trong danh sach dau vao ben tren 
-                var itemCartToDel = db.Carts.Where(c => selectedItems.Contains(c.cart_id)).ToList();
-                //SELECT* FROM Cart WHERE cart_id IN(1, 5, 9, 12)
-                db.Carts.RemoveRange(itemCartToDel);
-                db.SaveChanges();
-
-            }
-            TempData["Message"] = "Xóa sản phẩm  thành công!";
-            TempData["MsgType"] = "success";
-            return RedirectToAction("Index");
-        }
-
-        // Add CartItem tu trang chi tiet san pham 
-        [HttpPost]
-        public  JsonResult AddToCartJS(int variant_id)
+        public JsonResult UpdateCountJS(List<CartUpdateModel> carts)
         {
             var acc_id = Session["acc_id"] as int?;
             if (acc_id == null)
             {
-                return Json(new
-                {
-                    success = false,
-                    requireLogin = true, // Cờ hiệu để JS biết mà chuyển trang
-                    message = "Vui lòng đăng nhập để thực hiện chức năng này!"
-                });
+                return Json(new { success = false, requireLogin = true, message = "Vui lòng đăng nhập!" });
             }
+
             try
             {
-                var cart_item = db.Carts.FirstOrDefault(c => c.account_id == acc_id && c.variant_id == variant_id);
+                if (carts != null && carts.Any())
+                {
+                    foreach (var item in carts)
+                    {
+                        // Chỉ cập nhật cart item của đúng user đó
+                        var cartitem = db.Carts.FirstOrDefault(c => c.cart_id == item.cart_id && c.account_id == acc_id);
+                        if (cartitem != null && item.cart_count > 0)
+                        {
+                            cartitem.cart_count = item.cart_count;
+                        }
+                    }
+                    db.SaveChanges();
+
+                    return Json(new { success = true, message = "Cập nhật giỏ hàng thành công!" });
+                }
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi server: " + ex.Message });
+            }
+        }
+
+        //Xóa sản phẩm (JSON)
+        [HttpPost]
+        public JsonResult DeleteCartJS(int[] selectedItems)
+        {
+            var acc_id = Session["acc_id"] as int?;
+            if (acc_id == null)
+            {
+                return Json(new { success = false, requireLogin = true, message = "Vui lòng đăng nhập!" });
+            }
+
+            try
+            {
+                if (selectedItems != null && selectedItems.Length > 0)
+                {
+                    var itemsToDelete = db.Carts
+                        .Where(c => selectedItems.Contains(c.cart_id) && c.account_id == acc_id)
+                        .ToList();
+
+                    if (itemsToDelete.Any())
+                    {
+                        db.Carts.RemoveRange(itemsToDelete);
+                        db.SaveChanges();
+                        return Json(new { success = true, message = "Đã xóa sản phẩm khỏi giỏ hàng!" });
+                    }
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm để xóa!" });
+                }
+                return Json(new { success = false, message = "Vui lòng chọn sản phẩm cần xóa!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi server: " + ex.Message });
+            }
+        }
+
+        //Thêm vào giỏ hàng (JSON) từ trang chi tiết sản phẩm
+        [HttpPost]
+        public JsonResult AddToCartJS(int variant_id)
+        {
+            var acc_id = Session["acc_id"] as int?;
+            if (acc_id == null)
+            {
+                return Json(new { success = false, requireLogin = true, message = "Vui lòng đăng nhập để mua hàng!" });
+            }
+
+            try
+            {
+                var cartItem = db.Carts.FirstOrDefault(c => c.account_id == acc_id && c.variant_id == variant_id);
                 string msg = "";
 
-                if (cart_item != null)
+                if (cartItem != null)
                 {
-                    cart_item.cart_count += 1;
-                    msg = "Đã cập nhật số lượng sản phẩm!";
+                    cartItem.cart_count += 1;
+                    msg = "Đã cập nhật số lượng sản phẩm trong giỏ!";
                 }
                 else
                 {
-                    Cart newCartItem = new Cart();
-                    newCartItem.account_id = acc_id.Value;
-                    newCartItem.variant_id = variant_id;
-                    newCartItem.cart_count = 1;
-                    db.Carts.Add(newCartItem);
-                    msg = "Đã thêm mới vào giỏ hàng!";
+                    var newCart = new Cart
+                    {
+                        account_id = acc_id.Value,
+                        variant_id = variant_id,
+                        cart_count = 1
+                    };
+                    db.Carts.Add(newCart);
+                    msg = "Đã thêm sản phẩm mới vào giỏ hàng!";
                 }
                 db.SaveChanges();
 
-                // Đếm tổng số lượng sản phẩm trong giỏ (để cập nhật số trên icon giỏ hàng)
-                int totalCount = db.Carts.Where(c => c.account_id == acc_id).Count(); // Hoặc Sum(cart_count) tùy bạn
+                // Đếm tổng số lượng item để update badge trên header
+                int totalCount = db.Carts.Count(c => c.account_id == acc_id);
 
-                // Trả về kết quả thành công
                 return Json(new { success = true, message = msg, totalCartItem = totalCount });
             }
             catch (Exception ex)
@@ -115,13 +145,12 @@ namespace old_phone.Controllers.User
             }
         }
 
-        // Nhan danh sach cart item duoc chon de mua => chuyen den trang Checkout
+        // Chuyển đến trang Thanh toán từ Giỏ hàng
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck]
         public ActionResult ProceedToCheckout(List<int> selectedItems)
         {
-            // 1. Kiểm tra nếu không có sản phẩm nào được chọn
             if (selectedItems == null || !selectedItems.Any())
             {
                 TempData["Message"] = "Vui lòng chọn ít nhất một sản phẩm để thanh toán!";
@@ -129,25 +158,18 @@ namespace old_phone.Controllers.User
                 return RedirectToAction("Index");
             }
 
-            // 2. Lưu danh sách ID đã chọn vào TempData
             TempData["SelectedItems"] = selectedItems;
-
-            // 3. Chuyển hướng sang trang Thanh toán chính (Order/Checkout)
             return RedirectToAction("Checkout", "Order");
         }
 
-        // Nhan thong tin sp mua ngay o ben trang chi tiet sp
+        //Mua ngay từ trang Chi tiết sản phẩm
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck]
-
         public ActionResult BuyNow(int variant_id, int quantity = 1)
         {
-            // 1. Lưu trực tiếp ID và Số lượng
             TempData["BuyNow_ID"] = variant_id;
             TempData["BuyNow_Qty"] = quantity;
-
-            // 2. Chuyển hướng
             return RedirectToAction("Checkout", "Order");
         }
     }

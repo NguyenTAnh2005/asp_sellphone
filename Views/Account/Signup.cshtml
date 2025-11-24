@@ -41,7 +41,10 @@
                                 @Html.TextBoxFor(m => m.account_first_name, new { @class = "form-control rounded-pill", @placeholder = "A", @required = "required" })
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Ngày sinh</label>
+                            @Html.TextBoxFor(m => m.account_date, "{0:yyyy-MM-dd}", new { @class = "form-control rounded-pill", @type = "date", @required = "required" })
+                        </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Email</label>
                             @Html.TextBoxFor(m => m.account_email, new { @class = "form-control rounded-pill", @type = "email", @placeholder = "name@example.com", @required = "required" })

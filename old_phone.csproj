@@ -136,6 +136,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthorizeCheck.cs" />
+    <Compile Include="Common\MailHelper.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
@@ -350,6 +351,8 @@
     <Content Include="Views\Order\Success.cshtml" />
     <Content Include="Views\Order\History.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Account\AccountProfile.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

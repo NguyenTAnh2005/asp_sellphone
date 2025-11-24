@@ -11,7 +11,7 @@
         <i class="bi bi-house-add-fill me-2"></i> Thêm địa chỉ mới
     </button>
 
-    <div class="row g-3">
+    <div class="row g-3" id="hotlineList">
         @foreach (var item in Model)
         {
             <div class="col-12">
@@ -31,28 +31,32 @@
                                 <p class="text-muted mb-0"><span class="fw-bold text-dark">Địa chỉ:</span> @item.hotline_address</p>
                             </div>
 
-                            @* Nút thao tác bên phải *@
+                            @* Nút thao tác bên phải (AJAX) *@
                             <div class="d-flex flex-column align-items-end gap-2">
                                 <div>
-                                    @* Nút Sửa: Gọi hàm JS openModal kèm dữ liệu *@
+                                    @* Nút Sửa *@
                                     <button class="btn btn-link text-warning text-decoration-none fw-bold p-0 me-3"
                                             onclick="openModal('@item.hotline_id', '@item.hotline_name', '@item.hotline_phonenumber', '@item.hotline_address', '@item.hotline_default')">
                                         Sửa
                                     </button>
 
-                                    @* Nút Xóa (Chỉ hiện nếu ko phải mặc định) *@
+                                    @* Nút Xóa (Gọi hàm deleteHotlineJS) *@
                                     @if (item.hotline_default != true)
                                     {
-                                        <a href="@Url.Action("Delete", new { id = item.hotline_id })" class="btn btn-link text-danger text-decoration-none fw-bold p-0" onclick="return confirm('Xóa địa chỉ này?')">Xóa</a>
+                                        <button class="btn btn-link text-danger text-decoration-none fw-bold p-0"
+                                                onclick="deleteHotlineJS(@item.hotline_id)">
+                                            Xóa
+                                        </button>
                                     }
                                 </div>
 
-                                @* Nút Set Default (Chỉ hiện khi chưa phải default) *@
+                                @* Nút Set Default (Gọi hàm setDefaultJS) *@
                                 @if (item.hotline_default != true)
                                 {
-                                    <a href="@Url.Action("SetDefault", new { id = item.hotline_id })" class="btn btn-outline-secondary btn-sm rounded-pill">
+                                    <button class="btn btn-outline-secondary btn-sm rounded-pill"
+                                            onclick="setDefaultJS(@item.hotline_id)">
                                         Đặt làm mặc định
-                                    </a>
+                                    </button>
                                 }
                             </div>
                         </div>
@@ -72,11 +76,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("AddOrEdit", "Hotlines", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
+            @* Dùng form thường để JS xử lý *@
+            <form id="hotlineForm">
                 <div class="modal-body">
-                    @* Input ẩn chứa ID (để biết là Sửa hay Thêm) *@
                     <input type="hidden" name="hotline_id" id="inpId" value="0" />
 
                     <div class="mb-3">
@@ -109,40 +111,85 @@
                 </div>
                 <div class="modal-footer border-0 pt-0">
                     <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: #ff5722; border:none;">Lưu thay đổi</button>
+                    @* Nút Submit gọi hàm JS *@
+                    <button type="button" onclick="submitHotline()" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: #ff5722; border:none;">Lưu thay đổi</button>
                 </div>
-            }
+            </form>
         </div>
     </div>
 </div>
 
-@* --- SCRIPT XỬ LÝ MODAL --- *@
+@* --- SCRIPT XỬ LÝ AJAX --- *@
 <script>
-    // Hàm mở Modal: Dùng chung cho cả Thêm và Sửa
-    // Nếu gọi openModal() không tham số -> Là Thêm mới
-    // Nếu gọi có tham số -> Là Sửa -> Điền dữ liệu vào ô input
+    // 1. Hàm Mở Modal (Giữ nguyên logic cũ)
     function openModal(id = 0, name = '', phone = '', content = '', isDefault = 'False') {
-
-        // 1. Cập nhật dữ liệu vào Form
         document.getElementById('inpId').value = id;
         document.getElementById('inpName').value = name;
         document.getElementById('inpPhone').value = phone;
         document.getElementById('inpContent').value = content;
-
-        // Xử lý checkbox (C# trả về chuỗi 'True'/'False', JS cần true/false)
         document.getElementById('inpDefault').checked = (isDefault === 'True');
 
-        // 2. Đổi tiêu đề Modal cho hợp lý
         var title = document.getElementById('modalTitle');
-        if (id == 0) {
-            title.innerText = "Thêm địa chỉ mới";
-        } else {
-            title.innerText = "Chỉnh sửa địa chỉ";
-        }
+        title.innerText = (id == 0) ? "Thêm địa chỉ mới" : "Chỉnh sửa địa chỉ";
 
-        // 3. Mở Modal Bootstrap
         var myModal = new bootstrap.Modal(document.getElementById('addressModal'));
         myModal.show();
     }
-</script>
 
+    // 2. Lưu (Thêm/Sửa) Hotline - AJAX
+    async function submitHotline() {
+        var form = document.getElementById('hotlineForm');
+        // Validate cơ bản
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        var formData = new FormData(form);
+        // Fix lỗi checkbox: Nếu không check thì FormData không gửi value 'false', ta phải tự xử lý hoặc để backend lo
+        // (Trong C#, bool mặc định là false nếu ko gửi lên -> OK)
+
+        try {
+            const response = await fetch('@Url.Action("AddOrEditJS", "Hotlines")', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            alert(data.message);
+            if (data.success) location.reload(); // Reload để cập nhật danh sách
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+
+    // 3. Xóa Hotline - AJAX
+    async function deleteHotlineJS(id) {
+        if (!confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) return;
+
+        try {
+            const response = await fetch('@Url.Action("DeleteJS", "Hotlines")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+            const data = await response.json();
+
+            alert(data.message);
+            if (data.success) location.reload();
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+
+    // 4. Đặt Mặc định - AJAX
+    async function setDefaultJS(id) {
+        try {
+            const response = await fetch('@Url.Action("SetDefaultJS", "Hotlines")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+            const data = await response.json();
+
+            alert(data.message);
+            if (data.success) location.reload();
+        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+    }
+</script>

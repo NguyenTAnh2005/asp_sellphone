@@ -23,102 +23,120 @@ namespace old_phone.Controllers.User
             return View(listAddress);
         }
 
-        // Them moi hoac chinh sua 
+        // --- CÁC HÀM API JSON (Xử lý ngầm) ---
+
+        // 1. Thêm mới hoặc Chỉnh sửa (JSON)
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddOrEdit(int? hotline_id, string hotline_name,string hotline_address,
-                                      string hotline_phonenumber, bool hotline_default = false)
+        // Bỏ ValidateAntiForgeryToken tạm thời nếu chưa cấu hình header Ajax, hoặc thêm vào Ajax
+        public JsonResult AddOrEditJS(int? hotline_id, string hotline_name, string hotline_address, string hotline_phonenumber, bool hotline_default = false)
         {
             var acc_id = Session["acc_id"] as int?;
-            if(hotline_default)
-            {
-                // set ta ca cac dia chi khac thanh false tai gia tri default neu nhu cap nhat hoac tao moi co xac nhan set default
-                var allAddresses = db.Hotlines.Where(h => h.account_id == acc_id).ToList();
-                foreach(var addr in allAddresses)
-                {
-                    addr.hotline_default = false;
-                }
-            }
-            // luu thay doi
-            // Neu nhu ko nhan duowc id hotline => dang tao moi 
-            if (hotline_id == null || hotline_id == 0)
-            {
-                var newHotline = new Hotline()
-                {
-                    account_id = acc_id.Value,
-                    hotline_name = hotline_name,
-                    hotline_address = hotline_address,
-                    hotline_phonenumber = hotline_phonenumber,
-                    hotline_default = hotline_default
-                };
-                // Nếu đây là địa chỉ đầu tiên của user -> Tự động set mặc định
-                if (!db.Hotlines.Any(a => a.account_id == acc_id)) newHotline.hotline_default = true;
-                db.Hotlines.Add(newHotline);
-                db.SaveChanges();
-                TempData["Message"] = "Them dia chi thanh cong!";
-                TempData["MsgType"] = "success"; // success, danger, warning, info
-            }
-            else
-            {
-                var existAddr = db.Hotlines.FirstOrDefault(a => a.hotline_id == hotline_id && a.account_id == acc_id);
-                if(existAddr != null)
-                {
-                    existAddr.hotline_name = hotline_name;
-                    existAddr.hotline_address = hotline_address;
-                    existAddr.hotline_phonenumber = hotline_phonenumber;
+            if (acc_id == null) return Json(new { success = false, message = "Vui lòng đăng nhập!" });
 
-                    if(hotline_default)
+            try
+            {
+                if (hotline_default)
+                {
+                    // Reset các địa chỉ khác
+                    var allAddresses = db.Hotlines.Where(h => h.account_id == acc_id).ToList();
+                    allAddresses.ForEach(a => a.hotline_default = false);
+                }
+
+                if (hotline_id == null || hotline_id == 0)
+                {
+                    // --- THÊM MỚI ---
+                    var newHotline = new Hotline
                     {
-                        existAddr.hotline_default = true;
-                    }
+                        account_id = acc_id.Value,
+                        hotline_name = hotline_name,
+                        hotline_address = hotline_address,
+                        hotline_phonenumber = hotline_phonenumber,
+                        hotline_default = hotline_default
+                    };
+                    // Nếu chưa có địa chỉ nào -> Tự động set default
+                    if (!db.Hotlines.Any(a => a.account_id == acc_id)) newHotline.hotline_default = true;
+
+                    db.Hotlines.Add(newHotline);
                     db.SaveChanges();
-                    TempData["Message"] = "Cap nhat dia chi thanh cong!";
-                    TempData["MsgType"] = "success"; // success, danger, warning, info
-                }
-            }
-            return RedirectToAction("Index");
-        }
-
-        // XÓA ĐỊA CHỈ
-        public ActionResult Delete(int id)
-        {
-            var acc_id = Session["acc_id"] as int?;
-            var addr = db.Hotlines.FirstOrDefault(a => a.hotline_id == id && a.account_id == acc_id);
-
-            if (addr != null)
-            {
-                if (addr.hotline_default == true)
-                {
-                    TempData["Message"] = "Không thể xóa địa chỉ mặc định!";
-                    TempData["MsgType"] = "error"; // success, danger, warning, info
+                    return Json(new { success = true, message = "Thêm địa chỉ thành công!" });
                 }
                 else
                 {
-                    db.Hotlines.Remove(addr);
-                    db.SaveChanges();
-                    TempData["Message"] = "Xóa dia chi thanh cong!";
-                    TempData["MsgType"] = "success"; 
+                    // --- CẬP NHẬT ---
+                    var existAddr = db.Hotlines.FirstOrDefault(a => a.hotline_id == hotline_id && a.account_id == acc_id);
+                    if (existAddr != null)
+                    {
+                        existAddr.hotline_name = hotline_name;
+                        existAddr.hotline_address = hotline_address;
+                        existAddr.hotline_phonenumber = hotline_phonenumber;
+                        if (hotline_default) existAddr.hotline_default = true;
+
+                        db.SaveChanges();
+                        return Json(new { success = true, message = "Cập nhật địa chỉ thành công!" });
+                    }
+                    return Json(new { success = false, message = "Không tìm thấy địa chỉ này." });
                 }
             }
-            return RedirectToAction("Index");
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
         }
 
-        // SET MẶC ĐỊNH 
-        public ActionResult SetDefault(int id)
+        // 2. Xóa địa chỉ (JSON)
+        [HttpPost]
+        public JsonResult DeleteJS(int id)
         {
             var acc_id = Session["acc_id"] as int?;
-            // 1. Reset hết
-            var all = db.Hotlines.Where(a => a.account_id == acc_id).ToList();
-            all.ForEach(a => a.hotline_default = false);
+            if (acc_id == null) return Json(new { success = false, message = "Vui lòng đăng nhập!" });
 
-            // 2. Set cái được chọn
-            var target = all.FirstOrDefault(a => a.hotline_id == id);
-            if (target != null) target.hotline_default = true;
+            try
+            {
+                var addr = db.Hotlines.FirstOrDefault(a => a.hotline_id == id && a.account_id == acc_id);
+                if (addr != null)
+                {
+                    if (addr.hotline_default == true)
+                    {
+                        return Json(new { success = false, message = "Không thể xóa địa chỉ mặc định!" });
+                    }
 
-            db.SaveChanges();
-            TempData["Message"] = "Đã thay đổi địa chỉ mặc định.";
-            TempData["MsgType"] = "success";
-            return RedirectToAction("Index");
+                    db.Hotlines.Remove(addr);
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Xóa địa chỉ thành công!" });
+                }
+                return Json(new { success = false, message = "Địa chỉ không tồn tại." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
+        }
+
+        // 3. Đặt mặc định (JSON)
+        [HttpPost]
+        public JsonResult SetDefaultJS(int id)
+        {
+            var acc_id = Session["acc_id"] as int?;
+            if (acc_id == null) return Json(new { success = false, message = "Vui lòng đăng nhập!" });
+
+            try
+            {
+                var all = db.Hotlines.Where(a => a.account_id == acc_id).ToList();
+                all.ForEach(a => a.hotline_default = false);
+
+                var target = all.FirstOrDefault(a => a.hotline_id == id);
+                if (target != null)
+                {
+                    target.hotline_default = true;
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Đã đặt làm địa chỉ mặc định." });
+                }
+                return Json(new { success = false, message = "Địa chỉ không tồn tại." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
         }
     }
 }

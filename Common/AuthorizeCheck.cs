@@ -8,7 +8,7 @@ namespace old_phone.Common
 {
     public class AuthorizeCheck:ActionFilterAttribute
     {
-        public int RequiredRole { get; set; } = 1; // 1: User, 2: Manager, 3: Admin
+        public int RequiredRole { get; set; } = 1; // 1: User, 2: Admin
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // Kiểm tra xem người dùng đã đăng nhập chưa
@@ -31,7 +31,7 @@ namespace old_phone.Common
             if(RequiredRole != 1)
             {
                 int currentRole = int.Parse(role_Session.ToString());
-                if(currentRole != RequiredRole && currentRole!=3)
+                if(currentRole != RequiredRole && currentRole!=2)
                 {
                     // Neu nhu quyen tren session khong phu hop voi quyen yeu cau hoac khong phai admin
                     filterContext.Controller.TempData["Message"] = "Bạn không có quyền truy cập trang này";

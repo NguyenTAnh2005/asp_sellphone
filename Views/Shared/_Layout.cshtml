@@ -107,7 +107,11 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
                             @if (role == 1)
                             {
-                                <li><a class="dropdown-item text-main-CL " href="#"><i class="bi bi-person me-2"></i>Tài khoản</a></li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL" href="@Url.Action("AccountProfile", "Account")">
+                                        <i class="bi bi-person me-2"></i>Tài khoản
+                                    </a>
+                                </li>
                                 <li>
                                     <div class="dropdown-item text-main-CL ">
                                         <i class="bi bi-cart-check me-1"></i>
@@ -122,7 +126,7 @@
                                 </li>
                                 <li>
                                     <div class="dropdown-item text-main-CL ">
-                                        <i class="bi bi-house-check me-1"></i>
+                                        <i class="bi bi-clock-history me-1"></i>
                                         @Html.ActionLink("Lịch sử đơn hàng", "History", "Order", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
                                     </div>
                                 </li>
@@ -135,15 +139,6 @@
                                     </a>
                                 </li>
                             }
-                            @if (role == 3)
-                            {
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Dashboard", "Admin")">
-                                        <i class="bi bi-speedometer2 me-2"></i>Trang quản trị
-                                    </a>
-                                </li>
-                            }
-
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger fw-bold" href="@Url.Action("Logout", "Account")">

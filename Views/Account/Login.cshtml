@@ -68,18 +68,21 @@
                             Đăng Nhập <i class="bi bi-box-arrow-in-right ms-1"></i>
                         </button>
                         <div class=" d-flex justify-content-center mt-4">
-                            <input type="checkbox" name="rememberMe" id="rememberInput" value="true"/>
+                            <input type="checkbox" name="rememberMe" id="rememberInput" value="true" />
                             <label for="remeberInput" class="ps-1">Lưu thông tin đăng nhập!</label>
                         </div>
                     }
                 </div>
 
-                <div class="card-footer text-center bg-white border-0 pb-4">
+                <div class="card-footer text-center bg-white border-0 pb-2">
                     <p class="mb-1 small text-muted">Chưa có tài khoản?</p>
                     <a href="@Url.Action("Signup", "Account")" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                         Đăng ký ngay
                     </a>
                 </div>
+                <a href="@Url.Action("ForgotPassword", "Account")" class="small text-decoration-none text-center fw-bold text-main-CL pb-4">
+                    Quên mật khẩu?
+                </a>
             </div>
         </div>
     </div>
