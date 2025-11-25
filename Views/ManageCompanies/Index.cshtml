@@ -1,0 +1,57 @@
+﻿@model IEnumerable<old_phone.Models.Company>
+
+@{
+    ViewBag.Title = "Quản lý Hãng Sản Xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
+            <h5 class="fw-bold text-primary mb-0"><i class="bi bi-buildings-fill me-2"></i> Danh sách Hãng</h5>
+            <a href="@Url.Action("Create")" class="btn btn-success rounded-pill px-3 fw-bold shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i> Thêm mới
+            </a>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="bg-light text-uppercase small fw-bold text-muted">
+                        <tr>
+                            <th class="ps-4">@Html.DisplayNameFor(model => model.company_name)</th>
+                            <th>@Html.DisplayNameFor(model => model.company_desc)</th>
+                            <th class="text-end pe-4" style="min-width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold text-dark">
+                                    @Html.DisplayFor(modelItem => item.company_name)
+                                </td>
+                                <td class="text-muted small">
+                                    @Html.DisplayFor(modelItem => item.company_desc)
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Edit", new { id=item.company_id })" class="btn btn-sm btn-outline-warning" title="Sửa">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="@Url.Action("Details", new { id=item.company_id })" class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="bi bi-info-circle"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id=item.company_id })" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

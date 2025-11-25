@@ -1,0 +1,55 @@
+﻿@model old_phone.Models.Blog
+
+@{
+    ViewBag.Title = "Chi Tiết Tin Tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-info text-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle-fill me-2"></i> Thông Tin Chi Tiết</h5>
+                </div>
+
+                @* Phần ảnh bìa *@
+                @if (!string.IsNullOrEmpty(Model.blog_img))
+                {
+                    <img src="@Model.blog_img" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
+                }
+
+                <div class="card-body p-4">
+                    <h3 class="card-title fw-bold text-primary mb-3">@Html.DisplayFor(model => model.blog_name)</h3>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1 small text-uppercase fw-bold">Tác Giả</p>
+                            <p class="fw-bold"><i class="bi bi-person-badge me-2"></i> @Html.DisplayFor(model => model.blog_author)</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1 small text-uppercase fw-bold">Ngày Đăng</p>
+                            <p class="fw-bold"><i class="bi bi-calendar-event me-2"></i> @Model.blog_time.ToString("dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-muted mb-1 small text-uppercase fw-bold">Liên Kết Gốc</p>
+                        <a href="@Model.blog_link" target="_blank" class="text-decoration-none text-truncate d-block">
+                            <i class="bi bi-link-45deg me-1"></i> @Html.DisplayFor(model => model.blog_link)
+                        </a>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 border-top pt-3">
+                        <a href="@Url.Action("Index")" class="btn btn-light rounded-pill px-4 border">
+                            <i class="bi bi-arrow-left me-1"></i> Quay lại
+                        </a>
+                        <a href="@Url.Action("Edit", new { id = Model.blog_id })" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

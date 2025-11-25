@@ -1,0 +1,46 @@
+﻿@* File: ~/Views/Shared/Error_Delete.cshtml *@
+@{
+    ViewBag.Title = "Lỗi Thao Tác Dữ Liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Giữ layout chính
+
+
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h3 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i> LỖI THAO TÁC DỮ LIỆU</h3>
+                </div>
+                <div class="card-body p-4 p-md-5">
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-warning text-dark fw-bold" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning text-dark fw-bold" role="alert">
+                            Bạn không thể xóa đối tượng này!
+                        </div>
+                        <hr />
+                        <p class="mb-4">
+                            <i class="bi bi-info-circle-fill text-primary me-1"></i> Vui lòng kiểm tra các đối tượng liên quan  (các bảng CSDL) đang tham chiếu khóa ngoại tới đối tượng này trước khi xóa.
+                        </p>
+                    }
+
+
+                    <div class="d-flex justify-content-center">
+                        @Html.ActionLink("Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-outline-secondary me-3" })
+                        <a href="javascript:history.back()" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Quay lại trang trước
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

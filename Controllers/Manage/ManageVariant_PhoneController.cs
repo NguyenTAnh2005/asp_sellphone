@@ -49,7 +49,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "variant_id,product_id,variant_ph_ram,variant_ph_rom,variant_ph_color,variant_ph_org_price,variant_ph_new_price,variant_ph_final_price,variant_ph_img")] Variant_Phone variant_Phone)
+        public ActionResult Create([Bind(Include = "variant_id,product_id,variant_ph_ram,variant_ph_rom,variant_ph_color,variant_ph_org_price,variant_ph_new_price,variant_ph_final_price,variant_ph_img,variant_ph_state")] Variant_Phone variant_Phone)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "variant_id,product_id,variant_ph_ram,variant_ph_rom,variant_ph_color,variant_ph_org_price,variant_ph_new_price,variant_ph_final_price,variant_ph_img")] Variant_Phone variant_Phone)
+        public ActionResult Edit([Bind(Include = "variant_id,product_id,variant_ph_ram,variant_ph_rom,variant_ph_color,variant_ph_org_price,variant_ph_new_price,variant_ph_final_price,variant_ph_img,variant_ph_state")] Variant_Phone variant_Phone)
         {
             if (ModelState.IsValid)
             {

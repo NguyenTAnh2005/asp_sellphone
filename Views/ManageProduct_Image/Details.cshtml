@@ -1,0 +1,35 @@
+﻿@model old_phone.Models.Product_Image
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product_Image</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.image_url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.image_url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.product_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.product_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.image_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

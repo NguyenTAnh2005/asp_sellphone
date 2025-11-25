@@ -15,7 +15,6 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: ManagePhones
-        
         public ActionResult Index()
         {
             var phones = db.Phones.Include(p => p.Product);
@@ -49,7 +48,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "product_id,phone_chip,phone_screen_size,phone_front_cam,phone_behind_cam,phone_battery,phone_system,phone_charging_port,phone_sim_card,phone_nfc,phone_ear_phone,phone_memory_card,phone_desc")] Phone phone)
+        public ActionResult Create([Bind(Include = "product_id,phone_chip,phone_screen_size,phone_front_cam,phone_behind_cam,phone_battery,phone_system,phone_charging_port,phone_sim_card,phone_nfc,phone_ear_phone,phone_memory_card")] Phone phone)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +82,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "product_id,phone_chip,phone_screen_size,phone_front_cam,phone_behind_cam,phone_battery,phone_system,phone_charging_port,phone_sim_card,phone_nfc,phone_ear_phone,phone_memory_card,phone_desc")] Phone phone)
+        public ActionResult Edit([Bind(Include = "product_id,phone_chip,phone_screen_size,phone_front_cam,phone_behind_cam,phone_battery,phone_system,phone_charging_port,phone_sim_card,phone_nfc,phone_ear_phone,phone_memory_card")] Phone phone)
         {
             if (ModelState.IsValid)
             {

@@ -1,0 +1,83 @@
+﻿@model old_phone.Models.Blog
+
+@{
+    ViewBag.Title = "Chỉnh Sửa Tin Tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark text-center py-3">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-pencil-square me-2"></i> Cập Nhật Bài Viết</h4>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.blog_id)
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Tiêu Đề Bài Viết</label>
+                                @Html.EditorFor(model => model.blog_name, new { htmlAttributes = new { @class = "form-control rounded-3" } })
+                                @Html.ValidationMessageFor(model => model.blog_name, "", new { @class = "text-danger small mt-1" })
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tác Giả</label>
+                                    @Html.EditorFor(model => model.blog_author, new { htmlAttributes = new { @class = "form-control rounded-3" } })
+                                    @Html.ValidationMessageFor(model => model.blog_author, "", new { @class = "text-danger small mt-1" })
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Ngày Đăng</label>
+                                    @* Lưu ý: Định dạng ngày để hiển thị đúng trong input date *@
+                                    @Html.TextBoxFor(model => model.blog_time, "{0:yyyy-MM-dd}", new { @class = "form-control rounded-3", type = "date" })
+                                    @Html.ValidationMessageFor(model => model.blog_time, "", new { @class = "text-danger small mt-1" })
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Link Bài Viết</label>
+                                @Html.EditorFor(model => model.blog_link, new { htmlAttributes = new { @class = "form-control rounded-3" } })
+                                @Html.ValidationMessageFor(model => model.blog_link, "", new { @class = "text-danger small mt-1" })
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Link Hình Ảnh</label>
+                                @Html.EditorFor(model => model.blog_img, new { htmlAttributes = new { @class = "form-control rounded-3" } })
+                                @Html.ValidationMessageFor(model => model.blog_img, "", new { @class = "text-danger small mt-1" })
+
+                                @* Preview ảnh hiện tại *@
+                                @if (!string.IsNullOrEmpty(Model.blog_img))
+                                {
+                                    <div class="mt-2">
+                                        <small class="text-muted">Ảnh hiện tại:</small><br />
+                                        <img src="@Model.blog_img" alt="Preview" class="rounded border shadow-sm mt-1" style="height: 80px;" />
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-4 border-top pt-3">
+                                <a href="@Url.Action("Index")" class="btn btn-light rounded-pill px-4 fw-bold border">
+                                    <i class="bi bi-arrow-left me-1"></i> Hủy
+                                </a>
+                                <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-check-lg me-1"></i> Lưu Thay Đổi
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

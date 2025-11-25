@@ -139,10 +139,14 @@
     <Compile Include="Common\MailHelper.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ShopController.cs" />
+    <Compile Include="Controllers\Manage\ManageBlogsController.cs" />
+    <Compile Include="Controllers\Manage\ManageCompaniesController.cs" />
     <Compile Include="Controllers\Manage\ManagePhonesController.cs" />
-    <Compile Include="Controllers\Manage\ManageProductsController.cs" />
+    <Compile Include="Controllers\Manage\ManageProduct_ImageController.cs" />
     <Compile Include="Controllers\Manage\ManageVariant_PhoneController.cs" />
+    <Compile Include="Controllers\Manage\SalesController.cs" />
+    <Compile Include="Controllers\ShopController.cs" />
+    <Compile Include="Controllers\Manage\ManageProductsController.cs" />
     <Compile Include="Controllers\User\CartsController.cs" />
     <Compile Include="Controllers\User\HotlinesController.cs" />
     <Compile Include="Controllers\User\OrderController.cs" />
@@ -167,6 +171,15 @@
     <Compile Include="Models\Hotline.cs">
       <DependentUpon>Mycontext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MetaData\AccountPartial.cs" />
+    <Compile Include="Models\MetaData\BlogPartial.cs" />
+    <Compile Include="Models\MetaData\CompanyPartial.cs" />
+    <Compile Include="Models\MetaData\HotlinePartial.cs" />
+    <Compile Include="Models\MetaData\PhonePartial.cs" />
+    <Compile Include="Models\MetaData\ProductPartial.cs" />
+    <Compile Include="Models\MetaData\SalePartial.cs" />
+    <Compile Include="Models\MetaData\StockPartial.cs" />
+    <Compile Include="Models\MetaData\VariantPhonePartial.cs" />
     <Compile Include="Models\Mycontext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -323,16 +336,6 @@
     <Content Include="Views\ManageProducts\Details.cshtml" />
     <Content Include="Views\ManageProducts\Edit.cshtml" />
     <Content Include="Views\ManageProducts\Index.cshtml" />
-    <Content Include="Views\ManagePhones\Create.cshtml" />
-    <Content Include="Views\ManagePhones\Delete.cshtml" />
-    <Content Include="Views\ManagePhones\Details.cshtml" />
-    <Content Include="Views\ManagePhones\Edit.cshtml" />
-    <Content Include="Views\ManagePhones\Index.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Create.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Delete.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Details.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Edit.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Index.cshtml" />
     <Content Include="Views\Shop\Phones.cshtml" />
     <Content Include="Views\Shop\ProductDetails.cshtml" />
     <Content Include="Views\Shared\_VariantCard.cshtml" />
@@ -353,6 +356,37 @@
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Account\AccountProfile.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\ManageCompanies\Create.cshtml" />
+    <Content Include="Views\ManageCompanies\Delete.cshtml" />
+    <Content Include="Views\ManageCompanies\Details.cshtml" />
+    <Content Include="Views\ManageCompanies\Edit.cshtml" />
+    <Content Include="Views\ManageCompanies\Index.cshtml" />
+    <Content Include="Views\ManageProduct_Image\Create.cshtml" />
+    <Content Include="Views\ManageProduct_Image\Delete.cshtml" />
+    <Content Include="Views\ManageProduct_Image\Details.cshtml" />
+    <Content Include="Views\ManageProduct_Image\Edit.cshtml" />
+    <Content Include="Views\ManageProduct_Image\Index.cshtml" />
+    <Content Include="Views\Sales\Create.cshtml" />
+    <Content Include="Views\Sales\Delete.cshtml" />
+    <Content Include="Views\Sales\Details.cshtml" />
+    <Content Include="Views\Sales\Edit.cshtml" />
+    <Content Include="Views\Sales\Index.cshtml" />
+    <Content Include="Views\Shared\Error_Delete.cshtml" />
+    <Content Include="Views\ManagePhones\Create.cshtml" />
+    <Content Include="Views\ManagePhones\Delete.cshtml" />
+    <Content Include="Views\ManagePhones\Details.cshtml" />
+    <Content Include="Views\ManagePhones\Edit.cshtml" />
+    <Content Include="Views\ManagePhones\Index.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Create.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Delete.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Details.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Edit.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Index.cshtml" />
+    <Content Include="Views\ManageBlogs\Create.cshtml" />
+    <Content Include="Views\ManageBlogs\Delete.cshtml" />
+    <Content Include="Views\ManageBlogs\Details.cshtml" />
+    <Content Include="Views\ManageBlogs\Edit.cshtml" />
+    <Content Include="Views\ManageBlogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

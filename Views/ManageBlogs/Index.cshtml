@@ -1,0 +1,76 @@
+﻿@model IEnumerable<old_phone.Models.Blog>
+
+@{
+    ViewBag.Title = "Quản Lý Tin Tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="bi bi-newspaper me-2"></i> Danh Sách Tin Tức</h2>
+        @Html.ActionLink("Viết Bài Mới", "Create", null, new { @class = "btn btn-success rounded-pill px-4 fw-bold shadow-sm" })
+    </div>
+
+    <div class="card shadow border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="bg-light text-uppercase small fw-bold text-muted">
+                        <tr>
+                            <th class="ps-4" style="width: 100px;">Hình Ảnh</th>
+                            <th>@Html.DisplayNameFor(model => model.blog_name)</th>
+                            <th>@Html.DisplayNameFor(model => model.blog_author)</th>
+                            <th>@Html.DisplayNameFor(model => model.blog_time)</th>
+                            <th class="text-end pe-4" style="width: 180px;">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    @* Hiển thị ảnh thu nhỏ nếu có link, nếu không hiện icon mặc định *@
+                                    @if (!string.IsNullOrEmpty(item.blog_img))
+                                    {
+                                        <img src="@item.blog_img" alt="Blog Img" class="rounded-3 shadow-sm" style="width: 60px; height: 60px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light rounded-3 d-flex align-items-center justify-content-center text-secondary" style="width: 60px; height: 60px;">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td class="fw-bold text-dark text-wrap" style="max-width: 300px;">
+                                    @Html.DisplayFor(modelItem => item.blog_name)
+                                </td>
+                                <td class="text-secondary small">
+                                    <i class="bi bi-person-circle me-1"></i> @Html.DisplayFor(modelItem => item.blog_author)
+                                </td>
+                                <td class="text-muted small">
+                                    @if (item.blog_time != null)
+                                    {
+                                        @item.blog_time.ToString("dd/MM/yyyy")
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group shadow-sm" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.blog_id })" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="@Url.Action("Details", new { id = item.blog_id })" class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = item.blog_id })" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

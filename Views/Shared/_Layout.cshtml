@@ -48,13 +48,10 @@
         old_phone.Models.OldPhoneEntities db = new old_phone.Models.OldPhoneEntities();
         if (Request.Cookies["KeepLogin"] != null)
         {
-            // Lays token de kiem tra trong db
             var token = Request.Cookies["KeepLogin"].Values["token"];
             var account = db.Accounts.FirstOrDefault(a => a.RememberMeToken == token);
-            // Neu nhu co token do trong DB va con han su dung
             if (account != null && account.TokenExpiryDate > DateTime.Now)
             {
-                // Phuc hoi session
                 Session["account"] = account;
                 Session["acc_id"] = account.account_id;
                 Session["acc_name"] = account.account_last_name + " " + account.account_first_name;
@@ -62,11 +59,6 @@
             }
             else
             {
-                // Phong TH khi dang nhap may tinh, sau do dang nhap them va ghi nho dang nhap o thiet bi khac
-                // se tao ra token moi => ghi de vao database, thi o tren trinh duyet may tinh cookie luc nay co
-                // gia tri token khac voi token trong DB, nen neu nhu truy cap lai tren may tinh, sever se kiem tra token de cho dang nhap
-                // nhung luc nay token tren may tinh da khac so voi trong db do do  cookie tren may tinh se bi bo
-                // bang cach tao 1 cookie trung ten nhung set han expried la ngay hom qua => trinh duyet check => xoa Cookie
                 var expriedCookie = new HttpCookie("KeepLogin");
                 expriedCookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(expriedCookie);
@@ -85,12 +77,14 @@
                     <li>@Html.ActionLink("Giảm giá", "Sales", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Điện thoại", "Phones", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Bài viết", "Blogs", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Giỏ hàng", "Index", "Carts", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Sổ địa chỉ", "Index", "Hotlines", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Lịch sử đơn hàng", "History", "Order", new { area = "" }, new { @class = "nav-link" })</li>
 
                 </ul>
                 @* KIỂM TRA SESSION *@
                 @if (Session["account"] == null)
                 {
-                    @* Chưa đăng nhập *@
                     <div class="nav-item me-5">
                         <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary rounded-pill px-3">
                             <i class="bi bi-person-circle me-1"></i> Đăng nhập
@@ -105,40 +99,33 @@
                             <i class="bi bi-person-check-fill me-1"></i> @Session["acc_name"]
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
-                            @if (role == 1)
-                            {
-                                <li>
-                                    <a class="dropdown-item text-main-CL" href="@Url.Action("AccountProfile", "Account")">
-                                        <i class="bi bi-person me-2"></i>Tài khoản
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item text-main-CL ">
-                                        <i class="bi bi-cart-check me-1"></i>
-                                        @Html.ActionLink("Giỏ hàng", "Index", "Carts", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item text-main-CL ">
-                                        <i class="bi bi-house-check me-1"></i>
-                                        @Html.ActionLink("Sổ địa chỉ", "Index", "Hotlines", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item text-main-CL ">
-                                        <i class="bi bi-clock-history me-1"></i>
-                                        @Html.ActionLink("Lịch sử đơn hàng", "History", "Order", new { area = "" }, new { @class = "text-main-CL text-decoration-none text-reset" })
-                                    </div>
-                                </li>
-                            }
+                            <li>
+                                <a class="dropdown-item text-main-CL" href="@Url.Action("AccountProfile", "Account")">
+                                    <i class="bi bi-person me-2"></i>Tài khoản
+                                </a>
+                            </li>
                             @if (role == 2)
                             {
                                 <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageProducts")">
-                                        <i class="bi bi-speedometer2 me-2"></i>Trang quản ly sp
-                                    </a>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageCompanies")"> Quản lý hãng </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageProducts")"> Quản lý sản phẩm </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageProduct_Image")"> Quản lý ảnh sản phẩm </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManagePhones")"> Quản lý điện thoại </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageVariant_Phone")"> Quản lý chi tiết động điện thoại </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageBlogs")"> Quản lý bài viết </a>
                                 </li>
                             }
+
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger fw-bold" href="@Url.Action("Logout", "Account")">

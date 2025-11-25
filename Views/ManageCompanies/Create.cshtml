@@ -1,0 +1,49 @@
+﻿@model old_phone.Models.Company
+
+@{
+    ViewBag.Title = "Thêm Hãng Mới";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-plus-circle me-2"></i> Thêm Hãng Mới</h4>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">Tên Hãng</label>
+                                @Html.EditorFor(model => model.company_name, new { htmlAttributes = new { @class = "form-control rounded-3", @placeholder = "Nhập tên hãng..." } })
+                                @Html.ValidationMessageFor(model => model.company_name, "", new { @class = "text-danger small mt-1" })
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-muted">Mô Tả</label>
+                                @Html.EditorFor(model => model.company_desc, new { htmlAttributes = new { @class = "form-control rounded-3", @rows = "3", @placeholder = "Mô tả ngắn gọn..." } })
+                                @Html.ValidationMessageFor(model => model.company_desc, "", new { @class = "text-danger small mt-1" })
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="@Url.Action("Index")" class="btn btn-light rounded-pill px-4 fw-bold">
+                                    <i class="bi bi-arrow-left me-1"></i> Quay lại
+                                </a>
+                                <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-save me-1"></i> Lưu lại
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model old_phone.Models.Company
+
+@{
+    ViewBag.Title = "Chi Tiết Hãng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-info text-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle-fill me-2"></i> Thông Tin Chi Tiết</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-md-4 fw-bold text-muted text-uppercase small">Tên Hãng</div>
+                        <div class="col-md-8 fw-bold text-primary fs-5">@Html.DisplayFor(model => model.company_name)</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold text-muted text-uppercase small">Mô Tả</div>
+                        <div class="col-md-8">@Html.DisplayFor(model => model.company_desc)</div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-end gap-2">
+                        <a href="@Url.Action("Index")" class="btn btn-light rounded-pill px-4 border">
+                            <i class="bi bi-arrow-left me-1"></i> Quay lại
+                        </a>
+                        <a href="@Url.Action("Edit", new { id = Model.company_id })" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -26,7 +26,6 @@ namespace old_phone.Models
         public bool phone_nfc { get; set; }
         public string phone_ear_phone { get; set; }
         public bool phone_memory_card { get; set; }
-        public string phone_desc { get; set; }
     
         public virtual Product Product { get; set; }
     }
