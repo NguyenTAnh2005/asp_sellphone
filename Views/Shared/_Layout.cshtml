@@ -10,39 +10,8 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="p-0">
-    <style>
-        .bg-main-CL {
-            background-color: #0d6efd
-        }
+    @Html.Partial("_StyleCss");
 
-        .text-main-CL {
-            color: #0d6efd;
-        }
-
-        .header-bg {
-            background-color: #F0F8FF;
-        }
-
-        .nav-link {
-            color: slategray !important;
-            font-weight: 600 !important;
-        }
-
-        .navbar-brand {
-            color: #0d6efd !important;
-        }
-
-        .nav-link:hover {
-            color: #0d6efd !important;
-            transition: color ease-in-out;
-            transition-duration: 300ms;
-        }
-
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            transform: scale(.85) translateY(-1.15rem) translateX(.15rem) !important;
-        }
-    </style>
     @* KIỂM TRA COOKIE "KEEP LOGIN" ĐỂ PHỤC HỒI SESSION NẾU CÓ *@
     @{
         old_phone.Models.OldPhoneEntities db = new old_phone.Models.OldPhoneEntities();
@@ -119,7 +88,7 @@
                                     <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManagePhones")"> Quản lý điện thoại </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageVariant_Phone")"> Quản lý chi tiết động điện thoại </a>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageVariant_Phone")"> Quản lý biến thể điện thoại </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageBlogs")"> Quản lý bài viết </a>

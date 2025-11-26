@@ -1,100 +1,126 @@
-﻿@model IEnumerable<old_phone.Models.Phone>
-
+﻿@model PagedList.IPagedList<old_phone.Models.Phone>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản Lý Cấu Hình";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container-fluid py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-0"><i class="bi bi-cpu-fill me-2"></i> Thông Số Chung</h2>
+            <p class="text-muted small mb-0">Quản lý cấu hình chung của điện thoại</p>
+        </div>
+        @Html.ActionLink("Thêm điện thoại", "Create", null, new { @class = "btn btn-success rounded-pill px-4 fw-bold shadow-sm" })
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_chip)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_screen_size)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_front_cam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_behind_cam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_battery)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_system)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_charging_port)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_sim_card)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_nfc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_ear_phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phone_memory_card)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.product_name)
-        </th>
-        <th></th>
-    </tr>
+    @*Lọc, tìm kiếm*@
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+        <div class="card-body p-3">
+            @using (Html.BeginForm("Index", "ManagePhones", FormMethod.Get))
+            {
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                            @Html.TextBox("searchQuery", ViewBag.CurrentFilter as string, new { @class = "form-control border-start-0 bg-light", placeholder = "Tìm theo tên ..." })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 fw-bold text-muted">Hãng:</span>
+                            @Html.DropDownList("companyId", ViewBag.CompanyList as SelectList, "--- Tất cả hãng ---", new { @class = "form-select bg-light border-start-0" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold"><i class="bi bi-funnel-fill me-1"></i> Lọc</button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary rounded-pill px-3"><i class="bi bi-arrow-counterclockwise"></i></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_chip)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_screen_size)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_front_cam)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_behind_cam)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_battery)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_system)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_charging_port)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_sim_card)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_nfc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_ear_phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone_memory_card)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.product_name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.product_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.product_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.product_id })
-        </td>
-    </tr>
-}
+    <div class="card shadow border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0 small">
+                    <thead class="bg-light text-uppercase fw-bold text-secondary">
+                        <tr>
+                            <th class="ps-4 py-3">Sản Phẩm</th>
+                            <th>Hiệu Năng & OS</th>
+                            <th>Màn Hình & Cam</th>
+                            <th>Pin & Kết Nối</th>
+                            <th class="text-end pe-4">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold text-primary" style="min-width: 150px;">
+                                    @Html.DisplayFor(modelItem => item.Product.product_name)
+                                </td>
+                                <td style="min-width: 180px;">
+                                    <div class="d-flex flex-column">
+                                        <span><i class="bi bi-cpu me-1"></i> @item.phone_chip</span>
+                                        <span class="text-muted"><i class="bi bi-robot me-1"></i> @item.phone_system</span>
+                                    </div>
+                                </td>
+                                <td style="min-width: 200px;">
+                                    <div class="d-flex flex-column">
+                                        <span><i class="bi bi-display me-1"></i> @item.phone_screen_size</span>
+                                        <span class="text-muted" title="Cam sau"><i class="bi bi-camera-fill me-1"></i> @item.phone_behind_cam</span>
+                                    </div>
+                                </td>
+                                <td style="min-width: 180px;">
+                                    <div class="d-flex flex-column">
+                                        <span><i class="bi bi-battery-charging me-1"></i> @item.phone_battery mAh</span>
+                                        <span class="text-muted">
+                                            <i class="bi bi-hdd-network me-1"></i> @(item.phone_nfc ? "NFC: Có" : "NFC: Không")
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group shadow-sm" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.product_id })" class="btn btn-sm btn-outline-warning" title="Sửa">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="@Url.Action("Details", new { id = item.product_id })" class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = item.product_id })" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-</table>
+            @*Pagination*@
+            <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+                <div class="text-muted small">
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                    (Tổng: @Model.TotalItemCount biến thể)
+                </div>
+
+                <nav>
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, searchQuery = ViewBag.CurrentFilter, companyId = ViewBag.CurrentCompanyID }),
+                        new PagedListRenderOptions
+                        {
+                            LiElementClasses = new string[] { "page-item" },
+                            LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                            LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                            ClassToApplyToFirstListItemInPager = "page-item",
+                            ClassToApplyToLastListItemInPager = "page-item",
+                            ContainerDivClasses = new[] { "pagination-container" }
+                        })
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

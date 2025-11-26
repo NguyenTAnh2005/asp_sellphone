@@ -1,51 +1,45 @@
 ﻿@model old_phone.Models.Product
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Chi Tiết Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-info text-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle-fill me-2"></i> Thông Tin Chi Tiết</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-3 text-muted text-uppercase small fw-bold">Tên Sản Phẩm</div>
+                        <div class="col-sm-9 fw-bold text-primary fs-5">@Html.DisplayFor(model => model.product_name)</div>
+                    </div>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.product_name)
-        </dt>
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-sm-3 text-muted text-uppercase small fw-bold">Hãng Sản Xuất</div>
+                        <div class="col-sm-9 fw-bold">@Html.DisplayFor(model => model.Company.company_name)</div>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.product_name)
-        </dd>
+                    <div class="row mb-3">
+                        <div class="col-sm-3 text-muted text-uppercase small fw-bold">Mô Tả</div>
+                        <div class="col-sm-9 text-secondary">
+                            @Html.DisplayFor(model => model.product_desc)
+                        </div>
+                    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.product_desc)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.product_desc)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Company.company_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Company.company_name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone.phone_chip)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Phone.phone_chip)
-        </dd>
-
-    </dl>
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4">
+                            <i class="bi bi-arrow-left me-1"></i> Quay lại
+                        </a>
+                        <a href="@Url.Action("Edit", new { id = Model.product_id })" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.product_id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

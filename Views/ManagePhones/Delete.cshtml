@@ -1,121 +1,46 @@
 ﻿@model old_phone.Models.Phone
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Xóa Cấu Hình";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <i class="bi bi-trash3-fill" style="font-size: 3rem;"></i>
+                    <h4 class="fw-bold mt-2">Xác Nhận Xóa Cấu Hình?</h4>
+                    <p class="mb-0 opacity-75">Dữ liệu kỹ thuật của sản phẩm này sẽ bị mất vĩnh viễn.</p>
+                </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Phone</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_chip)
-        </dt>
+                <div class="card-body p-4 text-center">
+                    <h5 class="text-muted mb-3">Sản phẩm bị ảnh hưởng:</h5>
+                    <h3 class="fw-bold text-danger mb-4">@Html.DisplayFor(model => model.Product.product_name)</h3>
 
-        <dd>
-            @Html.DisplayFor(model => model.phone_chip)
-        </dd>
+                    <div class="bg-light p-3 rounded-3 border text-start d-inline-block" style="min-width: 250px;">
+                        <ul class="list-unstyled mb-0 small text-secondary">
+                            <li><i class="bi bi-cpu me-2"></i> @Html.DisplayFor(model => model.phone_chip)</li>
+                            <li><i class="bi bi-display me-2"></i> @Html.DisplayFor(model => model.phone_screen_size)</li>
+                            <li><i class="bi bi-battery me-2"></i> @Html.DisplayFor(model => model.phone_battery) mAh</li>
+                        </ul>
+                    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_screen_size)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_screen_size)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_front_cam)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_front_cam)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_behind_cam)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_behind_cam)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_battery)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_battery)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_system)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_system)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_charging_port)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_charging_port)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_sim_card)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_sim_card)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_nfc)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_nfc)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_ear_phone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_ear_phone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.phone_memory_card)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.phone_memory_card)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.product_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Product.product_name)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-x-lg me-1"></i> Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow">
+                                <i class="bi bi-trash-fill me-1"></i> Xóa ngay
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
-    }
+    </div>
 </div>

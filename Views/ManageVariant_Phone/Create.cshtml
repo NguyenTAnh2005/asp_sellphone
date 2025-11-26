@@ -1,100 +1,117 @@
-﻿@model old_phone.Models.Variant_Phone
+﻿@model old_phone.ViewModels.ManageVariant_PhoneViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm Biến Thể";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Variant_Phone</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.product_id, "product_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger" })
-            </div>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-success text-white py-3">
+            <h4 class="fw-bold mb-0 text-center"><i class="bi bi-plus-circle-dotted me-2"></i> TẠO BIẾN THỂ & NHẬP KHO</h4>
         </div>
+        <div class="card-body p-4 p-md-5">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger mb-4" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_ram, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_ram, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_ram, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="row g-5">
+                    <div class="col-lg-6">
+                        <h6 class="text-uppercase text-success fw-bold border-bottom pb-2 mb-3"><i class="bi bi-cpu"></i> 1. Thông Tin Cấu Hình</h6>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_rom, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_rom, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_rom, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Sản Phẩm</label>
+                            @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select form-select-lg" })
+                            @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_color, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_color, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_color, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">RAM (GB)</label>
+                                @Html.EditorFor(model => model.variant_ph_ram, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                @Html.ValidationMessageFor(model => model.variant_ph_ram, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">ROM (GB)</label>
+                                @Html.EditorFor(model => model.variant_ph_rom, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0" } })
+                                @Html.ValidationMessageFor(model => model.variant_ph_rom, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_org_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_org_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_org_price, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Màu Sắc</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-palette"></i></span>
+                                @Html.EditorFor(model => model.variant_ph_color, new { htmlAttributes = new { @class = "form-control", placeholder = "VD: Titan Xanh" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.variant_ph_color, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_new_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_new_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_new_price, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tình trạng máy </label>
+                            @Html.TextAreaFor(model => model.variant_ph_state, new { @class = "form-control", rows = 3, placeholder = "Tình trạng máy, bảo hành..." })
+                            @Html.ValidationMessageFor(model => model.variant_ph_state, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_final_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_final_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_final_price, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="col-lg-6">
+                        <h6 class="text-uppercase text-success fw-bold border-bottom pb-2 mb-3"><i class="bi bi-box-seam"></i> 2. Kho Hàng & Giá Cả</h6>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_img, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_img, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_img, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-4 p-3 bg-light border rounded-3">
+                            <label class="form-label fw-bold text-primary"><i class="bi bi-boxes me-1"></i> Số Lượng Nhập Kho Ban Đầu</label>
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.InitialStockCount, new { htmlAttributes = new { @class = "form-control fw-bold text-primary", type = "number", min = "0", value = "0" } })
+                                <span class="input-group-text bg-primary text-white">Sản phẩm</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.InitialStockCount, "", new { @class = "text-danger small" })
+                            <small class="text-muted fst-italic">* Số lượng này sẽ được thêm vào bảng Stock.</small>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.variant_ph_state, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.variant_ph_state, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.variant_ph_state, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="card border-0 mb-3">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">Giá Gốc (Giá khi mua mới) </label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.variant_ph_org_price, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                    <span class="input-group-text">VNĐ</span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.variant_ph_org_price, "", new { @class = "text-danger small" })
+                            </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted">Giá Mới (Khuyến mãi)</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.variant_ph_new_price, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                    <span class="input-group-text">VNĐ</span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.variant_ph_new_price, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Link Hình Ảnh</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-link-45deg"></i></span>
+                                @Html.EditorFor(model => model.variant_ph_img, new { htmlAttributes = new { @class = "form-control", placeholder = "http://..." } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.variant_ph_img, "", new { @class = "text-danger small" })
+                            <small>Mặc định các sản phẩm giá bán cuối cùng (final) sẽ bằng giá mới (new price)</small>
+                            <small>Còn ở sản phẩm đang trong giảm giá (Sales) thì có thể tùy chỉnh giá final!</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                    <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4 fw-bold">
+                        <i class="bi bi-arrow-left me-1"></i> Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-success rounded-pill px-5 fw-bold shadow-sm">
+                        <i class="bi bi-check-lg me-1"></i> Lưu Biến Thể
+                    </button>
+                </div>
+            }
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts { @Scripts.Render("~/bundles/jqueryval") }

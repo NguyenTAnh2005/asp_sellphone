@@ -66,95 +66,104 @@
         </div>
 
         @* --- CỘT PHẢI: THÔNG TIN --- *@
-        <div class="col-md-6 animate__animated animate__fadeInRight">
-            <h2 class="fw-bold text-dark">@Model.Product.product_name</h2>
+    <div class="col-md-6 animate__animated animate__fadeInRight">
+        <h2 class="fw-bold text-dark">@Model.Product.product_name</h2>
 
-            @* Hiển thị cấu hình đang chọn *@
-            <p class="text-muted fs-5">
-                @Model.Variant.variant_ph_ram GB / @Model.Variant.variant_ph_rom GB - @Model.Variant.variant_ph_color
-            </p>
+        @* Hiển thị cấu hình đang chọn *@
+        <p class="text-muted fs-5">
+            @Model.Variant.variant_ph_ram GB / @Model.Variant.variant_ph_rom GB - @Model.Variant.variant_ph_color
+        </p>
 
-            @* Giá tiền *@
-            <h3 class="text-danger fw-bold mb-3">
-                @Model.Variant.variant_ph_final_price.ToString("N0") đ
-                <small class="text-muted text-decoration-line-through fs-6 ms-2">
-                    @Model.Variant.variant_ph_org_price.ToString("N0") đ
-                </small>
-            </h3>
+        @* Giá tiền *@
+        <h3 class="text-danger fw-bold mb-3">
+            @Model.Variant.variant_ph_final_price.ToString("N0") đ
+            <small class="text-muted text-decoration-line-through fs-6 ms-2">
+                @Model.Variant.variant_ph_org_price.ToString("N0") đ
+            </small>
+        </h3>
 
-            @* Trạng thái hàng *@
-            <div class="mb-4">
-                <strong>Tình trạng: </strong>
-                @if (Model.StockCount > 0)
-                {
-                    <span class="badge bg-success">Còn hàng (@Model.StockCount)</span>
-                }
-                else
-                {
-                    <span class="badge bg-danger">Hết hàng</span>
-                }
-            </div>
-
-            @* Mô tả ngắn *@
-            <p class="text-secondary">@Model.Product.product_desc</p>
-
+        @* Trạng thái hàng *@
+        <div class="mb-4">
+            <strong>Tình trạng: </strong>
             @if (Model.StockCount > 0)
             {
-                <div class="d-flex gap-2 mt-4">
-                    <button type="button" onclick="addToCartJS(@Model.Variant.variant_id)" class="btn btn-warning btn-lg w-100 text-dark fw-bold shadow-sm">
-                        <i class="bi bi-cart-plus"></i>
-                        Thêm vào giỏ hàng
-                    </button>
-                    @*XỬ LÝ GỬI FORM THEO PHƯƠNG THỨC NGẦM json *@
-                    <script>
-                         async function addToCartJS(id_variant) {
-                            var formData = new FormData();
-                            formData.append('variant_id', id_variant);
-                            try{
-                                const response = await fetch('/Carts/AddToCartJS', {
-                                    method: 'POST',
-                                    body: formData
-                                });
-                                if (!response.ok) {
-                                    throw new Error("Lỗi mạng hoặc lỗi Server chưa phản hồi!");
-                                }
-                                const data = await response.json();
-                                if (data.requireLogin) {
-                                    alert(data.message);
-                                    window.location.href = "/Account/Login";
-                                }
-                                else if (data.success) {
-                                    alert(data.message);
-                                }
-                                else {
-                                    alert(data.message);
-                                }
-                            }
-                            catch(error){
-                                console.error('Error:', error);
-                            }
-                        }
-                    </script>
-
-                    @* Form Mua Ngay *@
-                    @using (Html.BeginForm("BuyNow", "Carts", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        @* Gửi ID biến thể đang xem *@
-                        <input type="hidden" name="variant_id" value="@Model.Variant.variant_id" />
-
-                        @* Request.Url.PathAndQuery lấy đường dẫn hiện tại (VD: /Shop/ProductDetails/5) *@
-                        <input type="hidden" name="returnUrl" value="@Request.Url.PathAndQuery" />
-
-                        @* Nút Mua Ngay *@
-                        <button type="submit" class="btn btn-lg btn-danger w-100 rounded-pill fw-bold">
-                            <i class="bi bi-wallet2"></i> Mua Ngay
-                        </button>
-                    }
-                </div>
+                <span class="badge bg-success">Còn hàng (@Model.StockCount)</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Hết hàng</span>
             }
         </div>
+
+        <div class="mb-4">
+            <strong>Giới thiệu: </strong>
+            <p></p>
+        </div>
+        <div class="mb-4">
+            <strong>Tình trạng máy: </strong>
+            <p></p>
+        </div>
+
+        @* Mô tả ngắn *@
+        <p class="text-secondary">@Model.Product.product_desc</p>
+
+        @if (Model.StockCount > 0)
+        {
+            <div class="d-flex gap-2 mt-4">
+                <button type="button" onclick="addToCartJS(@Model.Variant.variant_id)" class="btn btn-warning btn-lg w-100 text-dark fw-bold shadow-sm">
+                    <i class="bi bi-cart-plus"></i>
+                    Thêm vào giỏ hàng
+                </button>
+                @*XỬ LÝ GỬI FORM THEO PHƯƠNG THỨC NGẦM json *@
+                <script>
+                    async function addToCartJS(id_variant) {
+                        var formData = new FormData();
+                        formData.append('variant_id', id_variant);
+                        try {
+                            const response = await fetch('/Carts/AddToCartJS', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            if (!response.ok) {
+                                throw new Error("Lỗi mạng hoặc lỗi Server chưa phản hồi!");
+                            }
+                            const data = await response.json();
+                            if (data.requireLogin) {
+                                alert(data.message);
+                                window.location.href = "/Account/Login";
+                            }
+                            else if (data.success) {
+                                alert(data.message);
+                            }
+                            else {
+                                alert(data.message);
+                            }
+                        }
+                        catch (error) {
+                            console.error('Error:', error);
+                        }
+                    }
+                </script>
+
+                @* Form Mua Ngay *@
+                @using (Html.BeginForm("BuyNow", "Carts", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @* Gửi ID biến thể đang xem *@
+                    <input type="hidden" name="variant_id" value="@Model.Variant.variant_id" />
+
+                    @* Request.Url.PathAndQuery lấy đường dẫn hiện tại (VD: /Shop/ProductDetails/5) *@
+                    <input type="hidden" name="returnUrl" value="@Request.Url.PathAndQuery" />
+
+                    @* Nút Mua Ngay *@
+                    <button type="submit" class="btn btn-lg btn-danger w-100 rounded-pill fw-bold">
+                        <i class="bi bi-wallet2"></i> Mua Ngay
+                    </button>
+                }
+            </div>
+        }
+    </div>
     </div>
 
     @* --- PHẦN DƯỚI: BẢNG THÔNG SỐ KỸ THUẬT CHI TIẾT (Giao diện mới) --- *@

@@ -1,122 +1,138 @@
 ﻿@model old_phone.Models.Phone
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Cập Nhật Cấu Hình";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Phone</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.product_id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_chip, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_chip, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_chip, "", new { @class = "text-danger" })
-            </div>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-warning text-dark py-3">
+            <h4 class="fw-bold mb-0 text-center"><i class="bi bi-pencil-square me-2"></i> CẬP NHẬT CẤU HÌNH</h4>
         </div>
+        <div class="card-body p-4 p-md-5">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger mb-4" })
+                @Html.HiddenFor(model => model.product_id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_screen_size, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_screen_size, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_screen_size, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_front_cam, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_front_cam, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_front_cam, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_behind_cam, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_behind_cam, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_behind_cam, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_battery, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_battery, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_battery, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_system, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_system, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_system, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_charging_port, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_charging_port, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_charging_port, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_sim_card, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_sim_card, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_sim_card, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_nfc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.phone_nfc)
-                    @Html.ValidationMessageFor(model => model.phone_nfc, "", new { @class = "text-danger" })
+                <div class="alert alert-warning border-warning d-flex align-items-center mb-5 shadow-sm">
+                    <i class="bi bi-info-circle-fill me-3 fs-3 text-dark"></i>
+                    <div>
+                        <span class="text-muted text-uppercase small fw-bold d-block">Đang chỉnh sửa cho sản phẩm:</span>
+                        <span class="fs-5 fw-bold text-dark">@ViewBag.ProductName</span>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_ear_phone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone_ear_phone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone_ear_phone, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="row g-5">
+                    <div class="col-lg-6">
+                        <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+                            <span class="bg-primary text-white rounded-circle p-2 me-2 d-flex justify-content-center align-items-center" style="width: 32px; height: 32px;"><i class="bi bi-cpu-fill"></i></span>
+                            <h6 class="text-uppercase fw-bold text-primary mb-0">Hiệu Năng & Hiển Thị</h6>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone_memory_card, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.phone_memory_card)
-                    @Html.ValidationMessageFor(model => model.phone_memory_card, "", new { @class = "text-danger" })
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Chip Xử Lý</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-motherboard"></i></span>
+                                @Html.EditorFor(model => model.phone_chip, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.phone_chip, "", new { @class = "text-danger small fw-bold" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Hệ Điều Hành</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-android2"></i></span>
+                                @Html.EditorFor(model => model.phone_system, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.phone_system, "", new { @class = "text-danger small fw-bold" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Màn Hình</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-display"></i></span>
+                                @Html.EditorFor(model => model.phone_screen_size, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.phone_screen_size, "", new { @class = "text-danger small fw-bold" })
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Cam Trước</label>
+                                @Html.EditorFor(model => model.phone_front_cam, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone_front_cam, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Cam Sau</label>
+                                @Html.EditorFor(model => model.phone_behind_cam, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone_behind_cam, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+                            <span class="bg-dark text-white rounded-circle p-2 me-2 d-flex justify-content-center align-items-center" style="width: 32px; height: 32px;"><i class="bi bi-battery-charging"></i></span>
+                            <h6 class="text-uppercase fw-bold text-dark mb-0">Pin & Kết Nối</h6>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Pin (mAh)</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.phone_battery, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                    <span class="input-group-text">mAh</span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.phone_battery, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Cổng Sạc</label>
+                                @Html.EditorFor(model => model.phone_charging_port, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone_charging_port, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Số Sim</label>
+                                @Html.EditorFor(model => model.phone_sim_card, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.phone_sim_card, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Tai Nghe</label>
+                                @Html.EditorFor(model => model.phone_ear_phone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone_ear_phone, "", new { @class = "text-danger small fw-bold" })
+                            </div>
+                        </div>
+
+                        <div class="card bg-light border-0 rounded-3 p-3 mt-4">
+                            <div class="form-check form-switch mb-2">
+                                @Html.EditorFor(model => model.phone_nfc, new { htmlAttributes = new { @class = "form-check-input", role = "switch" } })
+                                <label class="form-check-label fw-bold ms-2 pt-1"><i class="bi bi-wifi"></i> Hỗ trợ NFC</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                @Html.EditorFor(model => model.phone_memory_card, new { htmlAttributes = new { @class = "form-check-input", role = "switch" } })
+                                <label class="form-check-label fw-bold ms-2 pt-1"><i class="bi bi-sd-card"></i> Hỗ trợ Thẻ Nhớ</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+                <div class="d-flex justify-content-end gap-2 mt-5 pt-3 border-top">
+                    <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4 fw-bold">
+                        <i class="bi bi-x-lg me-1"></i> Hủy Bỏ
+                    </a>
+                    <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold shadow-sm">
+                        <i class="bi bi-save me-1"></i> LƯU THAY ĐỔI
+                    </button>
+                </div>
+            }
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

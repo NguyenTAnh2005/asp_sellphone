@@ -1,44 +1,85 @@
 ﻿@model old_phone.Models.Product_Image
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm Ảnh Mới";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white py-3">
+                    <h4 class="fw-bold mb-0 text-center"><i class="bi bi-cloud-upload-fill me-2"></i> Tải Ảnh Lên</h4>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Product_Image</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.product_id, "product_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-success">Chọn Sản Phẩm</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-box-seam"></i></span>
+                                @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.image_url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.image_url, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.image_url, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-success">Đường Dẫn Ảnh (URL)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-link"></i></span>
+                                @Html.EditorFor(model => model.image_url, new { htmlAttributes = new { @class = "form-control", placeholder = "https://...", id = "ImgUrlInput" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.image_url, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                        <div class="card bg-light border-0 text-center p-3 mb-4">
+                            <small class="text-muted d-block mb-2 fw-bold text-uppercase">Xem trước hình ảnh</small>
+                            <div style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <img id="ImgPreview" src="https://via.placeholder.com/300x200?text=Preview+Image"
+                                     class="img-fluid rounded shadow-sm"
+                                     style="max-height: 300px; display: none;"
+                                     alt="Preview" />
+                                <span id="NoImgText" class="text-muted opacity-50"><i class="bi bi-image display-4"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4 fw-bold">
+                                <i class="bi bi-arrow-left me-1"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
+                                <i class="bi bi-check-lg me-1"></i> Lưu Hình Ảnh
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Script đơn giản để hiển thị ảnh khi nhập link
+        $(document).ready(function () {
+            function updateImage() {
+                var url = $('#ImgUrlInput').val();
+                if (url && url.trim() !== "") {
+                    $('#ImgPreview').attr('src', url).show();
+                    $('#NoImgText').hide();
+                } else {
+                    $('#ImgPreview').hide();
+                    $('#NoImgText').show();
+                }
+            }
+
+            $('#ImgUrlInput').on('input', updateImage);
+            $('#ImgUrlInput').change(updateImage); // Chạy khi paste chuột phải
+        });
+    </script>
+}

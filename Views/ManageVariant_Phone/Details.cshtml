@@ -1,99 +1,59 @@
 ﻿@model old_phone.Models.Variant_Phone
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Chi Tiết Biến Thể";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-info text-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle-fill me-2"></i> Chi Tiết Phiên Bản</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-5 bg-light d-flex align-items-center justify-content-center p-4">
+                            @if (!string.IsNullOrEmpty(Model.variant_ph_img))
+                            {
+                                <img src="@Model.variant_ph_img" class="img-fluid rounded shadow-sm" style="max-height: 350px;" alt="Variant Image" onerror="this.src='https://via.placeholder.com/300'">
+                            }
+                            else
+                            {
+                                <div class="text-muted display-1"><i class="bi bi-image"></i></div>
+                            }
+                        </div>
 
-<div>
-    <h4>Variant_Phone</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_ram)
-        </dt>
+                        <div class="col-md-7 p-4 p-md-5">
+                            <h2 class="fw-bold text-primary mb-1">@Html.DisplayFor(model => model.Product.product_name)</h2>
+                            <div class="mb-4">
+                                <span class="badge bg-warning text-dark fs-6 shadow-sm"><i class="bi bi-palette me-1"></i> @Model.variant_ph_color</span>
+                                <span class="badge bg-secondary fs-6 ms-1 shadow-sm">@Model.variant_ph_ram GB / @Model.variant_ph_rom GB</span>
+                            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_ram)
-        </dd>
+                            <div class="mb-4 p-3 bg-light rounded-3 border">
+                                <p class="mb-1 text-muted text-decoration-line-through small">Giá gốc: @Model.variant_ph_org_price.ToString("N0") đ</p>
+                                <h3 class="fw-bold text-danger mb-0">@Model.variant_ph_final_price.ToString("N0") đ</h3>
+                            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_rom)
-        </dt>
+                            <div class="mb-4">
+                                <h6 class="text-uppercase text-muted fw-bold small">Mô tả / Trạng thái:</h6>
+                                <p class="text-dark">@Html.DisplayFor(model => model.variant_ph_state)</p>
+                            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_rom)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_color)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_color)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_org_price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_org_price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_new_price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_new_price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_final_price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_final_price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_img)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_img)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.variant_ph_state)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.variant_ph_state)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.product_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Product.product_name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Stock.variant_id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Stock.variant_id)
-        </dd>
-
-    </dl>
+                            <div class="d-flex gap-2 mt-auto pt-3 border-top">
+                                <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4">
+                                    <i class="bi bi-arrow-left me-1"></i> Quay lại
+                                </a>
+                                <a href="@Url.Action("Edit", new { id = Model.variant_id })" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-pencil-square me-1"></i> Chỉnh sửa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.variant_id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

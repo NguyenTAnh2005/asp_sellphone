@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using old_phone.Models;
+using old_phone.Common;
 
 namespace old_phone.Controllers.Manage
 {
@@ -15,12 +16,14 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: ManageBlogs
+        [AuthorizeCheck(RequiredRole =2)]
         public ActionResult Index()
         {
             return View(db.Blogs.ToList());
         }
 
         // GET: ManageBlogs/Details/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,6 +39,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageBlogs/Create
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create()
         {
             return View();
@@ -46,6 +50,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create([Bind(Include = "blog_id,blog_name,blog_author,blog_link,blog_time,blog_img")] Blog blog)
         {
             if (ModelState.IsValid)
@@ -59,6 +64,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageBlogs/Edit/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,6 +84,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit([Bind(Include = "blog_id,blog_name,blog_author,blog_link,blog_time,blog_img")] Blog blog)
         {
             if (ModelState.IsValid)
@@ -90,6 +97,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageBlogs/Delete/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +115,7 @@ namespace old_phone.Controllers.Manage
         // POST: ManageBlogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult DeleteConfirmed(int id)
         {
             Blog blog = db.Blogs.Find(id);

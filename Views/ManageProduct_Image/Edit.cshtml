@@ -1,46 +1,73 @@
 ﻿@model old_phone.Models.Product_Image
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Cập Nhật Ảnh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h4 class="fw-bold mb-0 text-center"><i class="bi bi-pencil-square me-2"></i> Cập Nhật Hình Ảnh</h4>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                        @Html.HiddenFor(model => model.image_id)
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Product_Image</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.image_id)
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Sản Phẩm</label>
+                            @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select bg-light" })
+                            @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.product_id, "product_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.product_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Đường Dẫn Ảnh</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-link"></i></span>
+                                @Html.EditorFor(model => model.image_url, new { htmlAttributes = new { @class = "form-control", id = "ImgUrlInput" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.image_url, "", new { @class = "text-danger small" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.image_url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.image_url, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.image_url, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="card bg-light border-0 text-center p-3 mb-4">
+                            <small class="text-muted d-block mb-2 fw-bold text-uppercase">Ảnh Hiện Tại</small>
+                            <div style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <img id="ImgPreview" src="@Model.image_url"
+                                     class="img-fluid rounded shadow-sm"
+                                     style="max-height: 350px;"
+                                     alt="Preview"
+                                     onerror="this.src='https://via.placeholder.com/300?text=Image+Error'" />
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4 fw-bold">
+                                <i class="bi bi-arrow-left me-1"></i> Hủy
+                            </a>
+                            <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                                <i class="bi bi-save me-1"></i> Lưu Thay Đổi
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#ImgUrlInput').on('input', function () {
+                var url = $(this).val();
+                if (url) $('#ImgPreview').attr('src', url);
+            });
+        });
+    </script>
+}

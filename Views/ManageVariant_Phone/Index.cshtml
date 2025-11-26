@@ -1,88 +1,128 @@
-﻿@model IEnumerable<old_phone.Models.Variant_Phone>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<old_phone.Models.Variant_Phone>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản Lý Biến Thể";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container-fluid py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-0"><i class="bi bi-collection-play-fill me-2"></i> Danh Sách Biến Thể</h2>
+            <p class="text-muted small mb-0">Quản lý phiên bản, màu sắc và giá bán</p>
+        </div>
+        @Html.ActionLink("Thêm Biến Thể Mới", "Create", null, new { @class = "btn btn-success rounded-pill px-4 fw-bold shadow-sm" })
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_ram)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_rom)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_color)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_org_price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_new_price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_final_price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_img)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.variant_ph_state)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.product_name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Stock.variant_id)
-        </th>
-        <th></th>
-    </tr>
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+        <div class="card-body p-3">
+            @using (Html.BeginForm("Index", "ManageVariant_Phone", FormMethod.Get))
+            {
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                            @Html.TextBox("searchQuery", ViewBag.CurrentFilter as string, new { @class = "form-control border-start-0 bg-light", placeholder = "Tìm theo tên sản phẩm..." })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 fw-bold text-muted">Hãng:</span>
+                            @Html.DropDownList("companyId", ViewBag.CompanyList as SelectList, "--- Tất cả hãng ---", new { @class = "form-select bg-light border-start-0" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold"><i class="bi bi-funnel-fill me-1"></i> Lọc</button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary rounded-pill px-3"><i class="bi bi-arrow-counterclockwise"></i></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_ram)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_rom)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_color)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_org_price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_new_price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_final_price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_img)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.variant_ph_state)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.product_name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stock.variant_id)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.variant_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.variant_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.variant_id })
-        </td>
-    </tr>
-}
+    <div class="card shadow border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="bg-light text-uppercase small fw-bold text-secondary">
+                        <tr>
+                            <th class="ps-4 text-center" style="width: 80px;">Ảnh</th>
+                            <th>Sản Phẩm</th>
+                            <th>Màu & Cấu Hình</th>
+                            <th>Giá Bán</th>
+                            <th class="text-center">Trạng Thái</th>
+                            <th class="text-end pe-4">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count == 0)
+                        {
+                            <tr><td colspan="6" class="text-center py-4 text-muted">Không tìm thấy dữ liệu phù hợp.</td></tr>
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 text-center">
+                                    @if (!string.IsNullOrEmpty(item.variant_ph_img))
+                                    {
+                                        <img src="@item.variant_ph_img" class="rounded border shadow-sm" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50'" />
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-white border rounded d-flex align-items-center justify-content-center text-muted" style="width: 50px; height: 50px;"><i class="bi bi-image"></i></div>
+                                    }
+                                </td>
+                                <td><div class="fw-bold text-dark">@Html.DisplayFor(modelItem => item.Product.product_name)</div></td>
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <span class="badge bg-info text-dark border" style="width: fit-content;">@Html.DisplayFor(modelItem => item.variant_ph_color)</span>
+                                        <small class="text-muted">@item.variant_ph_ram GB / @item.variant_ph_rom GB</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-danger">@item.variant_ph_final_price.ToString("N0") đ</span>
+                                        @if (item.variant_ph_org_price > item.variant_ph_final_price)
+                                        {
+                                            <small class="text-muted text-decoration-line-through" style="font-size: 0.8em;">@item.variant_ph_org_price.ToString("N0") đ</small>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="badge bg-light text-secondary border">@Html.DisplayFor(modelItem => item.variant_ph_state)</span></td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group shadow-sm" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.variant_id })" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="@Url.Action("Details", new { id = item.variant_id })" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>
+                                        <a href="@Url.Action("Delete", new { id = item.variant_id })" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-</table>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+            <div class="text-muted small">
+                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                (Tổng: @Model.TotalItemCount biến thể)
+            </div>
+
+            <nav>
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, searchQuery = ViewBag.CurrentFilter, companyId = ViewBag.CurrentCompanyID }),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                        LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                        ClassToApplyToFirstListItemInPager = "page-item",
+                        ClassToApplyToLastListItemInPager = "page-item",
+                        ContainerDivClasses = new[] { "pagination-container" }
+                    })
+            </nav>
+        </div>
+    </div>
+</div>

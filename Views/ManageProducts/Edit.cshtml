@@ -1,57 +1,58 @@
 ﻿@model old_phone.Models.Product
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Cập Nhật Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h4 class="fw-bold mb-0 text-center"><i class="bi bi-pencil-square me-2"></i> Cập Nhật Thông Tin</h4>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.product_id)
 
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Product</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.product_id)
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary">Tên Sản Phẩm</label>
+                                @Html.EditorFor(model => model.product_name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.product_name, "", new { @class = "text-danger small mt-1" })
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.company_id, "company_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("company_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.company_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary">Hãng Sản Xuất</label>
+                                @Html.DropDownList("company_id", null, htmlAttributes: new { @class = "form-select" })
+                                @Html.ValidationMessageFor(model => model.company_id, "", new { @class = "text-danger small mt-1" })
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.product_name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.product_name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.product_name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-secondary">Giới thiệu sản phẩm </label>
+                                @Html.TextAreaFor(model => model.product_desc, new { @class = "form-control", rows = 5 })
+                                @Html.ValidationMessageFor(model => model.product_desc, "", new { @class = "text-danger small mt-1" })
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.product_desc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.product_desc, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.product_desc, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                                <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4 fw-bold">
+                                    <i class="bi bi-arrow-left me-1"></i> Hủy
+                                </a>
+                                <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="bi bi-check-circle me-1"></i> Lưu Thay Đổi
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
