@@ -7,17 +7,13 @@
 
 <div class="container py-5">
     <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-warning text-dark py-3">
-            <h4 class="fw-bold mb-0 text-center"><i class="bi bi-pencil-square me-2"></i> CẬP NHẬT BIẾN THỂ & KHO</h4>
-        </div>
         <div class="card-body p-4 p-md-5">
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "alert alert-danger mb-4" })
-                @Html.HiddenFor(model => model.variant_id)
 
-                @Html.HiddenFor(model => model.product_id)
+                @Html.HiddenFor(model => model.variant_id)
 
                 <div class="alert alert-warning border-warning d-flex align-items-center mb-4">
                     <i class="bi bi-phone me-2 fs-4"></i>
@@ -27,6 +23,12 @@
                 <div class="row g-5">
                     <div class="col-lg-6">
                         <h6 class="text-uppercase fw-bold border-bottom pb-2 mb-3 text-dark">1. Cấu Hình & Kho Hàng</h6>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Sản Phẩm</label>
+                            @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select bg-light", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.product_id)
+                        </div>
 
                         <div class="row g-2 mb-3">
                             <div class="col-6">
@@ -48,13 +50,13 @@
                         </div>
 
                         <div class="mb-3 p-3 bg-light border rounded shadow-sm">
-                            <label class="form-label fw-bold text-primary"><i class="bi bi-box-seam me-1"></i> Cập Nhật Số Lượng Kho</label>
+                            <label class="form-label fw-bold text-primary"><i class="bi bi-box-seam me-1"></i> Số Lượng Tồn Kho</label>
                             <div class="input-group">
                                 @Html.EditorFor(model => model.InitialStockCount, new { htmlAttributes = new { @class = "form-control fw-bold text-primary", type = "number", min = "0" } })
                                 <span class="input-group-text bg-primary text-white">Sản phẩm</span>
                             </div>
                             @Html.ValidationMessageFor(model => model.InitialStockCount, "", new { @class = "text-danger small" })
-                            <div class="form-text small text-muted fst-italic">Nhập số lượng thực tế đang có trong kho để cập nhật.</div>
+                            <div class="form-text small text-muted">Nhập số lượng thực tế đang có trong kho.</div>
                         </div>
 
                         <div class="mb-3">

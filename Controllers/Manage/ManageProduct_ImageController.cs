@@ -1,4 +1,7 @@
-﻿using System;
+﻿using old_phone.Common;
+using old_phone.Models;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using old_phone.Models;
 
 namespace old_phone.Controllers.Manage
 {
@@ -15,13 +17,33 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: ManageProduct_Image
-        public ActionResult Index()
+        [AuthorizeCheck(RequiredRole = 2)]
+        public ActionResult Index(string searchQuery, int?productId, int?page)
         {
-            var product_Image = db.Product_Image.Include(p => p.Product);
-            return View(product_Image.ToList());
+            var product_Image = db.Product_Image.Include(pi => pi.Product).AsQueryable();
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                product_Image = product_Image.Where(pi => pi.Product.product_name.Contains(searchQuery));
+            }
+            if (productId.HasValue)
+            {
+                product_Image = product_Image.Where(pi => pi.product_id == productId.Value);
+            }
+            product_Image = product_Image.OrderByDescending(pi => pi.image_id);
+
+            var pageSize = 20;
+            var pageNumber = (page ?? 1);
+            ViewBag.CurrentFilter = searchQuery;
+            ViewBag.CurrentProductID = productId;
+            ViewBag.ProductList = new SelectList(db.Products, "product_id", "product_name", productId);
+            
+            var pagedList = product_Image.ToPagedList(pageNumber, pageSize);
+
+            return View(pagedList);
         }
 
         // GET: ManageProduct_Image/Details/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +59,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageProduct_Image/Create
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create()
         {
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name");
@@ -48,6 +71,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create([Bind(Include = "image_id,product_id,image_url")] Product_Image product_Image)
         {
             if (ModelState.IsValid)
@@ -62,6 +86,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageProduct_Image/Edit/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +107,7 @@ namespace old_phone.Controllers.Manage
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit([Bind(Include = "image_id,product_id,image_url")] Product_Image product_Image)
         {
             if (ModelState.IsValid)
@@ -95,6 +121,7 @@ namespace old_phone.Controllers.Manage
         }
 
         // GET: ManageProduct_Image/Delete/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +139,7 @@ namespace old_phone.Controllers.Manage
         // POST: ManageProduct_Image/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult DeleteConfirmed(int id)
         {
             Product_Image product_Image = db.Product_Image.Find(id);

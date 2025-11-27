@@ -139,12 +139,14 @@
     <Compile Include="Common\MailHelper.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Manage\ManageAccountsController.cs" />
     <Compile Include="Controllers\Manage\ManageBlogsController.cs" />
     <Compile Include="Controllers\Manage\ManageCompaniesController.cs" />
+    <Compile Include="Controllers\Manage\ManageOrder_ViewModelController.cs" />
     <Compile Include="Controllers\Manage\ManagePhonesController.cs" />
     <Compile Include="Controllers\Manage\ManageProduct_ImageController.cs" />
+    <Compile Include="Controllers\Manage\ManageSalesController.cs" />
     <Compile Include="Controllers\Manage\ManageVariant_PhoneController.cs" />
-    <Compile Include="Controllers\Manage\SalesController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\Manage\ManageProductsController.cs" />
     <Compile Include="Controllers\User\CartsController.cs" />
@@ -222,6 +224,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BlogsPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="ViewModels\ManageOrder_ViewModel.cs" />
+    <Compile Include="ViewModels\ManageSaleViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\PhonesPageViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailsViewModel.cs" />
@@ -367,19 +371,12 @@
     <Content Include="Views\ManageProduct_Image\Details.cshtml" />
     <Content Include="Views\ManageProduct_Image\Edit.cshtml" />
     <Content Include="Views\ManageProduct_Image\Index.cshtml" />
-    <Content Include="Views\Sales\Create.cshtml" />
-    <Content Include="Views\Sales\Delete.cshtml" />
-    <Content Include="Views\Sales\Details.cshtml" />
-    <Content Include="Views\Sales\Edit.cshtml" />
-    <Content Include="Views\Sales\Index.cshtml" />
     <Content Include="Views\Shared\Error_Delete.cshtml" />
     <Content Include="Views\ManagePhones\Create.cshtml" />
     <Content Include="Views\ManagePhones\Delete.cshtml" />
     <Content Include="Views\ManagePhones\Details.cshtml" />
     <Content Include="Views\ManagePhones\Edit.cshtml" />
     <Content Include="Views\ManagePhones\Index.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Create.cshtml" />
-    <Content Include="Views\ManageVariant_Phone\Delete.cshtml" />
     <Content Include="Views\ManageVariant_Phone\Details.cshtml" />
     <Content Include="Views\ManageVariant_Phone\Edit.cshtml" />
     <Content Include="Views\ManageVariant_Phone\Index.cshtml" />
@@ -389,6 +386,20 @@
     <Content Include="Views\ManageBlogs\Edit.cshtml" />
     <Content Include="Views\ManageBlogs\Index.cshtml" />
     <Content Include="Views\Shared\_StyleCss.cshtml" />
+    <Content Include="Views\ManageSales\Create.cshtml" />
+    <Content Include="Views\ManageSales\Delete.cshtml" />
+    <Content Include="Views\ManageSales\Details.cshtml" />
+    <Content Include="Views\ManageSales\Edit.cshtml" />
+    <Content Include="Views\ManageSales\Index.cshtml" />
+    <Content Include="Views\ManageAccounts\Create.cshtml" />
+    <Content Include="Views\ManageAccounts\Delete.cshtml" />
+    <Content Include="Views\ManageAccounts\Details.cshtml" />
+    <Content Include="Views\ManageAccounts\Edit.cshtml" />
+    <Content Include="Views\ManageAccounts\Index.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Create.cshtml" />
+    <Content Include="Views\ManageVariant_Phone\Delete.cshtml" />
+    <Content Include="Views\ManageOrder_ViewModel\Index.cshtml" />
+    <Content Include="Views\ManageOrder_ViewModel\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,95 @@
+﻿@model old_phone.Models.Account
+
+@{
+    ViewBag.Title = "Tạo Tài Khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white py-3 text-center">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-person-plus-fill me-2"></i> Tạo Tài Khoản Mới</h4>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                        <h6 class="text-uppercase text-success fw-bold border-bottom pb-2 mb-4">Thông Tin Cá Nhân</h6>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Họ & Tên Đệm</label>
+                                @Html.EditorFor(model => model.account_first_name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.account_first_name, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Tên</label>
+                                @Html.EditorFor(model => model.account_last_name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.account_last_name, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Ngày Sinh</label>
+                                @Html.EditorFor(model => model.account_date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.account_date, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Giới Tính</label>
+                                <div class="d-flex gap-3 mt-2">
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.account_gender, true, new { @class = "form-check-input", id = "male" })
+                                        <label class="form-check-label" for="male">Nam</label>
+                                    </div>
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.account_gender, false, new { @class = "form-check-input", id = "female" })
+                                        <label class="form-check-label" for="female">Nữ</label>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.account_gender, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <h6 class="text-uppercase text-success fw-bold border-bottom pb-2 mb-4 mt-4">Thông Tin Đăng Nhập</h6>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            @Html.EditorFor(model => model.account_email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                            @Html.ValidationMessageFor(model => model.account_email, "", new { @class = "text-danger small" })
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger text-center py-2 mb-3" style="font-size: 0.9rem;">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i> @ViewBag.Error
+                                </div>
+                            }
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Mật Khẩu</label>
+                                @Html.EditorFor(model => model.account_password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                                @Html.ValidationMessageFor(model => model.account_password, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Vai Trò (Role)</label>
+                                @Html.DropDownList("role_id", null, htmlAttributes: new { @class = "form-select" })
+                                @Html.ValidationMessageFor(model => model.role_id, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 border-top pt-3">
+                            <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4">Hủy</a>
+                            <button type="submit" class="btn btn-success rounded-pill px-5 fw-bold shadow-sm">Lưu</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @Scripts.Render("~/bundles/jqueryval") }

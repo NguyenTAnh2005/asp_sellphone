@@ -21,7 +21,7 @@ namespace old_phone.Models
         public int detail_count { get; set; }
         public long detail_total_price { get; set; }
     
-        public virtual Order_ Order_ { get; set; }
         public virtual Variant_Phone Variant_Phone { get; set; }
+        public virtual Order_ Order_ { get; set; }
     }
 }

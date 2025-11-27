@@ -47,60 +47,64 @@
             </div>
 
             @* --- 2. THÔNG TIN GIAO HÀNG & THANH TOÁN --- *@
-            <div class="card border-0 shadow-sm rounded-3 p-4">
-                <h5 class="fw-bold text-main-CL mb-3">Thông tin nhận hàng</h5>
+        <div class="card border-0 shadow-sm rounded-3 p-4">
+            <h5 class="fw-bold text-main-CL mb-3">Thông tin nhận hàng</h5>
 
-                @* Chọn Địa Chỉ (Dùng SELECT BOX theo yêu cầu) *@
-                <div class="mb-4">
-                    <label class="form-label fw-bold text-muted small">Địa chỉ nhận hàng</label>
-                    @if (Model.listHotlines != null && Model.listHotlines.Any())
-                    {
-                        <select class="form-select" name="Order_HotlineId" required>
-                            @foreach (var h in Model.listHotlines)
-                            {
-                                <option value="@h.hotline_id" @(h.hotline_default == true ? "selected" : "")>
-                                    @h.hotline_name - @h.hotline_phonenumber (@h.hotline_address) @(h.hotline_default == true ? "(Mặc định)" : "")
-                                </option>
-                            }
-                        </select>
-                        <div class="mt-2 text-end">
-                            <a href="@Url.Action("Index", "Hotlines", new { returnUrl = "Checkout" })" class="text-decoration-none small text-main-CL">
-                                <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
-                            </a>
-                        </div>
-                    }
-                    @*else
-                    {
-                        <div class="alert alert-warning">
-                            Chưa có địa chỉ nào. <a href="@Url.Action("Index", "Hotlines")">Thêm ngay</a>
-                        </div>
-                    }*@
-                </div>
-
-                @* Chọn Phương Thức Thanh Toán (Radio Buttons đã disable Banking) *@
-                <div class="mb-3">
-                    <label class="form-label fw-bold text-muted small">Hình thức thanh toán</label>
-                    <div class="card p-3 border-0 bg-light rounded-3">
-
-                        @* 1. COD (Mặc định chọn cái này) *@
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="Order_TypePayment" value="1" id="payCOD" checked>
-                            <label class="form-check-label fw-bold" for="payCOD">
-                                <i class="bi bi-cash-coin me-2 text-success"></i> Thanh toán khi nhận hàng (COD)
-                            </label>
-                        </div>
-
-                        @* 2. Banking (Đã DISABLE) *@
-                        <div class="form-check opacity-50">
-                            <input class="form-check-input" type="radio" name="Order_TypePayment" value="2" id="payBank" disabled>
-                            <label class="form-check-label" for="payBank">
-                                <i class="bi bi-bank me-2"></i> Chuyển khoản ngân hàng (Banking)
-                                <span class="badge bg-secondary ms-2" style="font-size: 0.7rem;">Đang bảo trì</span>
-                            </label>
-                        </div>
+            @* Chọn Địa Chỉ (Dùng SELECT BOX theo yêu cầu) *@
+            <div class="mb-4">
+                <label class="form-label fw-bold text-muted small">Địa chỉ nhận hàng</label>
+                @if (Model.listHotlines != null && Model.listHotlines.Any())
+                {
+                    <select class="form-select" name="Order_HotlineId" required>
+                        @foreach (var h in Model.listHotlines)
+                        {
+                            <option value="@h.hotline_id" @(h.hotline_default == true ? "selected" : "")>
+                                @h.hotline_name - @h.hotline_phonenumber (@h.hotline_address) @(h.hotline_default == true ? "(Mặc định)" : "")
+                            </option>
+                        }
+                    </select>
+                    <div class="mt-2 text-end">
+                        <a href="@Url.Action("Index", "Hotlines", new { returnUrl = "Checkout" })" class="text-decoration-none small text-main-CL">
+                            <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
+                        </a>
                     </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Chưa có địa chỉ nào. <a href="@Url.Action("Index", "Hotlines")">Thêm ngay</a>
+                    </div>
+                }
+            </div>
+
+            @* Chọn Phương Thức Thanh Toán (Radio Buttons đã disable Banking) *@
+            @* --- 2. PHƯƠNG THỨC THANH TOÁN (Cập nhật Value thành số) --- *@
+            <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden">
+                <div class="card-header bg-main-CL text-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-credit-card-2-front"></i> Phương Thức Thanh Toán</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="form-check mb-3 p-3 border rounded-3 bg-light">
+                        @* Value = 0: Thanh toán khi nhận hàng *@
+                        @Html.RadioButtonFor(m => m.Order_TypePayment,"COD", new { @class = "form-check-input", @checked = "checked", id = "pay_cod" })
+                        <label class="form-check-label w-100 fw-bold text-dark" for="pay_cod">
+                            <i class="bi bi-cash-coin me-2 text-success"></i> Thanh toán khi nhận hàng (COD)
+                            <div class="small text-muted fw-normal mt-1">Bạn sẽ thanh toán tiền mặt cho shipper khi nhận được hàng.</div>
+                        </label>
+                    </div>
+
+                    <div class="form-check p-3 border rounded-3 bg-light opacity-50">
+                        @* Value = 1: Chuyển khoản *@
+                        @Html.RadioButtonFor(m => m.Order_TypePayment, "QR", new { @class = "form-check-input", id = "pay_bank", disabled="disabled" })
+                        <label class="form-check-label w-100 fw-bold text-dark" for="pay_bank">
+                            <i class="bi bi-bank me-2 text-primary"></i> Chuyển khoản ngân hàng  (QR Code) (Chức năng đang được phát triển )
+                            <div class="small text-muted fw-normal mt-1">Quét mã QR để thanh toán nhanh chóng và chính xác.</div>
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Order_TypePayment, "", new { @class = "text-danger small" })
                 </div>
             </div>
+        </div>
         </div>
 
         @* --- CỘT PHẢI: LIST SẢN PHẨM & TỔNG KẾT --- *@

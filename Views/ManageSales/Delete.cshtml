@@ -1,0 +1,49 @@
+﻿@model old_phone.Models.Sale
+
+@{
+    ViewBag.Title = "Xóa Khuyến Mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <i class="bi bi-trash3-fill" style="font-size: 3rem;"></i>
+                    <h4 class="fw-bold mt-2">Xóa sản phẩm này khỏi danh sách khuyến mãi:</h4>
+                    <p class="mb-0 opacity-75">Hành động này không thể hoàn tác.</p>
+                </div>
+
+                <div class="card-body p-4 text-center">
+                    <h5 class="text-muted mb-3">Sản phẩm </h5>
+                    <h3 class="fw-bold text-dark mb-4">@Html.DisplayFor(model => model.sale_name) - @Model.Variant_Phone.variant_ph_color</h3>
+
+                    <div class="bg-light p-3 rounded-3 mb-4 border text-start">
+                        <div class="mb-2">
+                            <i class="bi bi-phone me-2 text-secondary"></i>
+                            <strong>Sản phẩm:</strong> @Html.DisplayFor(model => model.Variant_Phone.Product.product_name)
+                        </div>
+                        <div>
+                            <i class="bi bi-clock-history me-2 text-secondary"></i>
+                            <strong>Thời gian:</strong> @Model.sale_start.ToString("dd/MM") - @Model.sale_end.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-x-lg me-1"></i> Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow">
+                                <i class="bi bi-trash-fill me-1"></i> Xóa ngay
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,102 +3,59 @@
 @{
     ViewBag.Title = "Lịch Sử Đơn Hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    string currentStatus = ViewBag.CurrentStatus as string ?? "ALL";
 }
-
-<style>
-    /* Định nghĩa màu sắc theo trạng thái */
-    .status-PREPARE {
-        color: #ffc107;
-        font-weight: bold;
-    }
-    /* Vàng */
-    .status-SHIPPING {
-        color: #0dcaf0;
-        font-weight: bold;
-    }
-    /* Xanh dương nhạt */
-    .status-SUCCESS {
-        color: #198754;
-        font-weight: bold;
-    }
-    /* Xanh lá */
-    .status-CANCEL {
-        color: #dc3545;
-        font-weight: bold;
-    }
-    /* Đỏ */
-
-    .status-badge {
-        font-size: 0.75rem;
-        padding: 0.4em 0.8em;
-        border-radius: 0.25rem;
-    }
-
-    .status-ALL {
-        background-color: #6c757d;
-        color: white;
-    }
-
-    .status-filter {
-        transition: all 0.2s;
-    }
-</style>
 
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h3 class="fw-bold text-main-CL text-uppercase">
-            <i class="bi bi-receipt-cutoff me-2"></i> Lịch Sử Đặt Hàng Của Bạn
+        <h3 class="fw-bold text-uppercase text-primary">
+            <i class="bi bi-clock-history me-2"></i> Lịch Sử Mua Hàng
         </h3>
-        <p class="text-muted">Quản lý các đơn hàng đã thực hiện.</p>
     </div>
 
-    @* --- KHỐI LỌC THEO TRẠNG THÁI --- *@
-    <div class="mb-4 p-3 bg-light rounded-3 shadow-sm">
-        <span class="fw-bold me-3 text-secondary">Lọc theo trạng thái:</span>
-        <div class="btn-group" role="group" aria-label="Order Status Filter">
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+        <div class="card-body p-3">
+            @using (Html.BeginForm("History", "Order", FormMethod.Get, new { id = "filterForm" }))
+            {
+                <div class="d-flex justify-content-end align-items-center">
+                    <label class="fw-bold me-3 text-secondary d-none d-md-block">
+                        <i class="bi bi-funnel-fill"></i> Trạng thái đơn hàng:
+                    </label>
 
-            @* Nút Tất Cả *@
-            <a href="@Url.Action("History", new { status = "ALL" })"
-               class="btn btn-sm status-filter @(currentStatus == "ALL" ? "status-ALL" : "btn-outline-secondary")">
-                Tất Cả
-            </a>
-
-            @* Nút Đang Chuẩn Bị *@
-            <a href="@Url.Action("History", new { status = "PREPARE" })"
-               class="btn btn-sm status-filter @(currentStatus == "PREPARE" ? "status-PREPARE" : "btn-outline-warning")">
-                Đang Chuẩn Bị
-            </a>
-
-            @* Nút Đang Giao Hàng *@
-            <a href="@Url.Action("History", new { status = "SHIPPING" })"
-               class="btn btn-sm status-filter @(currentStatus == "SHIPPING" ? "btn-info" : "btn-outline-info")">
-                Đang Giao Hàng
-            </a>
-
-            @* Nút Đã Giao Hàng *@
-            <a href="@Url.Action("History", new { status = "SUCCESS" })"
-               class="btn btn-sm status-filter @(currentStatus == "SUCCESS" ? "btn-success" : "btn-outline-success")">
-                Đã Giao Hàng
-            </a>
-
-            @* Nút Đã Hủy *@
-            <a href="@Url.Action("History", new { status = "CANCEL" })"
-               class="btn btn-sm status-filter @(currentStatus == "CANCEL" ? "btn-danger" : "btn-outline-danger")">
-                Đã Hủy
-            </a>
+                    <div style="min-width: 250px;">
+                        @* Dropdown list lấy từ ViewBag.StatusList *@
+                        @Html.DropDownList("status", ViewBag.StatusList as SelectList, new
+                        {
+                            @class = "form-select border-primary bg-light fw-bold text-primary",
+                            @onchange = "this.form.submit();" // Tự động submit khi chọn
+                        })
+                    </div>
+                </div>
+            }
         </div>
     </div>
 
-    <hr />
+    <hr class="text-muted opacity-25 mb-4" />
 
-    @* --- DANH SÁCH HÓA ĐƠN --- *@
     @if (Model != null && Model.Any())
     {
         <div class="row g-4">
             @foreach (var order in Model)
             {
+                // Chuyển đổi trạng thái từ số sang chữ/màu sắc để hiển thị Badge
+                int stateId = order.order_state;
+
+                string badgeClass = "bg-secondary";
+                string stateText = "Không xác định";
+
+                switch (stateId)
+                {
+                    case 0: badgeClass = "bg-warning text-dark"; stateText = "Chờ xác nhận"; break;
+                    case 1: badgeClass = "bg-info text-dark"; stateText = "Đang chuẩn bị"; break;
+                    case 2: badgeClass = "bg-primary"; stateText = "Đang giao hàng"; break;
+                    case 3: badgeClass = "bg-success"; stateText = "Giao thành công"; break;
+                    case 4: badgeClass = "bg-danger"; stateText = "Đã hủy"; break;
+                }
+
                 <div class="col-12">
                     <div class="card shadow-sm border-0">
                         <div class="card-body p-4">
@@ -109,26 +66,7 @@
                                     </h5>
                                     <small class="text-muted">Đặt ngày: @order.order_buy_time.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
-                                <span class="badge status-badge status-@order.order_state">
-                                    @switch (order.order_state)
-                                    {
-                                        case "PREPARE":
-                                            @:Đang Chuẩn Bị
-                                            break;
-                                        case "SHIPPING":
-                                            @:Đang Giao Hàng
-                                            break;
-                                        case "SUCCESS":
-                                            @:Đã Giao Hàng
-                                            break;
-                                        case "CANCEL":
-                                            @:Đã Hủy
-                                            break;
-                                        default:
-                                            @:Không rõ
-                                            break;
-                                    }
-                                </span>
+                                <span class="badge rounded-pill @badgeClass px-3 py-2 shadow-sm">@stateText</span>
                             </div>
 
                             <hr />
@@ -164,8 +102,24 @@
                                     </span>
                                 </div>
                                 <div>
-                                    <small class="text-muted me-2">Thanh toán:</small>
-                                    <span class="fw-bold text-dark">@order.order_type_pay</span>
+                                    <small class="text-muted me-2">Hình thức thanh toán:</small>
+                                    
+                                        @*order.order_type_pay == "COD" ? "COD - Thanh toán khi nhận hàng" : "QR: Đã chuyển khoản trước";*@
+
+                                    <span class="fw-bold text-dark">
+                                        @switch (order.order_type_pay)
+                                        {
+                                            case "COD":
+                                                @:COD - Thanh toán khi nhận hàng
+                                                break;
+                                            case "QR":
+                                                @:QR: Đã chuyển khoản trước
+                                                break;
+                                            default:
+                                                @:Không xác định
+                                                break;
+                                        }
+                                    </span>
 
                                     @* Nút Xem Chi Tiết (Bạn có thể phát triển thêm) *@
                                     <a href=@Url.Action("Details", "Order", new { id = order.order_id }) class="btn btn-sm btn-outline-secondary ms-3">
@@ -180,11 +134,16 @@
         </div>
     }
     else
-    {
-        <div class="alert alert-info text-center mt-5">
-            <h5 class="alert-heading"><i class="bi bi-info-circle me-2"></i> Không có đơn hàng nào!</h5>
-            <p>Hiện tại bạn chưa có đơn hàng nào @(currentStatus != "ALL" ? ("ở trạng thái **" + currentStatus + "**") : "") trong lịch sử.</p>
-            <a href="@Url.Action("Index", "Shop")" class="btn btn-main-CL text-white mt-2">Tiếp tục mua sắm</a>
-        </div>
+                                            {
+<div class="text-center py-5">
+    <div class="mb-3">
+        <i class="bi bi-clipboard-x display-1 text-muted opacity-25"></i>
+    </div>
+    <h5 class="text-muted">Không tìm thấy đơn hàng nào theo bộ lọc này.</h5>
+    <a href="@Url.Action("History", new { status = -1 })" class="btn btn-link text-decoration-none">Xem tất cả đơn hàng</a>
+    <br />
+    <a href="@Url.Action("Index","Shop")" class="btn btn-link text-decoration-none">Quay về trang chủ</a>
+
+</div>
     }
 </div>

@@ -1,0 +1,192 @@
+﻿@model old_phone.ViewModels.ManageOrder_ViewModel
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng #" + Model.Header.OrderId;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 fw-bold border-start border-primary border-5 ps-3">
+            Thông Tin Đơn Hàng <span class="text-primary">#@Model.Header.OrderId</span>
+        </h1>
+        <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm shadow-sm">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    @if (TempData["SuccessMsg"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-start border-success border-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMsg"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4 border-0 rounded-3">
+                <div class="card-header py-3 bg-white d-flex align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-box-open me-2"></i> Danh Sách Sản Phẩm</h6>
+                    <span class="badge bg-primary rounded-pill">@Model.Items.Count() sản phẩm</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light text-secondary text-uppercase text-xs font-weight-bolder">
+                                <tr>
+                                    <th class="ps-4">Tên Sản Phẩm</th>
+                                    <th class="text-center">Cấu Hình</th>
+                                    <th class="text-center">Số Lượng</th>
+                                    <th class="text-end pe-4">Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex flex-column">
+                                                <span class="fw-bold text-dark">@item.MainProductName</span>
+                                                <span class="text-xs text-muted">@item.ProductName</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-light text-dark border">
+                                                <i class="fas fa-microchip me-1"></i> @item.Ram GB - @item.Rom GB
+                                            </span>
+                                            <div class="text-xs text-secondary mt-1">Màu: @item.Color</div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold text-dark">x @item.Quantity</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <span class="text-danger fw-bold">@item.ItemTotalPrice.ToString("N0") ₫</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot class="bg-light">
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold text-uppercase pt-3 text-secondary">Tổng giá trị đơn hàng:</td>
+                                    <td class="text-end pe-4 pt-3">
+                                        <h4 class="fw-bold text-danger m-0">@Model.Header.OrderTotalPrice.ToString("N0") ₫</h4>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+
+            <div class="card shadow mb-4 border-0 rounded-3">
+                <div class="card-header py-3 bg-white border-bottom-warning">
+                    <h6 class="m-0 font-weight-bold text-warning"><i class="fas fa-tasks me-2"></i> Trạng Thái Đơn Hàng</h6>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("UpdateStatus", "ManageOrder_", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.Hidden("OrderId", Model.Header.OrderId)
+
+                        <div class="mb-3">
+                            <label class="form-label text-xs fw-bold text-uppercase text-muted">Trạng thái hiện tại:</label>
+                            @{
+                                string badgeClass = "bg-secondary";
+                                switch (Model.Header.OrderState)
+                                {
+                                    case 0: badgeClass = "bg-warning text-dark"; break;
+                                    case 1: badgeClass = "bg-info text-dark"; break;
+                                    case 2: badgeClass = "bg-primary"; break;
+                                    case 3: badgeClass = "bg-success"; break;
+                                    case 4: badgeClass = "bg-danger"; break;
+                                }
+                            }
+                            <div class="d-block">
+                                <span class="badge @badgeClass fs-6 px-3 py-2 w-100 shadow-sm text-center">
+                                    @Model.Header.OrderStateDisplay
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-xs fw-bold text-uppercase text-muted">Cập nhật trạng thái mới:</label>
+                            <select name="SelectedStatus" class="form-select border-warning shadow-none fw-bold">
+                                @foreach (var status in Model.StatusList)
+                                {
+                                    // Kiểm tra xem option nào đang được chọn (dựa trên SelectedStatus từ Controller)
+                                    <option value="@status.Value" selected="@(status.Value == Model.SelectedStatus ? "selected" : null)">
+                                        @status.Text
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm text-dark">
+                            <i class="fas fa-save me-1"></i> Lưu Thay Đổi
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <div class="card shadow mb-4 border-0 rounded-3">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-user-circle me-2"></i> Thông Tin Khách Hàng</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-light text-info me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase fw-bold">Họ tên khách hàng</div>
+                            <div class="fw-bold text-dark">@Model.Header.CustomerFullName</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-light text-success me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase fw-bold">Số điện thoại nhận</div>
+                            <div class="fw-bold text-dark">@Model.Header.RecipientPhoneNumber</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="rounded-circle bg-light text-danger me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; flex-shrink:0;">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-muted text-uppercase fw-bold">Địa chỉ giao hàng</div>
+                            <div class="text-dark small">@Model.ShippingAddress</div>
+                        </div>
+                    </div>
+
+                    <hr class="my-3 opacity-25">
+
+                    <div class="mb-2">
+                        <div class="text-xs text-muted text-uppercase fw-bold mb-1">Phương thức thanh toán</div>
+                        <span class="badge bg-light text-dark border w-100 py-2 fw-normal">
+                            <i class="fas fa-credit-card me-2"></i> @Model.PaymentMethod
+                        </span>
+                    </div>
+
+                    <div>
+                        <div class="text-xs text-muted text-uppercase fw-bold mb-1">Thời gian đặt hàng</div>
+                        <span class="text-secondary small">
+                            <i class="far fa-clock me-1"></i> @Model.Header.OrderBuyTime.ToString("dd/MM/yyyy - HH:mm:ss")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

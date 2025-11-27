@@ -31,7 +31,8 @@ namespace old_phone.ViewModels
     {
         public int order_id { get; set; }
         public DateTime order_buy_time { get; set; }
-        public string order_state { get; set; } // Trạng thái: PREPARE, SHIPPING, SUCCESS...
+        // Trạng thái: -- 0: Đang xác nhận, 1: Đang chuẩn bị hàng, 2: Đang giao hàng, 3: Đã nhận được hàng, 4: Đã hủy
+        public int order_state { get; set; } 
         public long order_total_price { get; set; }
         public string order_type_pay { get; set; }
 
@@ -46,7 +47,7 @@ namespace old_phone.ViewModels
         // Thông tin đơn hàng chính
         public int OrderId { get; set; }
         public DateTime BuyTime { get; set; }
-        public string State { get; set; }
+        public int State { get; set; }
         public long TotalPrice { get; set; }
         public string PaymentType { get; set; }
 
@@ -66,6 +67,5 @@ namespace old_phone.ViewModels
         public int Quantity { get; set; }
         public long UnitPrice { get; set; } // Giá lúc mua
         public string ImageUrl { get; set; }
-        // Có thể thêm RAM/ROM nếu cần (nhưng ở đây ta chỉ dùng thông tin từ Detail)
     }
 }

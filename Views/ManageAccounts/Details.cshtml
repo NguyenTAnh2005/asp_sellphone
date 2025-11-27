@@ -1,0 +1,51 @@
+﻿@model old_phone.Models.Account
+
+@{
+    ViewBag.Title = "Thông Tin Tài Khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-info text-white py-3 text-center">
+                    <h5 class="fw-bold mb-0">HỒ SƠ NHÂN SỰ</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                            @Model.account_last_name.Substring(0, 1).ToUpper()
+                        </div>
+                        <h4 class="fw-bold">@Model.account_last_name @Model.account_first_name</h4>
+                        <span class="badge bg-primary">@Model.Role.role_name</span>
+                    </div>
+
+                    <div class="row border-top pt-3">
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted fw-bold d-block">EMAIL</small>
+                            <span>@Model.account_email</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted fw-bold d-block">GIỚI TÍNH</small>
+                            <span>@(Model.account_gender ? "Nam" : "Nữ")</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted fw-bold d-block">NGÀY SINH</small>
+                            <span>@Model.account_date.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted fw-bold d-block">MÃ TÀI KHOẢN</small>
+                            <span>#@Model.account_id</span>
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill">Quay lại</a>
+                        <a href="@Url.Action("Edit", new { id = Model.account_id })" class="btn btn-warning rounded-pill px-4 fw-bold">Sửa hồ sơ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

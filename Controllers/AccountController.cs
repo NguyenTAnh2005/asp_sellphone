@@ -18,10 +18,6 @@ namespace old_phone.Controllers
         [HttpGet]
         public ActionResult Signup()
         {
-            if (Session["account"] != null)
-            {
-                return RedirectToAction("Index", "Shop");
-            }
             if (Request.Cookies["KeepLogin"] != null)
             {
                 // Lays token de kiem tra trong db
@@ -47,6 +43,10 @@ namespace old_phone.Controllers
                     expriedCookie.Expires = DateTime.Now.AddDays(-1);
                     Response.Cookies.Add(expriedCookie);
                 }
+            }
+            if (Session["account"] != null)
+            {
+                return RedirectToAction("Index", "Shop");
             }
             return View();
         }

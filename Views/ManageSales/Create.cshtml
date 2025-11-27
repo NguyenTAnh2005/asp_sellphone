@@ -1,0 +1,69 @@
+﻿@model old_phone.ViewModels.ManageSaleViewModel
+
+@{
+    ViewBag.Title = "Tạo Khuyến Mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white py-3 text-center">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-tags-fill me-2"></i> TẠO KHUYẾN MÃI MỚI</h4>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-success">1. Chọn Sản Phẩm</label>
+                            @Html.DropDownList("variant_id", null, htmlAttributes: new { @class = "form-select form-select-lg shadow-sm" })
+                            @Html.ValidationMessageFor(model => model.variant_id, "", new { @class = "text-danger small" })
+                            <div class="form-text text-muted">Giá niêm yết ban đầu</div>
+                        </div>
+
+                        <div class="mb-4 p-3 bg-light border rounded">
+                            <label class="form-label fw-bold text-danger">2. Nhập Giá Khuyến Mãi (Final Price)</label>
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.DiscountPrice, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number" } })
+                                <span class="input-group-text bg-danger text-white">VNĐ</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DiscountPrice, "", new { @class = "text-danger small" })
+                            <small class="text-muted fst-italic">* Giá này sẽ cập nhật trực tiếp vào sản phẩm.</small>
+                        </div>
+
+                        <hr />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">3. Tên Chương Trình</label>
+                            @Html.EditorFor(model => model.sale_name, new { htmlAttributes = new { @class = "form-control", placeholder = "VD: Sale Giáng Sinh" } })
+                            @Html.ValidationMessageFor(model => model.sale_name, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Bắt đầu</label>
+                                @Html.EditorFor(model => model.sale_start, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.sale_start, "", new { @class = "text-danger small" })
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Kết thúc</label>
+                                @Html.EditorFor(model => model.sale_end, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.sale_end, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="text-end pt-3 border-top">
+                            <a href="@Url.Action("Index")" class="btn btn-light border rounded-pill px-4">Hủy</a>
+                            <button type="submit" class="btn btn-success rounded-pill px-5 fw-bold shadow-sm">Lưu & Áp Dụng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @Scripts.Render("~/bundles/jqueryval") }

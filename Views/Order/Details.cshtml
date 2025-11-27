@@ -4,31 +4,23 @@
     ViewBag.Title = "Chi Tiết Đơn Hàng #" + Model.OrderId;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    // Hàm để lấy class màu cho trạng thái
-    Func<string, string> GetStatusClass = (state) =>
+    // 1. Hàm map Trạng thái (INT -> String)
+    Func<int, string> GetStatusName = (state) =>
     {
         switch (state)
         {
-            case "PREPARE": return "text-warning";
-            case "SHIPPING": return "text-info";
-            case "SUCCESS": return "text-success";
-            case "CANCEL": return "text-danger";
-            default: return "text-secondary";
+            case 0: return "Đang Xác Nhận";
+            case 1: return "Đang Chuẩn Bị";
+            case 2: return "Đang Giao Hàng";
+            case 3: return "Giao Thành Công";
+            case 4: return "Đã Hủy";
+            default: return "Không Rõ";
         }
     };
 
-    // Hàm để lấy tên trạng thái tiếng Việt
-    Func<string, string> GetStatusName = (state) =>
-    {
-        switch (state)
-        {
-            case "PREPARE": return "Đang Chuẩn Bị Hàng";
-            case "SHIPPING": return "Đang Giao Hàng";
-            case "SUCCESS": return "Đã Giao Hàng";
-            case "CANCEL": return "Đã Hủy";
-            default: return "Chờ Xử Lý";
-        }
-    };
+    // Lưu ý: Bạn cần chắc chắn ViewModel của Details nhận int cho State và PaymentType
+    // Nếu ViewModel vẫn là string, bạn cần int.Parse() bên dưới
+    int stateInt = Convert.ToInt32(Model.State);
 }
 
 <style>
@@ -52,8 +44,8 @@
         <div class="card-header bg-white p-4 detail-card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold mb-0">Đơn Hàng #@Model.OrderId</h5>
-                <span class="fw-bold @GetStatusClass(Model.State)">
-                    Trạng Thái: @GetStatusName(Model.State)
+                <span class="fw-bold @Model.State">
+                    Trạng Thái đơn hàng:  @{GetStatusName(@Model.State);}
                 </span>
             </div>
             <small class="text-muted">Ngày đặt: @Model.BuyTime.ToString("dd/MM/yyyy HH:mm")</small>
@@ -78,7 +70,7 @@
                 <div class="col-md-6">
                     <h6 class="fw-bold text-main-CL mb-3"><i class="bi bi-wallet-fill me-2"></i> Thanh Toán & Tổng Kết</h6>
                     <ul class="list-unstyled small">
-                        <li><span class="fw-bold">Hình thức:</span> @Model.PaymentType</li>
+                        <li><span class="fw-bold">Hình thức thanh toán:</span> @Model.PaymentType</li>
                         <li><span class="fw-bold">Phí vận chuyển:</span> <span class="text-success">FREE</span></li>
                         <li class="mt-2 pt-2 border-top">
                             <span class="fw-bold fs-5 text-danger">TỔNG TIỀN:</span>
@@ -115,7 +107,7 @@
                 </a>
 
                 @* Thêm logic hủy đơn nếu trạng thái cho phép (ví dụ: PREPARE) *@
-                @if (Model.State == "PREPARE")
+                @if (Model.State <= 1)
                 {
                     <a href="#" class="btn btn-danger ms-2" onclick="return alert('Chức năng đang được phát triển thêm :))!')">
                         <i class="bi bi-x-circle"></i> Hủy Đơn Hàng

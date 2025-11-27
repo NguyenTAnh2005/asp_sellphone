@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="p-0">
-    @Html.Partial("_StyleCss");
+    @Html.Partial("_StyleCss")
 
     @* KIỂM TRA COOKIE "KEEP LOGIN" ĐỂ PHỤC HỒI SESSION NẾU CÓ *@
     @{
@@ -92,6 +92,15 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageBlogs")"> Quản lý bài viết </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageSales")"> Quản lý giảm giá </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageAccounts")"> Quản lý tài khoản </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageOrder_ViewModel")"> Quản lý hóa đơn  </a>
                                 </li>
                             }
 

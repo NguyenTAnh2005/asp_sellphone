@@ -26,6 +26,7 @@ namespace old_phone.Models
 
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ!")]
         [StringLength(30, ErrorMessage = "Email không được vượt quá 30 ký tự!")]
         public string account_email { get; set; }
 

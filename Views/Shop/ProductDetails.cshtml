@@ -97,15 +97,12 @@
 
         <div class="mb-4">
             <strong>Giới thiệu: </strong>
-            <p></p>
+            <p> @Model.Product.product_desc </p>
         </div>
         <div class="mb-4">
             <strong>Tình trạng máy: </strong>
-            <p></p>
+            <p>@Model.Variant.variant_ph_state</p>
         </div>
-
-        @* Mô tả ngắn *@
-        <p class="text-secondary">@Model.Product.product_desc</p>
 
         @if (Model.StockCount > 0)
         {

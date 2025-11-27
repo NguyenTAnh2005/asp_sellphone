@@ -1,0 +1,142 @@
+﻿@model IEnumerable<old_phone.ViewModels.AdminOrderHeaderViewModel>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 fw-bold border-start border-primary border-5 ps-3">
+            Quản Lý Đơn Hàng
+        </h1>
+    </div>
+
+    <div class="card shadow mb-4 border-0 rounded-3">
+        <div class="card-header py-3 bg-white border-bottom-0 d-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list-ul me-2"></i> Danh Sách Đơn Hàng
+            </h6>
+            <span class="badge bg-primary rounded-pill">@(Model != null ? Model.Count() : 0) đơn</span>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" width="100%" cellspacing="0">
+                    <thead class="bg-light text-uppercase text-secondary text-xs font-weight-bolder">
+                        <tr class="text-center">
+                            <th class="py-3">Mã Đơn</th>
+                            <th class="text-start">Khách Hàng</th>
+                            <th>SĐT Nhận</th>
+                            <th>Ngày Đặt</th>
+                            <th class="text-end pe-4">Tổng Tiền</th>
+                            <th>Trạng Thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center fw-bold text-primary">
+                                        #@item.OrderId
+                                    </td>
+
+                                    <td class="text-start">
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-bold text-dark">@item.CustomerFullName</span>
+                                            @if (string.IsNullOrEmpty(item.CustomerFullName))
+                                            {<span class="text-danger fst-italic">Không xác định</span>}
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark border font-weight-normal">
+                                            @item.RecipientPhoneNumber
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center text-secondary">
+                                        <div class="fw-bold">@item.OrderBuyTime.ToString("dd/MM/yyyy")</div>
+                                        <div class="small">@item.OrderBuyTime.ToString("HH:mm")</div>
+                                    </td>
+
+                                    <td class="text-end pe-4">
+                                        <span class="fw-bold text-danger">@item.OrderTotalPrice.ToString("N0") ₫</span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        @{
+                                            string badgeClass = "bg-secondary";
+                                            string iconClass = "fa-minus";
+
+                                            // Mapping màu sắc dựa trên OrderState (int)
+                                            switch (item.OrderState)
+                                            {
+                                                case 0: // Đang xác nhận
+                                                    badgeClass = "bg-warning text-dark";
+                                                    iconClass = "fa-clock";
+                                                    break;
+                                                case 1: // Đang chuẩn bị
+                                                    badgeClass = "bg-info text-dark";
+                                                    iconClass = "fa-box-open";
+                                                    break;
+                                                case 2: // Đang giao
+                                                    badgeClass = "bg-primary";
+                                                    iconClass = "fa-shipping-fast";
+                                                    break;
+                                                case 3: // Đã giao
+                                                    badgeClass = "bg-success";
+                                                    iconClass = "fa-check-circle";
+                                                    break;
+                                                case 4: // Đã hủy
+                                                    badgeClass = "bg-danger";
+                                                    iconClass = "fa-times-circle";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge @badgeClass rounded-pill px-3 py-2 shadow-sm">
+                                            <i class="fas @iconClass me-1"></i> @item.OrderStateDisplay
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a href="@Url.Action("Details", "ManageOrder_ViewModel", new { id = item.OrderId })" class="btn btn-sm btn-outline-info rounded-circle"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    <i class="fas fa-box-open fa-3x mb-3 text-gray-300"></i>
+                                    <p class="mb-0">Chưa có đơn hàng nào.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white py-3">
+        </div>
+    </div>
+</div>
+
+<style>
+    /* CSS Tinh chỉnh nhỏ */
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .text-sm {
+        font-size: 0.9rem;
+    }
+
+    .text-xs {
+        font-size: 0.75rem;
+    }
+</style>

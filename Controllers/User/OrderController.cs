@@ -84,7 +84,6 @@ namespace old_phone.Controllers.User
         public ActionResult ProcessOrder(OrderViewModel model)
         {
             var acc_id = Convert.ToInt32(Session["acc_id"]);
-
             // Danh sách các món sẽ mua để tạo Detail
             // Dùng một class tạm hoặc tái sử dụng OrderItemViewModel để lưu thông tin cần thiết (ID, Giá, Số lượng)
             var itemsToCheckout = new List<OrderItemViewModel>();
@@ -149,8 +148,8 @@ namespace old_phone.Controllers.User
             newOrder.hotline_id = model.Order_HotlineId;
             newOrder.order_buy_time = DateTime.Now;
             newOrder.order_rec_time = DateTime.Now.AddDays(3);
-            newOrder.order_state = "PREPARE";
-            newOrder.order_type_pay = (model.Order_TypePayment == "1") ? "COD" : "Banking";
+            newOrder.order_state = 0; // mặc định của SQL đã là 0 r nhưng thêm cho chắc
+            newOrder.order_type_pay = model.Order_TypePayment;
             newOrder.order_total_price = (long)itemsToCheckout.Sum(x => x.price * x.count);
 
             db.Order_.Add(newOrder);
@@ -192,63 +191,57 @@ namespace old_phone.Controllers.User
         }
 
         // Xem lịch sử đơn hàng
+        // GET: Order/History
         [AuthorizeCheck]
-        public ActionResult History(string status)
+        public ActionResult History(int? status)
         {
             var acc_id = Convert.ToInt32(Session["acc_id"]);
 
-            // 1. Lấy tất cả đơn hàng của tài khoản hiện tại
+            // 1. Lấy đơn hàng của user
             var ordersQuery = db.Order_
                                 .Where(o => o.account_id == acc_id)
                                 .OrderByDescending(o => o.order_buy_time)
-                                .AsEnumerable(); // Chuyển sang In-memory để dùng Contains lọc trạng thái (nếu cần)
+                                .AsQueryable();
 
-            // 2. Xử lý Lọc theo Trạng thái (status)
-            List<string> filterStatuses = new List<string>();
-
-            // Thiết lập các trạng thái hợp lệ
-            var validStatuses = new List<string> { "PREPARE", "SHIPPING", "SUCCESS", "CANCEL" };
-
-            if (!string.IsNullOrEmpty(status) && status.ToUpper() != "ALL")
+            // 2. Lọc theo trạng thái (Quy ước: -1 là Xem Tất Cả)
+            if (status.HasValue && status.Value != -1)
             {
-                // Chuyển status về dạng chuẩn (in hoa)
-                string upperStatus = status.ToUpper();
-
-                if (validStatuses.Contains(upperStatus))
-                {
-                    ordersQuery = ordersQuery.Where(o => o.order_state == upperStatus);
-                }
+                ordersQuery = ordersQuery.Where(o => o.order_state == status.Value);
             }
 
-            // 3. Mapping dữ liệu sang ViewModel
+            // 3. Mapping dữ liệu sang ViewModel (Giữ nguyên logic cũ của bạn)
             var historyList = new List<OrderHistoryViewModel>();
-
-            foreach (var order in ordersQuery)
+            foreach (var order in ordersQuery.ToList())
             {
-                // Lấy chi tiết đơn hàng (Details)
-                var details = db.Details
-                                .Where(d => d.order_id == order.order_id)
-                                .ToList();
-
-                // Lấy tên 3 sản phẩm đầu tiên
+                var details = db.Details.Where(d => d.order_id == order.order_id).ToList();
                 var itemNames = details.Take(3).Select(d => d.detail_name).ToList();
 
                 historyList.Add(new OrderHistoryViewModel
                 {
                     order_id = order.order_id,
                     order_buy_time = order.order_buy_time,
-                    order_state = order.order_state,
+                    // Lưu ý: ViewModel nên để int, nếu là string thì ép kiểu tạm
+                    order_state = order.order_state.Value,
                     order_total_price = order.order_total_price,
                     order_type_pay = order.order_type_pay,
-
-                    // Lấy thông tin chi tiết
                     ItemNames = itemNames,
                     TotalItemCount = details.Sum(d => d.detail_count)
                 });
             }
 
-            // Truyền trạng thái hiện tại (để View tô màu nút lọc)
-            ViewBag.CurrentStatus = status?.ToUpper() ?? "ALL";
+            // 4. TẠO DANH SÁCH DROPDOWN TRẠNG THÁI (MỚI)
+            var statusItems = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "-1", Text = "--- Tất cả đơn hàng ---" },
+                new SelectListItem { Value = "0", Text = "Đang xác nhận" },
+                new SelectListItem { Value = "1", Text = "Đang chuẩn bị hàng" },
+                new SelectListItem { Value = "2", Text = "Đang giao hàng" },
+                new SelectListItem { Value = "3", Text = "Giao thành công" },
+                new SelectListItem { Value = "4", Text = "Đã hủy" }
+            };
+
+            // Chọn sẵn giá trị đang lọc (nếu null thì chọn -1)
+            ViewBag.StatusList = new SelectList(statusItems, "Value", "Text", status ?? -1);
 
             return View(historyList);
         }
@@ -282,7 +275,7 @@ namespace old_phone.Controllers.User
             {
                 OrderId = order.order_id,
                 BuyTime = order.order_buy_time,
-                State = order.order_state,
+                State = order.order_state.Value,
                 TotalPrice = order.order_total_price,
                 PaymentType = order.order_type_pay,
 
@@ -307,7 +300,5 @@ namespace old_phone.Controllers.User
 
             return View(viewModel);
         }
-
-
     }
 }

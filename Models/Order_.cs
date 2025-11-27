@@ -26,8 +26,8 @@ namespace old_phone.Models
         public System.DateTime order_buy_time { get; set; }
         public System.DateTime order_rec_time { get; set; }
         public string order_type_pay { get; set; }
-        public string order_state { get; set; }
         public long order_total_price { get; set; }
+        public Nullable<int> order_state { get; set; }
     
         public virtual Account Account { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

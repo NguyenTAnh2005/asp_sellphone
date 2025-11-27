@@ -17,9 +17,9 @@ namespace old_phone.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.Order_ = new HashSet<Order_>();
             this.Carts = new HashSet<Cart>();
             this.Hotlines = new HashSet<Hotline>();
+            this.Order_ = new HashSet<Order_>();
         }
     
         public int account_id { get; set; }
@@ -33,12 +33,12 @@ namespace old_phone.Models
         public string RememberMeToken { get; set; }
         public Nullable<System.DateTime> TokenExpiryDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order_> Order_ { get; set; }
         public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Carts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Hotline> Hotlines { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order_> Order_ { get; set; }
     }
 }
