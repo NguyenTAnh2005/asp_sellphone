@@ -34,22 +34,67 @@
             }
         }
     }
-    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 " style="z-index:2">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse px-3 px-lg-0" id="navbarToggler">
                 @Html.ActionLink("Old Phone", "Index", "Shop", new { area = "" }, new { @class = "ms-5 navbar-brand fs-3 fw-semibold" })
-                <ul class="navbar-nav flex-grow-1 d-flex flex-column justify-content-center gap-5 gap-lg-0 flex-lg-row">
+                <ul class="navbar-nav flex-grow-1 d-flex flex-column justify-content-center gap-0 gap-lg-3 flex-lg-row">
                     <li>@Html.ActionLink("Trang chủ", "Index", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Giảm giá", "Sales", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Khuyến mãi ", "Sales", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Điện thoại", "Phones", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Bài viết", "Blogs", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Giỏ hàng", "Index", "Carts", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Sổ địa chỉ", "Index", "Hotlines", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Lịch sử đơn hàng", "History", "Order", new { area = "" }, new { @class = "nav-link" })</li>
-
+                    <li>@Html.ActionLink("Tin tức", "Blogs", "Shop", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (Session["acc_id"] != null)
+                    {
+                        var acc_id = Convert.ToInt32(Session["acc_id"]);
+                        var cartCount = db.Carts.Count(c => c.account_id == acc_id);
+                        var hotlineCount = db.Hotlines.Count(h => h.account_id == acc_id);
+                        var orderCount = db.Order_.Count(o => o.account_id == acc_id);
+                        <li class="nav-item position-relative ms-lg-5 ms-0">
+                            <a href="@Url.Action("Index","Carts")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-cart3 fs-5"></i>
+                                <span class="position-absolute top-25 start-75 badge rounded-pill bg-danger" style="font-size: 0.65rem; margin-left: -10px;">
+                                    @(cartCount > 99 ? "99+" : cartCount.ToString())
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item position-relative">
+                            <a href="@Url.Action("Index","Hotlines")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-house-heart fs-5"></i>
+                                <span class="position-absolute top-25 start-75 badge rounded-pill bg-danger" style="font-size: 0.65rem; margin-left: -10px;">
+                                    @(cartCount > 99 ? "99+" : hotlineCount.ToString())
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item position-relative">
+                            <a href="@Url.Action("History","Order")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-clock-history fs-5"></i>
+                                <span class="position-absolute top-25 start-75 badge rounded-pill bg-danger" style="font-size: 0.65rem; margin-left: -10px;">
+                                    @(orderCount > 99 ? "99+" : orderCount.ToString())
+                                </span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item position-relative ms-lg-5 ms-0">
+                            <a href="@Url.Action("Index","Carts")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-cart3 fs-5"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item position-relative">
+                            <a href="@Url.Action("Index","Hotlines")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-house-heart fs-5"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item position-relative">
+                            <a href="@Url.Action("History","Order")" class="nav-link text-decoration-none text-reset">
+                                <i class="bi bi-clock-history fs-5"></i>
+                            </a>
+                        </li>
+                    }
                 </ul>
                 @* KIỂM TRA SESSION *@
                 @if (Session["account"] == null)
@@ -69,45 +114,28 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
                             <li>
-                                <a class="dropdown-item text-main-CL" href="@Url.Action("AccountProfile", "Account")">
-                                    <i class="bi bi-person me-2"></i>Tài khoản
+                                <a class="dropdown-item fw-bold text-primary" href="@Url.Action("AccountProfile", "Account")">
+                                    <i class="bi bi-person me-2 text-primary"></i>Thông tin tài khoản
                                 </a>
                             </li>
                             @if (role == 2)
                             {
                                 <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageCompanies")"> Quản lý hãng </a>
+                                    <a class="dropdown-item fw-bold text-success" href="@Url.Action("Index", "Dashboard")">
+                                        <i class="bi bi-speedometer2 me-2 text-success"></i>Dashboard Thống Kê
+                                    </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageProducts")"> Quản lý sản phẩm </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageProduct_Image")"> Quản lý ảnh sản phẩm </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManagePhones")"> Quản lý điện thoại </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageVariant_Phone")"> Quản lý biến thể điện thoại </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageBlogs")"> Quản lý bài viết </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageSales")"> Quản lý giảm giá </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageAccounts")"> Quản lý tài khoản </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-main-CL " href="@Url.Action("Index", "ManageOrder_ViewModel")"> Quản lý hóa đơn  </a>
+                                    <a class="dropdown-item fw-bold text-warning" href="@Url.Action("ManageOptionView", "Shop")">
+                                        <i class="bi bi-box-seam me-2 text-warning"></i>Quản lý
+                                    </a>
                                 </li>
                             }
 
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger fw-bold" href="@Url.Action("Logout", "Account")">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                    <i class="bi bi-box-arrow-right text-danger me-2"></i>Đăng xuất
                                 </a>
                             </li>
                         </ul>

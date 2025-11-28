@@ -7,7 +7,7 @@
 @* --- PHẦN 1: BANNER VÀ GIỚI THIỆU (Phần Tĩnh) --- *@
 <div class="row d-flex justify-content-evenly align-items-center mb-4 mt-4">
     @* SLide Banner *@
-    <div class="col-10 col-xl-7 animate__animated animate__zoomIn">
+    <div class="col-10 col-xl-7 animate__animated animate__fadeInUp">
         <div class="border border-3 border-light rounded-4 overflow-hidden shadow-sm">
             <div class="carousel slide" id="index_banner" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -30,7 +30,7 @@
     </div>
 
     @* GT WEB *@
-    <div class="col-12 col-xl-4 mt-3 mt-xl-0 d-flex justify-content-center align-items-center animate__animated animate__zoomIn">
+    <div class="col-12 col-xl-4 mt-3 mt-xl-0 d-flex justify-content-center align-items-center animate__animated animate__fadeInUp">
         <div class="card border-2 main-border rounded-4 shadow-sm h-100">
             <div class="card-body text-center">
                 <i class="bi bi-emoji-smile-fill text-warning display-1 mb-3"></i>
@@ -41,99 +41,110 @@
     </div>
 </div>
 
-@* --- PHẦN 2: HOT SALE (Dữ liệu động từ Model.HotSales) --- *@
-<div class="container-fluid mt-5 px-0 px-xl-2 border-danger rounded-5 animate__animated animate__zoomIn">
-    <div class="text-center text-uppercase">
-        <span class="fs-2 fw-semibold text-main-CL"><i class="bi bi-fire me-2"></i>Giảm giá sốc</span>
-    </div>
+@* --- PHẦN 2: HOT SALE --- *@
+<div class="bg-danger bg-opacity-10 py-5 my-5">
+    <div class="container animate__animated animate__fadeInUp">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-danger text-uppercase section-title">
+                <i class="bi bi-fire me-2"></i>Khuyến Mãi Cực Sốc
+            </h2>
+            <p class="text-muted mt-2">Săn deal hời - Giá tốt nhất thị trường</p>
+        </div>
 
-    <div class="card container-fluid main-border border-2 rounded-bottom-5 rounded-top-0 bg-light">
-        <div class="px-2 py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-5 g-md-3 px-5 px-sm-0">
-            @if (Model.HotSales != null)
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 g-4 justify-content-center">
+            @if (Model.HotSales != null && Model.HotSales.Any())
             {
                 foreach (var item in Model.HotSales)
                 {
-                    @Html.Partial("_SaleCard", item);
+                    <div class="col hover-lift">
+                        @Html.Partial("_SaleCard", item)
+                    </div>
                 }
             }
             else
             {
-                <div class="col-12 text-center py-5">
-                    <p class="text-muted">Chưa có sản phẩm khuyến mãi nào.</p>
+                <div class="col-12 text-center py-4">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="100" class="mb-3 opacity-50" />
+                    <p class="text-muted">Chương trình khuyến mãi đang được cập nhật.</p>
                 </div>
             }
-
         </div>
-        <div class="text-center py-3">
-            <a href="@Url.Action("Sales", "Shop", new { filter = "sale" })" class="btn btn-outline-primary rounded-pill px-4">
-                Xem tất cả Sale <i class="bi bi-arrow-right"></i>
+
+        <div class="text-center mt-5">
+            <a href="@Url.Action("Sales", "Shop", new { filter = "sale" })" class="btn btn-outline-danger rounded-pill px-5 py-2 fw-bold">
+                Xem tất cả Deal <i class="bi bi-arrow-right-short fs-5 align-middle"></i>
             </a>
         </div>
     </div>
 </div>
 
-@* --- PHẦN 3: SẢN PHẨM NỔI BẬT (Dữ liệu động từ Model.FeaturedPhones) --- *@
-<div class="container-fluid mt-5 px-0 px-xl-2 main-border rounded-5 animate__animated animate__zoomIn">
-    <div class="row main-bg-color g-0 text-light rounded-top-5">
-        <div class="col text-center text-capitalize">
-            <span class="fs-2 fw-semibold ms-4 text-main-CL">
-                <i class="bi bi-star-fill me-2 text-main-CL"></i>
-                SẢN PHẨM NỔI BẬT
-            </span>
+@* --- PHẦN 3: SẢN PHẨM NỔI BẬT --- *@
+<div class="container py-4 mb-5 animate__animated animate__fadeInUp">
+    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
+        <div>
+            <h2 class="fw-bold text-primary mb-0">
+                <i class="bi bi-star-fill text-warning me-2"></i>Sản Phẩm Nổi Bật
+            </h2>
+            <small class="text-muted">Những mẫu điện thoại được săn đón nhiều nhất</small>
         </div>
     </div>
 
-    <div class="card container-fluid main-border border-2 rounded-bottom-5 rounded-top-0 bg-light">
-        <div class="px-2 py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-5 g-md-3 px-5 px-sm-0">
-
-            @if (Model.FeaturedPhones != null && Model.FeaturedPhones.Any())
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+        @if (Model.FeaturedPhones != null && Model.FeaturedPhones.Any())
+        {
+            foreach (var item in Model.FeaturedPhones)
             {
-                foreach (var item in Model.FeaturedPhones)
-                {
-                    @Html.Partial("_VariantCard", item);
-                }
-            }
-            else
-            {
-                <div class="col-12 text-center py-5">
-                    <p class="text-muted">Đang cập nhật sản phẩm...</p>
+                <div class="col hover-lift">
+                    @Html.Partial("_VariantCard", item)
                 </div>
             }
-        </div>
-        <div class="text-center py-3">
-            <a href="@Url.Action("Phones", "Shop")" class="btn btn-outline-primary rounded-pill px-4">
-                Xem kho máy <i class="bi bi-phone"></i>
-            </a>
-        </div>
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Đang cập nhật sản phẩm...</p>
+            </div>
+        }
+    </div>
+
+    <div class="text-center py-3">
+        <a href="@Url.Action("Phones", "Shop")" class="btn btn-outline-primary rounded-pill px-4">
+            Xem kho máy <i class="bi bi-phone"></i>
+        </a>
     </div>
 </div>
 
-@* --- PHẦN 4: BLOG (Dữ liệu động từ Model.Blogs) --- *@
-<div class="container-fluid mt-5 px-0 px-xl-3 main-border rounded-5 animate__animated animate__zoomIn mb-5">
-    <div class="row main-bg-color g-0 text-light rounded-top-5">
-        <div class="col text-center text-capitalize">
-            <span class="fs-2 fw-semibold ms-4 text-main-CL">
-                <i class="bi bi-newspaper me-2"></i>TIN TỨC CÔNG NGHỆ
-            </span>
+@* --- PHẦN 4: BLOG / TIN TỨC --- *@
+<div class="bg-light py-5">
+    <div class="container animate__animated animate__fadeInUp">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark text-uppercase section-title">
+                <i class="bi bi-newspaper me-2"></i>Tin Tức Công Nghệ
+            </h2>
         </div>
-    </div>
-    <div class="card main-border border-2 rounded-bottom-5 rounded-top-0">
-        <div class="px-2 py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
 
+        <div class="row g-4">
             @if (Model.Blogs != null && Model.Blogs.Any())
             {
-                foreach (var blog in Model.Blogs) { @Html.Partial("_ArticleCard", blog); }
+                foreach (var blog in Model.Blogs)
+                {
+                    // Giả sử _ArticleCard dùng col bên trong hoặc ta bọc ngoài
+                    <div class="col-md-6 col-lg-4 col-xl-3 hover-lift">
+                        @Html.Partial("_ArticleCard", blog)
+                    </div>
+                }
             }
             else
             {
-                <div class="col-12 text-center py-5">
-                    <p class="text-muted">Chưa có bài viết nào.</p>
+                <div class="col-12 text-center text-muted">
+                    Chưa có bài viết nào mới.
                 </div>
             }
         </div>
-        <div class="text-center py-3">
-            <a href="@Url.Action("Blogs", "Shop")" class="btn btn-outline-primary rounded-pill px-4">
-                Đọc thêm tin tức <i class="bi bi-arrow-right"></i>
+
+        <div class="text-center mt-5">
+            <a href="@Url.Action("Blogs", "Shop")" class="btn btn-dark rounded-pill px-5 py-2">
+                Đọc thêm tin tức <i class="bi bi-book ms-2"></i>
             </a>
         </div>
     </div>

@@ -292,11 +292,36 @@ namespace old_phone.Controllers.User
                     UnitPrice = d.detail_total_price,
                     // Lấy URL ảnh từ bảng Variant_Phone (cần JOIN hoặc SELECT riêng)
                     // Giả định Detail có variant_id, ta query ảnh từ Variant_Phone
-                    ImageUrl = db.Variant_Phone.FirstOrDefault(v => v.variant_id == d.variant_id)?.variant_ph_img
-                               // Nếu không tìm thấy ảnh, dùng ảnh placeholder
-                               ?? "/Content/images/placeholder.png"
-                }).ToList()
+                    ImageUrl = db.Variant_Phone.FirstOrDefault(v => v.variant_id == d.variant_id).variant_ph_img}).ToList()
             };
+            // --- LOGIC MỚI: Xử lý trạng thái ---
+            switch (viewModel.State)
+            {
+                case 0:
+                    viewModel.StateName = "Đang Chờ Xác Nhận";
+                    viewModel.StateClass = "text-warning"; // Màu vàng
+                    break;
+                case 1:
+                    viewModel.StateName = "Đang Chuẩn Bị Hàng";
+                    viewModel.StateClass = "text-info"; // Màu xanh dương nhạt
+                    break;
+                case 2:
+                    viewModel.StateName = "Đang Giao Hàng";
+                    viewModel.StateClass = "text-primary"; // Màu xanh dương đậm
+                    break;
+                case 3:
+                    viewModel.StateName = "Giao Thành Công";
+                    viewModel.StateClass = "text-success"; // Màu xanh lá
+                    break;
+                case 4:
+                    viewModel.StateName = "Đã Hủy";
+                    viewModel.StateClass = "text-danger"; // Màu đỏ
+                    break;
+                default:
+                    viewModel.StateName = "Không Xác Định";
+                    viewModel.StateClass = "text-secondary";
+                    break;
+            }
 
             return View(viewModel);
         }

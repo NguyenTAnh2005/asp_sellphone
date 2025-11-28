@@ -1,14 +1,15 @@
 ﻿using old_phone.Common;
 using old_phone.Models;
 using old_phone.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
-
 
 namespace old_phone.Controllers.Manage
 {
@@ -17,17 +18,44 @@ namespace old_phone.Controllers.Manage
         private OldPhoneEntities db = new OldPhoneEntities();
 
         // GET: Manage/ManageOrder_
-        public ActionResult Index()
+        [AuthorizeCheck(RequiredRole = 2)] 
+        public ActionResult Index(int? order_State,DateTime? date,int?page)
         {
-            // Truy vấn DL Order có  kèm hotline và account 
-            var ordersAll = db.Order_
+            // 1. Khởi tạo truy vấn (Chưa chạy SQL ngay)
+            var ordersQuery = db.Order_
                 .Include(o => o.Hotline)
                 .Include(o => o.Account)
-                .OrderByDescending(o => o.order_buy_time)
-                .ToList();
+                .AsQueryable(); // Quan trọng: Giữ IQueryable để lọc SQL
+
+            // 2. Lọc theo trạng thái (Nếu có chọn)
+            if (order_State.HasValue && order_State.Value != -1) // Giả sử -1 là "Tất cả"
+            {
+                ordersQuery = ordersQuery.Where(o => o.order_state == order_State.Value);
+            }
+
+            // 3. Lọc theo ngày (Nếu có chọn)
+            if (date.HasValue)
+            {
+                // QUAN TRỌNG: Tách giá trị ngày ra biến riêng bên ngoài
+                // Để EF hiểu đây là một giá trị hằng số (Parameter), không phải lệnh SQL
+                var filterDate = date.Value.Date;
+
+                // Sử dụng DbFunctions.TruncateTime để cắt giờ trong Database và so sánh
+                ordersQuery = ordersQuery.Where(o => DbFunctions.TruncateTime(o.order_buy_time) == filterDate);
+            }
+
+
+            // 4. Sắp xếp (Mới nhất lên đầu)
+            ordersQuery = ordersQuery.OrderByDescending(o => o.order_buy_time);
+
+            // 5. Mapping sang ViewModel
+            // Lưu ý: Phải ToList() ở đây để lấy dữ liệu về RAM rồi mới foreach tạo ViewModel
+            // (Vì AdminOrderHeaderViewModel không phải Entity nên không dùng .Select trực tiếp được dễ dàng)
+            var ordersAll = ordersQuery.ToList();
+            var viewModels = new List<AdminOrderHeaderViewModel>();
+
             // Chuyển từ Order_ sang ViewModel AdminOrderHeaderViewModel - item
             // được show trong  danh sách đơn hàng 
-            var viewModels = new List<AdminOrderHeaderViewModel>();
 
             foreach (var order in ordersAll)
             {
@@ -36,9 +64,10 @@ namespace old_phone.Controllers.Manage
                 vm.OrderBuyTime = order.order_buy_time;
                 vm.OrderTotalPrice = order.order_total_price;
                 vm.OrderState = order.order_state ?? 0;
+                vm.CustomerId = order.account_id.Value;
                 if (order.Account != null)
                 {
-                    vm.CustomerFullName = order.Account.account_last_name + " " + order.Account.account_last_name;
+                    vm.CustomerFullName = order.Account.account_last_name + " " + order.Account.account_first_name;
                 }
                 else
                 {
@@ -64,11 +93,33 @@ namespace old_phone.Controllers.Manage
 
                 viewModels.Add(vm);
             }
+            // 6. Phân trang cho List ViewModel
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
 
-            return View(viewModels);
+            // Lưu ViewBag để giữ giá trị bộ lọc trên View
+            ViewBag.CurrentFilterState = order_State;
+            // Format ngày yyyy-MM-dd để input type="date" hiển thị đúng
+            ViewBag.CurrentFilterDate = date.HasValue ? date.Value.ToString("yyyy-MM-dd") : "";
+
+            // Tạo Dropdown trạng thái
+            var statusItems = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "-1", Text = "--- Tất cả trạng thái ---" },
+                new SelectListItem { Value = "0", Text = "Đang xác nhận" },
+                new SelectListItem { Value = "1", Text = "Đang chuẩn bị" },
+                new SelectListItem { Value = "2", Text = "Đang giao hàng" },
+                new SelectListItem { Value = "3", Text = "Giao thành công" },
+                new SelectListItem { Value = "4", Text = "Đã hủy" }
+            };
+            ViewBag.StatusList = new SelectList(statusItems, "Value", "Text", order_State ?? -1);
+
+            // Trả về PagedList
+            return View(viewModels.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ManageOrder_/Details/5
+        [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Details(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -156,5 +207,68 @@ namespace old_phone.Controllers.Manage
             }
             return View(model);
         }
+
+        // POST: Cập nhật trạng thái đơn hàng từ trang Details
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeCheck(RequiredRole = 2)] 
+        public ActionResult UpdateStatus(int OrderId, int SelectedStatus)
+        {
+            // 1. Tìm đơn hàng theo ID
+            var order = db.Order_.Find(OrderId);
+
+            if (order != null)
+            {
+                // 2. Cập nhật trạng thái mới
+                order.order_state = SelectedStatus;
+
+                // 3. Logic phụ: Nếu trạng thái là "Giao thành công" (3) -> Cập nhật ngày nhận hàng thực tế
+                if (SelectedStatus == 3)
+                {
+                    order.order_rec_time = DateTime.Now;
+                }
+
+                // 4. Lưu vào Database
+                db.SaveChanges();
+
+                // 5. Thông báo thành công (dùng TempData để hiển thị ở trang Details sau khi redirect)
+                TempData["Message"] = "Cập nhật trạng thái đơn hàng thành công!";
+                TempData["MsgType"] = "success";
+
+                var account_email = db.Accounts.Find(order.account_id)?.account_email;
+                if (account_email != null)
+                {
+                    // Gửi email thông báo cho khách hàng về việc cập nhật trạng thái đơn hàng
+                    var account = db.Accounts.Find(order.account_id);
+                    var account_full_name = account.account_last_name + " " + account.account_first_name;
+                    string subject = "[Old Phone]Cập nhật trạng thái đơn hàng của bạn";
+                    string body = $"Chào {account_full_name},<br/><br/>" +
+                                      $"Đơn hàng có mã số <b style='color:red; font-size:18px;'>#{OrderId}</b>  của bạn đã được cập nhật trạng thái mới:<br/><br/>" +
+                                      "<b style='color:lime; font-size:14px;'>";
+                    switch (SelectedStatus)
+                    {
+                        case 0: body += "Đang xác nhận</b>"; break;
+                        case 1: body += "Đang chuẩn bị</b>"; break;
+                        case 2: body += "Đang giao hàng</b>"; break;
+                        case 3: body += "Giao thành công</b>"; break;
+                        case 4: body += "Đã hủy</b>"; break;
+                        default: body += "Không xác định</b>"; break;
+                    }
+                    body += "<br/><br/>Bạn có thể kiểm tra lại trên trang web";
+                    body += "<br/><br/>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!";
+
+                    MailHelper.SendEmail(account_email, subject, body);
+                }
+            }
+            else
+            {
+                TempData["Message"] = "Không tìm thấy đơn hàng!";
+                TempData["MsgType"] = "error";
+            }
+
+            // 6. Quay lại trang chi tiết của đơn hàng đó
+            return RedirectToAction("Index");
+        }
+
     }
 }

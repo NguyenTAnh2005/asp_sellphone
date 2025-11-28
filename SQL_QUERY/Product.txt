@@ -1,0 +1,131 @@
+INSERT INTO Product (company_id, product_name, product_desc)
+VALUES
+(1, N'Iphone X', N''),
+(1, N'Iphone XS', N''),
+(1, N'Iphone 11', N''),
+(1, N'Iphone 11 promax', N''),
+(1, N'Iphone 12', N''),
+(1, N'Iphone 12 promax', N''),
+(1, N'Iphone 13', N''),
+(1, N'Iphone 13 promax', N''),
+(1, N'Iphone 14', N''),
+(1, N'Iphone 14 promax', N''),
+(2, N'Galaxy S23 Ultra', N''),
+(2, N'Galaxy S23', N''),
+(2, N'Galaxy Z Flip 4', N''),
+(2, N'Galaxy A73', N''),
+(2, N'Galaxy A53', N''),
+(2, N'Galaxy S22', N''),
+(2, N'Galaxy S21', N''),
+(2, N'Galaxy M55', N''),
+(2, N'Galaxy A35', N''),
+(3, N'OPPO Reno10 Pro', N''),
+(3, N'OPPO A74', N''),
+(3, N'OPPO Reno8 Pro', N''),
+(3, N'OPPO Reno8', N''),
+(3, N'OPPO Reno7 Pro', N''),
+(3, N'OPPO Reno7', N''),
+(3, N'OPPO Reno10 Pro', N''),
+(4, N'Nubia RedMagic 8S Pro', N''),
+(4, N'Nubia RedMagic 7 Obsidian', N''),
+(5, N'Vivo Y28', N''),
+(5, N'Vivo V30E', N''),
+(5, N'Vivo V23 Pro', N''),
+(5, N'Vivo V25 Pro', N''),
+(5, N'Vivo X50 Pro', N''),
+(5, N'Vivo X60', N''),
+(5, N'Vivo X60 Pro', N''),
+(5, N'Vivo X70', N''),
+(5, N'Vivo X70 Pro', N''),
+(6, N'Realme 7', N''),
+(6, N'Realme 8', N''),
+(6, N'Realme 8 Pro', N''),
+(6, N'Realme 9', N''),
+(6, N'Realme 9 Pro', N''),
+(6, N'Realme GT', N''),
+(6, N'Realme GT Master Edition', N''),
+(6, N'Realme GT Neo 2', N''),
+(6, N'Realme C25', N''),
+(6, N'Realme C35', N''),
+(7, N'Xiaomi Mi 10', N''),
+(7, N'Xiaomi Mi 10T Pro', N''),
+(7, N'Xiaomi Mi 11', N''),
+(7, N'Xiaomi Mi 11 Ultra', N''),
+(7, N'Xiaomi 12', N''),
+(7, N'Xiaomi 12 Pro', N''),
+(7, N'Redmi Note 10', N''),
+(7, N'Redmi Note 11', N''),
+(7, N'Redmi Note 11 Pro', N''),
+(7, N'Redmi K40', N'');
+
+
+-- Cập nhật mô tả chi tiết cho APPLE
+UPDATE Product SET product_desc = N'iPhone X mang tính đột phá với thiết kế tai thỏ, loại bỏ nút Home vật lý. Sở hữu màn hình OLED 5.8 inch sắc nét, chip A11 Bionic mạnh mẽ và Face ID bảo mật cao cấp.' WHERE product_name = N'Iphone X';
+UPDATE Product SET product_desc = N'Phiên bản nâng cấp của iPhone X với hiệu năng vượt trội nhờ chip A12 Bionic. Màn hình Super Retina OLED hiển thị HDR sống động, khả năng chống nước chuẩn IP68.' WHERE product_name = N'Iphone XS';
+UPDATE Product SET product_desc = N'Sự lựa chọn hoàn hảo với nhiều màu sắc trẻ trung. Chip A13 Bionic cân mọi tác vụ, cụm camera kép chụp đêm ấn tượng và thời lượng pin trâu bò.' WHERE product_name = N'Iphone 11';
+UPDATE Product SET product_desc = N'Đẳng cấp Pro với cụm 3 camera sau linh hoạt, màn hình Super Retina XDR lớn. Chip A13 tối ưu hóa hiệu năng và pin, mang lại trải nghiệm đỉnh cao.' WHERE product_name = N'Iphone 11 promax';
+UPDATE Product SET product_desc = N'Thiết kế vuông vức hoài cổ nhưng hiện đại. Màn hình OLED rực rỡ, hỗ trợ kết nối 5G siêu tốc và chip A14 Bionic mạnh mẽ hàng đầu.' WHERE product_name = N'Iphone 12';
+UPDATE Product SET product_desc = N'Chiếc iPhone có màn hình lớn nhất dòng 12 series. Hệ thống camera chuyên nghiệp với cảm biến lớn hơn, chụp thiếu sáng đỉnh cao cùng công nghệ 5G.' WHERE product_name = N'Iphone 12 promax';
+UPDATE Product SET product_desc = N'Nâng cấp hoàn hảo về camera với cảm biến đặt chéo và chế độ Cinematic Mode. Chip A15 Bionic tiết kiệm điện năng, notch tai thỏ nhỏ gọn hơn.' WHERE product_name = N'Iphone 13';
+UPDATE Product SET product_desc = N'Trải nghiệm mượt mà chưa từng có với màn hình ProMotion 120Hz. Pin siêu trâu, camera chụp macro ấn tượng và hiệu năng A15 không đối thủ.' WHERE product_name = N'Iphone 13 promax';
+UPDATE Product SET product_desc = N'Tiếp nối thành công với các tính năng an toàn mới như phát hiện va chạm. Camera được cải tiến khả năng chụp thiếu sáng và quay video chống rung Action Mode.' WHERE product_name = N'Iphone 14';
+UPDATE Product SET product_desc = N'Đột phá với Dynamic Island thay thế tai thỏ. Camera chính 48MP siêu nét, màn hình Always-on Display và chip A16 Bionic mạnh mẽ nhất thế giới smartphone.' WHERE product_name = N'Iphone 14 promax';
+
+-- Cập nhật mô tả chi tiết cho SAMSUNG
+UPDATE Product SET product_desc = N'Siêu phẩm Android với bút S Pen quyền năng tích hợp. Camera "mắt thần" 200MP zoom 100x, chip Snapdragon 8 Gen 2 for Galaxy tối ưu riêng biệt.' WHERE product_name = N'Galaxy S23 Ultra';
+UPDATE Product SET product_desc = N'Thiết kế nhỏ gọn, tinh tế nhưng đầy sức mạnh. Màn hình 120Hz mượt mà, camera chụp đêm Nightography xuất sắc và hiệu năng hàng đầu.' WHERE product_name = N'Galaxy S23';
+UPDATE Product SET product_desc = N'Biểu tượng thời trang công nghệ với thiết kế gập vỏ sò độc đáo. Màn hình phụ tiện lợi, nếp gấp mờ hơn và khả năng quay chụp linh hoạt Flex Cam.' WHERE product_name = N'Galaxy Z Flip 4';
+UPDATE Product SET product_desc = N'Dẫn đầu phân khúc tầm trung với camera 108MP sắc nét. Màn hình lớn 120Hz giải trí cực đã cùng khả năng kháng nước bụi chuẩn IP67.' WHERE product_name = N'Galaxy A73';
+UPDATE Product SET product_desc = N'Chiến binh Galaxy A toàn năng với thiết kế trẻ trung. Camera chống rung OIS, màn hình Super AMOLED 120Hz và viên pin 5000mAh dùng cả ngày dài.' WHERE product_name = N'Galaxy A53';
+UPDATE Product SET product_desc = N'Flagship nhỏ gọn với thiết kế Contour Cut đặc trưng. Camera chụp đêm Nightography ấn tượng, khung viền Armor Aluminum bền bỉ.' WHERE product_name = N'Galaxy S22';
+UPDATE Product SET product_desc = N'Thiết kế đột phá với cụm camera liền mạch. Màn hình 120Hz thích ứng, quay video 8K chuẩn điện ảnh và hiệu năng Exynos mạnh mẽ.' WHERE product_name = N'Galaxy S21';
+UPDATE Product SET product_desc = N'Mãnh thú pin trâu 5000mAh cùng khả năng sạc nhanh 45W. Thiết kế mỏng nhẹ bất ngờ, màn hình lớn rực rỡ phục vụ giải trí đa phương tiện.' WHERE product_name = N'Galaxy M55';
+UPDATE Product SET product_desc = N'Thiết kế Key Island mới lạ, mặt lưng kính sang trọng. Màn hình Super AMOLED 120Hz, bảo mật Samsung Knox Vault và chuẩn kháng nước IP67.' WHERE product_name = N'Galaxy A35';
+
+-- Cập nhật mô tả chi tiết cho OPPO
+UPDATE Product SET product_desc = N'Chuyên gia chân dung thế hệ thứ 10 với camera tele chụp xóa phông chuẩn DSLR. Thiết kế cong 3D sang trọng, sạc siêu nhanh SuperVOOC 80W.' WHERE product_name = N'OPPO Reno10 Pro';
+UPDATE Product SET product_desc = N'Smartphone tầm trung cân bằng mọi yếu tố. Màn hình AMOLED sắc nét, pin 5000mAh bền bỉ và thiết kế mỏng nhẹ cầm nắm thoải mái.' WHERE product_name = N'OPPO A74';
+UPDATE Product SET product_desc = N'Sở hữu NPU MariSilicon X chuyên xử lý hình ảnh ban đêm. Thiết kế nguyên khối Streamlined Unibody độc bản và màn hình 120Hz sống động.' WHERE product_name = N'OPPO Reno8 Pro';
+UPDATE Product SET product_desc = N'Thiết kế vuông vức thời thượng với mặt lưng OPPO Glow. Camera cảm biến Sony IMX766 chụp đêm tốt, sạc nhanh 80W an toàn.' WHERE product_name = N'OPPO Reno8';
+UPDATE Product SET product_desc = N'Thiết kế mặt lưng sao băng với viền sáng kép độc đáo. Camera chân dung chất lượng cao và hiệu năng ổn định cho mọi tác vụ.' WHERE product_name = N'OPPO Reno7 Pro';
+UPDATE Product SET product_desc = N'Phong cách cổ điển với mặt lưng da sợi thủy tinh. Viền đèn Orbit Light thông báo thú vị, camera microscope soi vi sinh vật độc đáo.' WHERE product_name = N'OPPO Reno7';
+UPDATE Product SET product_desc = N'Phiên bản đặc biệt với hiệu năng nâng cấp từ chip Dimensity 8200. Màn hình cong tràn viền 120Hz và khả năng nhiếp ảnh chân dung đỉnh cao.' WHERE product_name = N'OPPO Reno10 Pro (bản khác)';
+
+-- Cập nhật mô tả chi tiết cho NUBIA
+UPDATE Product SET product_desc = N'Quái vật gaming đích thực với thiết kế hầm hố. Tích hợp quạt tản nhiệt RGB, phím trigger cảm ứng và màn hình full-view không khuyết điểm.' WHERE product_name = N'Nubia RedMagic 8S Pro';
+UPDATE Product SET product_desc = N'Trải nghiệm game mượt mà nhất với màn hình tần số quét 165Hz. Hệ thống làm mát đa chiều ICE 8.0 giúp máy luôn mát mẻ trong các trận chiến.' WHERE product_name = N'Nubia RedMagic 7 Obsidian';
+
+-- Cập nhật mô tả chi tiết cho VIVO
+UPDATE Product SET product_desc = N'Thiết kế trendy với màu sắc bắt mắt. Pin khủng 6000mAh, sạc nhanh 44W và loa kép âm lượng 300% cho trải nghiệm giải trí bất tận.' WHERE product_name = N'Vivo Y28';
+UPDATE Product SET product_desc = N'Nổi bật với vòng sáng Aura Light tùy chỉnh nhiệt độ màu. Chụp chân dung studio ngay tại nhà, thiết kế siêu mỏng nhẹ đầy cuốn hút.' WHERE product_name = N'Vivo V30E';
+UPDATE Product SET product_desc = N'Mặt lưng kính đổi màu UV độc đáo. Camera selfie kép 50MP tự động lấy nét mắt, quay vlog chuyên nghiệp và thiết kế cong 3D mềm mại.' WHERE product_name = N'Vivo V23 Pro';
+UPDATE Product SET product_desc = N'Chuyên gia nhiếp ảnh đêm với cảm biến siêu nhạy sáng. Thiết kế kính Flourite AG đổi màu, hiệu năng mượt mà với Ram mở rộng.' WHERE product_name = N'Vivo V25 Pro';
+UPDATE Product SET product_desc = N'Tiên phong công nghệ chống rung Gimbal Camera. Quay video siêu ổn định như dùng thiết bị chuyên nghiệp, chụp trăng Supermoon rõ nét.' WHERE product_name = N'Vivo X50 Pro';
+UPDATE Product SET product_desc = N'Hợp tác cùng ZEISS nâng tầm nhiếp ảnh di động. Giả lập hiệu ứng bokeh xoáy Biotar kinh điển, hiệu năng mạnh mẽ với Snapdragon 870.' WHERE product_name = N'Vivo X60';
+UPDATE Product SET product_desc = N'Phiên bản cao cấp với hệ thống chống rung Gimbal 2.0. Chất lượng thấu kính ZEISS giúp giảm lóa, tăng độ trong trẻo cho bức ảnh.' WHERE product_name = N'Vivo X60 Pro';
+UPDATE Product SET product_desc = N'Lớp phủ ZEISS T* giúp kiểm soát ánh sáng hoàn hảo. Thiết kế cụm camera "Thung lũng mây" độc đáo và sang trọng.' WHERE product_name = N'Vivo X70';
+UPDATE Product SET product_desc = N'Đỉnh cao nhiếp ảnh với 4 camera chuyên dụng. Chip hình ảnh V1 tự phát triển xử lý ảnh đêm siêu tốc, chống rung 360 độ.' WHERE product_name = N'Vivo X70 Pro';
+
+-- Cập nhật mô tả chi tiết cho REALME
+UPDATE Product SET product_desc = N'Smartphone gaming giá rẻ với màn hình 90Hz mượt mà. Hệ thống làm mát bằng sợi carbon, pin 5000mAh và sạc nhanh Dart 30W.' WHERE product_name = N'Realme 7';
+UPDATE Product SET product_desc = N'Thiết kế mỏng nhẹ đậm chất tương lai. Màn hình Super AMOLED rực rỡ, camera 64MP AI và hiệu năng chiến game ổn định.' WHERE product_name = N'Realme 8';
+UPDATE Product SET product_desc = N'Bứt phá nhiếp ảnh với camera 108MP cảm biến Samsung HM2. Chế độ quay video Tilt-shift thú vị và sạc siêu nhanh 50W.' WHERE product_name = N'Realme 8 Pro';
+UPDATE Product SET product_desc = N'Thiết kế Ripple Holographic đổi màu theo ánh sáng. Camera 108MP ProLight thu sáng tốt hơn, màn hình 90Hz mượt mà.' WHERE product_name = N'Realme 9';
+UPDATE Product SET product_desc = N'Hiệu ứng chuyển màu Light Shift độc đáo. Camera cảm biến Sony IMX766 cao cấp, hiệu năng 5G mạnh mẽ và hệ thống làm mát buồng hơi.' WHERE product_name = N'Realme 9 Pro';
+UPDATE Product SET product_desc = N'Flagship Killer với chip Snapdragon 888 đầu bảng giá tốt. Thiết kế lấy cảm hứng từ xe đua GT, màn hình 120Hz siêu mượt.' WHERE product_name = N'Realme GT';
+UPDATE Product SET product_desc = N'Thiết kế vali độc bản từ Naoto Fukasawa. Màn hình Samsung AMOLED 120Hz, chip Snapdragon 778G 5G cân bằng hiệu năng và nhiệt độ.' WHERE product_name = N'Realme GT Master Edition';
+UPDATE Product SET product_desc = N'Gaming phone hoàn hảo với tản nhiệt kim cương. Chip Snapdragon 870 ổn định, loa kép Dolby Atmos và pin 5000mAh sạc nhanh 65W.' WHERE product_name = N'Realme GT Neo 2';
+UPDATE Product SET product_desc = N'Vua pin 6000mAh trong phân khúc giá rẻ. Đạt chứng nhận độ bền TÜV Rheinland, camera 48MP AI chụp ảnh sắc nét.' WHERE product_name = N'Realme C25';
+UPDATE Product SET product_desc = N'Thiết kế vuông vức phát sáng thời thượng nhất dòng C. Màn hình lớn FHD+, pin trâu 5000mAh và camera 50MP chất lượng.' WHERE product_name = N'Realme C35';
+
+-- Cập nhật mô tả chi tiết cho XIAOMI
+UPDATE Product SET product_desc = N'Kỷ nguyên 108MP bắt đầu với khả năng quay video 8K. Loa kép Harman Kardon âm thanh vòm, màn hình cong 90Hz tràn viền.' WHERE product_name = N'Xiaomi Mi 10';
+UPDATE Product SET product_desc = N'Màn hình tần số quét thích ứng 144Hz siêu mượt. Camera 108MP hỗ trợ nhiều chế độ phơi sáng sáng tạo, hiệu năng Snapdragon 865.' WHERE product_name = N'Xiaomi Mi 10T Pro';
+UPDATE Product SET product_desc = N'Tuyệt tác màn hình cong tứ diện 2K+ 120Hz. Chip Snapdragon 888 đầu tiên thế giới, âm thanh Harman Kardon và camera quay phim điện ảnh.' WHERE product_name = N'Xiaomi Mi 11';
+UPDATE Product SET product_desc = N'Đỉnh cao công nghệ với màn hình phụ phía sau độc đáo. Cảm biến camera siêu lớn gần 1 inch, zoom 120x và kháng nước IP68.' WHERE product_name = N'Xiaomi Mi 11 Ultra';
+UPDATE Product SET product_desc = N'Flagship nhỏ gọn cầm nắm vừa tay. Màn hình 12 cấp độ màu, chip Snapdragon 8 Gen 1 và khả năng chụp chuyển động cực nhanh.' WHERE product_name = N'Xiaomi 12';
+UPDATE Product SET product_desc = N'Bộ 3 camera 50MP làm chủ mọi góc chụp. Màn hình 2K+ LTPO tiết kiệm điện, sạc nhanh HyperCharge 120W đầy pin trong tích tắc.' WHERE product_name = N'Xiaomi 12 Pro';
+UPDATE Product SET product_desc = N'Ông vua tầm trung với màn hình AMOLED sống động. Loa kép Stereo, pin 5000mAh sạc nhanh 33W và hiệu năng Snapdragon ổn định.' WHERE product_name = N'Redmi Note 10';
+UPDATE Product SET product_desc = N'Nâng cấp toàn diện với màn hình 90Hz mượt mà. Chip Snapdragon 680 tiết kiệm điện, thiết kế phẳng hiện đại và camera 50MP.' WHERE product_name = N'Redmi Note 11';
+UPDATE Product SET product_desc = N'Thiết kế vuông vức nam tính, mặt lưng kính. Camera 108MP, màn hình 120Hz và sạc nhanh 67W Turbo Charge hàng đầu phân khúc.' WHERE product_name = N'Redmi Note 11 Pro';
+UPDATE Product SET product_desc = N'Flagship killer với màn hình E4 AMOLED cao cấp. Hiệu năng Snapdragon 870 mát mẻ, loa kép Dolby Atmos và thiết kế mỏng nhẹ.' WHERE product_name = N'Redmi K40';

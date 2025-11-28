@@ -1,0 +1,271 @@
+﻿@model old_phone.ViewModels.DashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard Thống Kê";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 fw-bold border-start border-primary border-5 ps-3">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard Thống kê tổng quan 
+        </h1>
+        <small class="text-muted">Cập nhật: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</small>
+    </div>
+
+    @* === 1. 4 CARDS THỐNG KÊ TỔNG QUAN === *@
+    <div class="row g-4 mb-4">
+        @* Card 1: Tổng sản phẩm *@
+        <div class="col-xl-3 col-md-6 animate__animated animate__fadeInUp">
+            <div class="card border-0 shadow-sm rounded-3 border-start border-primary border-4">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-primary text-uppercase mb-1">Tổng Sản Phẩm</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalProducts</div>
+                            <small class="text-muted">Biến thể đang bán</small>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-phone fs-1 text-primary opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Card 2: Tổng doanh thu *@
+        <div class="col-xl-3 col-md-6 animate__animated animate__fadeInUp">
+            <div class="card border-0 shadow-sm rounded-3 border-start border-success border-4">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-success text-uppercase mb-1">Tổng Doanh Thu</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalRevenue.ToString("N0") đ</div>
+                            <small class="text-muted">Đơn đã giao thành công</small>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-currency-dollar fs-1 text-success opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Card 3: Tổng đơn hàng *@
+        <div class="col-xl-3 col-md-6 animate__animated animate__fadeInUp">
+            <div class="card border-0 shadow-sm rounded-3 border-start border-warning border-4">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-warning text-uppercase mb-1">Tổng Đơn Hàng</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalOrders</div>
+                            <small class="text-muted">Tất cả trạng thái</small>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-cart-check fs-1 text-warning opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Card 4: Tổng thành viên *@
+        <div class="col-xl-3 col-md-6 animate__animated animate__fadeInUp">
+            <div class="card border-0 shadow-sm rounded-3 border-start border-info border-4">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-info text-uppercase mb-1">Tổng Thành Viên</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalMembers</div>
+                            <small class="text-muted">Tài khoản đã đăng ký</small>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-people fs-1 text-info opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        @* === 2. CẢNH BÁO SALE SẮP HẾT HẠN === *@
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm rounded-3 h-100 animate__animated animate__fadeInUp">
+                <div class="card-header bg-warning bg-opacity-10 border-bottom border-warning py-3">
+                    <h6 class="m-0 fw-bold text-warning">
+                        <i class="bi bi-clock-history me-2"></i> Sale Sắp Hết Hạn (3 Ngày Tới)
+                    </h6>
+                </div>
+                <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                    @if (Model.ExpiringSales != null && Model.ExpiringSales.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var sale in Model.ExpiringSales)
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="fw-bold mb-1 text-danger">@sale.SaleName</h6>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-box-seam me-1"></i> @sale.ProductName - @sale.VariantInfo
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar-x me-1"></i> Hết hạn: @sale.SaleEnd.ToString("dd/MM/yyyy")
+                                            </small>
+                                        </div>
+                                        <span class="badge @(sale.DaysRemaining == 0 ? "bg-danger" : sale.DaysRemaining == 1 ? "bg-warning" : "bg-info") rounded-pill">
+                                            @(sale.DaysRemaining == 0 ? "Hôm nay" : sale.DaysRemaining + " ngày")
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="p-4 text-center text-muted">
+                            <i class="bi bi-check-circle fs-1 opacity-25"></i>
+                            <p class="mb-0 mt-2">Không có sale sắp hết hạn trong 3 ngày tới</p>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="@Url.Action("Index", "ManageSales")" class="btn btn-sm btn-outline-warning w-100">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Quản lý tất cả Sale
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* === 3. CẢNH BÁO SẢN PHẨM SẮP HẾT HÀNG === *@
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm rounded-3 h-100 animate__animated animate__fadeInUp">
+                <div class="card-header bg-danger bg-opacity-10 border-bottom border-danger py-3">
+                    <h6 class="m-0 fw-bold text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Sản Phẩm Sắp Hết Hàng (< 5)
+                    </h6>
+                </div>
+                <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                    @if (Model.LowStockProducts != null && Model.LowStockProducts.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var product in Model.LowStockProducts)
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@product.ProductImage" alt="@product.ProductName" 
+                                             class="rounded border me-3" 
+                                             style="width: 50px; height: 50px; object-fit: contain;"
+                                             onerror="this.src='https://via.placeholder.com/50'">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-bold">@product.ProductName</h6>
+                                            <small class="text-muted">
+                                                @product.VariantColor - @product.Ram/@product.Rom GB
+                                            </small>
+                                        </div>
+                                        <span class="badge @(product.StockCount == 0 ? "bg-danger" : "bg-warning text-dark") fs-6 px-3">
+                                            Còn: @product.StockCount
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="p-4 text-center text-muted animate__animated animate__fadeInUp">
+                            <i class="bi bi-box-seam-fill fs-1 opacity-25"></i>
+                            <p class="mb-0 mt-2">Tất cả sản phẩm đều còn hàng đầy đủ</p>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="@Url.Action("Index", "ManageVariant_Phone")" class="btn btn-sm btn-outline-danger w-100">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Quản lý Kho Hàng
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* === 4. BIỂU ĐỒ DOANH THU 7 NGÀY === *@
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-3 animate__animated animate__fadeInUp">
+                <div class="card-header bg-primary bg-opacity-10 border-bottom border-primary py-3">
+                    <h6 class="m-0 fw-bold text-primary">
+                        <i class="bi bi-graph-up me-2"></i> Doanh Thu 7 Ngày Gần Nhất
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Chart.js từ CDN *@
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('revenueChart').getContext('2d');
+
+            // Lấy dữ liệu từ Model C# sang JavaScript
+            var labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueChart.Select(r => r.Date.ToString("dd/MM"))));
+            var data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueChart.Select(r => r.Revenue)));
+
+            var chart = new Chart(ctx, {
+                type: 'line', // Hoặc 'bar' nếu muốn dạng cột
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh Thu (VNĐ)',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4, // Làm mượt đường line
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var value = context.parsed.y;
+                                    return 'Doanh thu: ' + value.toLocaleString('vi-VN') + ' đ';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('vi-VN') + ' đ';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

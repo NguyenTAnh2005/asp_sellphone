@@ -16,7 +16,8 @@ namespace old_phone.ViewModels
         public int OrderState { get; set; }         // Trạng thái hóa đơn (số)
         public string OrderStateDisplay { get; set; }// Trạng thái hóa đơn (chữ)
         public string CustomerFullName { get; set; } // Tên khách
-        public string RecipientPhoneNumber { get; set; } // SĐT
+        public string RecipientPhoneNumber { get; set; } // SĐTư
+        public int CustomerId { get; set; } // mã tk KH 
     }
 
     // =======================================================

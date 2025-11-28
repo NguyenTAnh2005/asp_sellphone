@@ -5,32 +5,50 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    /* Hiệu ứng nổi lên khi di chuột vào đơn hàng */
+    .order-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #f0f0f0;
+    }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+            border-color: #dee2e6;
+        }
+
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 0.5em 1em;
+    }
+</style>
+
 <div class="container py-5">
-    <div class="text-center mb-5">
-        <h3 class="fw-bold text-uppercase text-primary">
-            <i class="bi bi-clock-history me-2"></i> Lịch Sử Mua Hàng
-        </h3>
-    </div>
 
-    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
-        <div class="card-body p-3">
-            @using (Html.BeginForm("History", "Order", FormMethod.Get, new { id = "filterForm" }))
-            {
-                <div class="d-flex justify-content-end align-items-center">
-                    <label class="fw-bold me-3 text-secondary d-none d-md-block">
-                        <i class="bi bi-funnel-fill"></i> Trạng thái đơn hàng:
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5">
+        <div class="mb-3 mb-md-0 animate__animated animate__fadeInUp">
+            <h3 class="fw-bold text-uppercase text-primary mb-1">
+                <i class="bi bi-clock-history me-2"></i> Lịch Sử Đơn Hàng
+            </h3>
+            <p class="text-muted mb-0">Theo dõi trạng thái và lịch sử mua sắm của bạn.</p>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 bg-white animate__animated animate__fadeInDown" style="min-width: 300px;">
+            <div class="card-body p-2">
+                @using (Html.BeginForm("History", "Order", FormMethod.Get, new { id = "filterForm", @class = "d-flex align-items-center" }))
+                {
+                    <label class="fw-bold me-2 text-secondary small text-nowrap ps-2">
+                        <i class="bi bi-funnel-fill"></i> Trạng thái:
                     </label>
-
-                    <div style="min-width: 250px;">
-                        @* Dropdown list lấy từ ViewBag.StatusList *@
-                        @Html.DropDownList("status", ViewBag.StatusList as SelectList, new
-                        {
-                            @class = "form-select border-primary bg-light fw-bold text-primary",
-                            @onchange = "this.form.submit();" // Tự động submit khi chọn
-                        })
-                    </div>
-                </div>
-            }
+                    @Html.DropDownList("status", ViewBag.StatusList as SelectList, new
+                    {
+                        @class = "form-select border-0 bg-light fw-bold text-dark rounded-pill",
+                        @onchange = "this.form.submit();",
+                        @style = "cursor: pointer;"
+                    })
+                }
+            </div>
         </div>
     </div>
 
@@ -38,92 +56,119 @@
 
     @if (Model != null && Model.Any())
     {
-        <div class="row g-4">
+        <div class="row g-4 animate__animated animate__fadeInUp">
             @foreach (var order in Model)
             {
-                // Chuyển đổi trạng thái từ số sang chữ/màu sắc để hiển thị Badge
-                int stateId = order.order_state;
-
+                // 1. XỬ LÝ LOGIC MÀU SẮC & TRẠNG THÁI
                 string badgeClass = "bg-secondary";
                 string stateText = "Không xác định";
+                string iconState = "bi-question-circle";
 
-                switch (stateId)
+                switch (order.order_state)
                 {
-                    case 0: badgeClass = "bg-warning text-dark"; stateText = "Chờ xác nhận"; break;
-                    case 1: badgeClass = "bg-info text-dark"; stateText = "Đang chuẩn bị"; break;
-                    case 2: badgeClass = "bg-primary"; stateText = "Đang giao hàng"; break;
-                    case 3: badgeClass = "bg-success"; stateText = "Giao thành công"; break;
-                    case 4: badgeClass = "bg-danger"; stateText = "Đã hủy"; break;
+                    case 0:
+                        badgeClass = "bg-warning text-dark";
+                        stateText = "Chờ xác nhận";
+                        iconState = "bi-hourglass-split";
+                        break;
+                    case 1:
+                        badgeClass = "bg-info text-dark";
+                        stateText = "Đang chuẩn bị";
+                        iconState = "bi-box-seam";
+                        break;
+                    case 2:
+                        badgeClass = "bg-primary";
+                        stateText = "Đang giao hàng";
+                        iconState = "bi-truck";
+                        break;
+                    case 3:
+                        badgeClass = "bg-success";
+                        stateText = "Giao thành công";
+                        iconState = "bi-check-circle-fill";
+                        break;
+                    case 4:
+                        badgeClass = "bg-danger";
+                        stateText = "Đã hủy";
+                        iconState = "bi-x-circle-fill";
+                        break;
+                }
+
+                // 2. XỬ LÝ LOGIC HIỂN THỊ TEXT THANH TOÁN (Sửa lỗi CS0127)
+                string paymentText = "Không xác định";
+                switch (order.order_type_pay)
+                {
+                    case "COD": paymentText = "COD - Thanh toán khi nhận hàng"; break;
+                    case "QR": paymentText = "Banking - Chuyển khoản trước"; break;
+                    default: paymentText = order.order_type_pay; break;
                 }
 
                 <div class="col-12">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h5 class="fw-bold mb-1">
-                                        Đơn Hàng #@order.order_id
-                                    </h5>
-                                    <small class="text-muted">Đặt ngày: @order.order_buy_time.ToString("dd/MM/yyyy HH:mm")</small>
+                    <div class="card order-card shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-bottom-0 d-flex flex-wrap justify-content-between align-items-center py-3">
+                            <div>
+                                <span class="badge bg-light text-secondary border me-2 rounded-pill px-3">
+                                    #@order.order_id
+                                </span>
+                                <span class="text-muted small">
+                                    <i class="bi bi-calendar3 me-1"></i> @order.order_buy_time.ToString("dd/MM/yyyy HH:mm")
+                                </span>
+                            </div>
+                            <div class="mt-2 mt-sm-0">
+                                <span class="badge rounded-pill @badgeClass status-badge shadow-sm">
+                                    <i class="bi @iconState me-1"></i> @stateText
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="card-body bg-light bg-opacity-10 pt-0">
+                            <hr class="mt-0 mb-3 text-muted opacity-25">
+
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-md-0 border-end-md">
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-3 mt-1 text-primary">
+                                            <i class="bi bi-basket2-fill fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1">Sản phẩm đã đặt:</h6>
+                                            @if (order.ItemNames.Any())
+                                            {
+                                                <ul class="mb-0 ps-3 small text-secondary">
+                                                    @foreach (var name in order.ItemNames)
+                                                    {
+                                                        <li>@name</li>
+                                                    }
+                                                    @if (order.TotalItemCount > order.ItemNames.Count)
+                                                    {
+                                                        <li class="fst-italic text-muted">... và @(order.TotalItemCount - order.ItemNames.Count) sản phẩm khác</li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger small">Không tìm thấy chi tiết sản phẩm.</span>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="badge rounded-pill @badgeClass px-3 py-2 shadow-sm">@stateText</span>
-                            </div>
 
-                            <hr />
-
-                            @* Chi tiết sản phẩm *@
-                            <div class="mb-3">
-                                <span class="fw-bold small me-2">Sản phẩm:</span>
-                                @if (order.ItemNames.Any())
-                                {
-                                    <span class="text-secondary small">
-                                        @string.Join(", ", order.ItemNames)
-                                        @if (order.TotalItemCount > order.ItemNames.Count)
-                                        {
-                                            @: và @(order.TotalItemCount - order.ItemNames.Count) sản phẩm khác...
-                                        }
-                                        else if (order.ItemNames.Count == 1)
-                                        {
-                                            @: (@order.TotalItemCount sản phẩm)
-                                        }
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="text-danger small">Không tìm thấy chi tiết sản phẩm.</span>
-                                }
-                            </div>
-
-                            @* Tổng tiền & Thanh toán *@
-                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                <div>
-                                    <span class="fw-bold text-danger fs-5">
+                                <div class="col-md-4 text-md-end ps-md-4">
+                                    <div class="mb-1">
+                                        <span class="small text-muted">Tổng thanh toán</span>
+                                    </div>
+                                    <div class="fs-4 fw-bold text-danger mb-2">
                                         @string.Format("{0:N0} đ", order.order_total_price)
-                                    </span>
-                                </div>
-                                <div>
-                                    <small class="text-muted me-2">Hình thức thanh toán:</small>
-                                    
-                                        @*order.order_type_pay == "COD" ? "COD - Thanh toán khi nhận hàng" : "QR: Đã chuyển khoản trước";*@
+                                    </div>
 
-                                    <span class="fw-bold text-dark">
-                                        @switch (order.order_type_pay)
-                                        {
-                                            case "COD":
-                                                @:COD - Thanh toán khi nhận hàng
-                                                break;
-                                            case "QR":
-                                                @:QR: Đã chuyển khoản trước
-                                                break;
-                                            default:
-                                                @:Không xác định
-                                                break;
-                                        }
-                                    </span>
+                                    <div class="mb-3">
+                                        <span class="badge bg-light text-dark border fw-normal">
+                                            <i class="bi bi-credit-card me-1"></i> @paymentText
+                                        </span>
+                                    </div>
 
-                                    @* Nút Xem Chi Tiết (Bạn có thể phát triển thêm) *@
-                                    <a href=@Url.Action("Details", "Order", new { id = order.order_id }) class="btn btn-sm btn-outline-secondary ms-3">
-                                        Xem Chi Tiết <i class="bi bi-chevron-right"></i>
+                                    <a href="@Url.Action("Details", "Order", new { id = order.order_id })"
+                                       class="btn btn-outline-primary rounded-pill px-4 btn-sm fw-bold">
+                                        Xem Chi Tiết <i class="bi bi-chevron-right ms-1"></i>
                                     </a>
                                 </div>
                             </div>
@@ -134,16 +179,20 @@
         </div>
     }
     else
-                                            {
-<div class="text-center py-5">
-    <div class="mb-3">
-        <i class="bi bi-clipboard-x display-1 text-muted opacity-25"></i>
-    </div>
-    <h5 class="text-muted">Không tìm thấy đơn hàng nào theo bộ lọc này.</h5>
-    <a href="@Url.Action("History", new { status = -1 })" class="btn btn-link text-decoration-none">Xem tất cả đơn hàng</a>
-    <br />
-    <a href="@Url.Action("Index","Shop")" class="btn btn-link text-decoration-none">Quay về trang chủ</a>
-
-</div>
+    {
+        <div class="text-center py-5 bg-light rounded-4 animate__animated animate__fadeInUp">
+            <div class="mb-3">
+                <i class="bi bi-clipboard-x display-1 text-muted opacity-25"></i>
+            </div>
+            <h5 class="text-secondary fw-bold">Không tìm thấy đơn hàng nào theo bộ lọc này.</h5>
+            <div class="mt-4 gap-2 d-flex justify-content-center">
+                <a href="@Url.Action("History", new { status = -1 })" class="btn btn-outline-secondary rounded-pill px-4">
+                    Xem tất cả đơn
+                </a>
+                <a href="@Url.Action("Index","Shop")" class="btn btn-primary rounded-pill px-4">
+                    Tiếp tục mua sắm
+                </a>
+            </div>
+        </div>
     }
 </div>

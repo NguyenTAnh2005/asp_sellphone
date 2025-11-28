@@ -6,10 +6,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4 mb-5 animate__animated animate__zoomIn">
+<div class="container mt-4 mb-5">
 
     @* --- PHẦN HEADER & TÌM KIẾM --- *@
-    <div class="row align-items-center mb-4">
+    <div class="row align-items-center mb-4 animate__animated animate__fadeInDown">
         <div class="col-md-6">
             <h3 class="fw-bold text-danger text-uppercase border-start border-4 border-danger ps-3">
                 <i class="bi bi-newspaper"></i> Tin tức công nghệ
@@ -30,7 +30,7 @@
     </div>
 
     @* --- DANH SÁCH BÀI VIẾT --- *@
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 animate__animated animate__fadeInUp">
         @if (Model.Blogs != null && Model.Blogs.Any())
         {
             foreach (var item in Model.Blogs)
@@ -53,46 +53,45 @@
     </div>
 
     @* --- THANH PHÂN TRANG --- *@
-    @if (Model.Blogs != null && Model.Blogs.PageCount > 1)
-    {
-        <div class="mt-5 d-flex justify-content-center">
-            @* Truyền tham số 'search' để khi chuyển trang không bị mất tìm kiếm *@
-            @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page, search = Model.Search }),
-                new PagedListRenderOptions
-                     {
-                    LiElementClasses = new string[] { "page-item" },
-                    LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
-                    LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
-                    ClassToApplyToFirstListItemInPager = "page-item",
-                    ClassToApplyToLastListItemInPager = "page-item",
-                    ContainerDivClasses = new[] { "pagination-container" }
-                }
-            )
-        </div>
 
-        @* CSS Phân trang (Màu đỏ cho hợp Blog) *@
-        <style>
-            .pagination-container ul.pagination {
-                justify-content: center;
+    <div class="mt-5 d-flex justify-content-center animate__animated animate__fadeInUp">
+        @* Truyền tham số 'search' để khi chuyển trang không bị mất tìm kiếm *@
+        @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page, search = Model.Search }),
+            new PagedListRenderOptions
+                 {
+                LiElementClasses = new string[] { "page-item" },
+                LinkToPreviousPageFormat = "<i class='bi bi-chevron-left'></i>",
+                LinkToNextPageFormat = "<i class='bi bi-chevron-right'></i>",
+                ClassToApplyToFirstListItemInPager = "page-item",
+                ClassToApplyToLastListItemInPager = "page-item",
+                ContainerDivClasses = new[] { "pagination-container" }
             }
+        )
+    </div>
 
-            .pagination .page-link {
-                color: #dc3545;
-                border: 1px solid #f8d7da;
-                margin: 0 3px;
-                border-radius: 8px;
-                padding: 0.5rem 1rem;
-            }
+    @* CSS Phân trang (Màu đỏ cho hợp Blog) *@
+    <style>
+        .pagination-container ul.pagination {
+            justify-content: center;
+        }
 
-            .pagination .page-item.active .page-link {
-                background-color: #dc3545;
-                border-color: #dc3545;
-                color: white;
-            }
+        .pagination .page-link {
+            color: #dc3545;
+            border: 1px solid #f8d7da;
+            margin: 0 3px;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+        }
 
-            .pagination .page-link:hover {
-                background-color: #ffebe9;
-            }
-        </style>
-    }
+        .pagination .page-item.active .page-link {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #ffebe9;
+        }
+    </style>
+
 </div>

@@ -56,6 +56,9 @@ namespace old_phone.ViewModels
         public string RecipientPhone { get; set; }
         public string RecipientAddress { get; set; }
 
+        public string StateName { get; set; } // Chứa chữ "Đang giao hàng", "Đã hủy"...
+        public string StateClass { get; set; } // Chứa class CSS màu sắc (text-success, text-danger...)
+
         // Danh sách sản phẩm chi tiết trong đơn hàng
         public List<OrderDetailItem> Items { get; set; }
     }

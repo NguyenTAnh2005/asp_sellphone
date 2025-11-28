@@ -139,6 +139,7 @@
     <Compile Include="Common\MailHelper.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Manage\DashboardController.cs" />
     <Compile Include="Controllers\Manage\ManageAccountsController.cs" />
     <Compile Include="Controllers\Manage\ManageBlogsController.cs" />
     <Compile Include="Controllers\Manage\ManageCompaniesController.cs" />
@@ -223,6 +224,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BlogsPageViewModel.cs" />
+    <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ManageOrder_ViewModel.cs" />
     <Compile Include="ViewModels\ManageSaleViewModel.cs" />
@@ -400,6 +402,8 @@
     <Content Include="Views\ManageVariant_Phone\Delete.cshtml" />
     <Content Include="Views\ManageOrder_ViewModel\Index.cshtml" />
     <Content Include="Views\ManageOrder_ViewModel\Details.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Shop\ManageOptionView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

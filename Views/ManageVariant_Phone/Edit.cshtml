@@ -1,4 +1,4 @@
-﻿@model old_phone.ViewModels.ManageVariant_PhoneViewModel
+﻿﻿@model old_phone.ViewModels.ManageVariant_PhoneViewModel
 
 @{
     ViewBag.Title = "Cập Nhật Biến Thể";
@@ -26,7 +26,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Sản Phẩm</label>
-                            @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select bg-light", @disabled = "disabled" })
+                            @Html.DropDownList("product_id", null, htmlAttributes: new { @class = "form-select bg-light"})
                             @Html.HiddenFor(model => model.product_id)
                         </div>
 

@@ -17,7 +17,9 @@
                     {
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(model => model.sale_id)
-                        @Html.HiddenFor(model => model.variant_id) <div class="card bg-light border-0 mb-4">
+                        @Html.HiddenFor(model => model.variant_id)
+                        
+                        <div class="card bg-light border-0 mb-4">
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="fw-bold text-muted">Sản Phẩm Đang Sale:</label>
@@ -28,14 +30,14 @@
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold text-secondary">Giá Niêm Yết (New Price)</label>
                                         <div class="input-group">
-                                            @Html.EditorFor(model => model.CurrentNewPrice, new { htmlAttributes = new { @class = "form-control bg-white", @readonly = "readonly" } })
+                                            @Html.EditorFor(model => model.CurrentNewPrice, new { htmlAttributes = new { @class = "form-control bg-white", @readonly = "readonly", id = "CurrentNewPrice" } })
                                             <span class="input-group-text">VNĐ</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold text-danger">Giá Khuyến Mãi (Final Price)</label>
                                         <div class="input-group">
-                                            @Html.EditorFor(model => model.DiscountPrice, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number" } })
+                                            @Html.EditorFor(model => model.DiscountPrice, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number", id = "DiscountPrice" } })
                                             <span class="input-group-text bg-danger text-white">VNĐ</span>
                                         </div>
                                         @Html.ValidationMessageFor(model => model.DiscountPrice, "", new { @class = "text-danger small" })
@@ -73,4 +75,45 @@
         </div>
     </div>
 </div>
-@section Scripts { @Scripts.Render("~/bundles/jqueryval") }
+
+@section Scripts { 
+    @Scripts.Render("~/bundles/jqueryval")
+    
+    <script type="text/javascript">
+        // JavaScript thuần để load giá sản phẩm khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentNewPriceInput = document.getElementById('CurrentNewPrice');
+            var discountPriceInput = document.getElementById('DiscountPrice');
+            
+            // Format số với dấu phẩy khi hiển thị
+            if (currentNewPriceInput && currentNewPriceInput.value) {
+                var currentPrice = parseFloat(currentNewPriceInput.value);
+                if (!isNaN(currentPrice)) {
+                    // Giữ giá trị số nguyên trong input để submit đúng
+                    currentNewPriceInput.setAttribute('data-original-value', currentPrice);
+                }
+            }
+            
+            // Thêm validation realtime cho discount price
+            if (discountPriceInput && currentNewPriceInput) {
+                discountPriceInput.addEventListener('input', function() {
+                    var discountPrice = parseFloat(this.value);
+                    var currentPrice = parseFloat(currentNewPriceInput.value);
+                    
+                    if (!isNaN(discountPrice) && !isNaN(currentPrice)) {
+                        if (discountPrice >= currentPrice) {
+                            this.setCustomValidity('Giá khuyến mãi phải nhỏ hơn giá niêm yết');
+                            this.classList.add('is-invalid');
+                        } else if (discountPrice <= 0) {
+                            this.setCustomValidity('Giá khuyến mãi phải lớn hơn 0');
+                            this.classList.add('is-invalid');
+                        } else {
+                            this.setCustomValidity('');
+                            this.classList.remove('is-invalid');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

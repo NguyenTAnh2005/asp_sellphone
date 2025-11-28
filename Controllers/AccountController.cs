@@ -229,11 +229,12 @@ namespace old_phone.Controllers
             try
             {
                 // 3. Gửi Email trước (để chắc chắn gửi được mới lưu DB)
-                string subject = "[SellPhone TA] Cấp lại mật khẩu mới";
+                string subject = "[Old Phone] Cấp lại mật khẩu mới";
                 string body = $"Chào {account.account_last_name} {account.account_first_name},<br/><br/>" +
                               $"Yêu cầu cấp lại mật khẩu của bạn đã được xử lý.<br/>" +
                               $"Mật khẩu mới của bạn là: <b style='color:red; font-size:18px;'>{newPassRaw}</b><br/><br/>" +
                               $"Vui lòng đăng nhập và đổi lại mật khẩu ngay để bảo mật thông tin.";
+                body += "<br/><br/>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!";
 
                 MailHelper.SendEmail(account.account_email, subject, body);
 

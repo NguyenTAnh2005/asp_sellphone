@@ -1,0 +1,9 @@
+INSERT INTO Company (company_name, company_desc)
+VALUES 
+    (N'APPLE', N'Mỹ'),
+    (N'SAMSUNG', N'Hàn Quốc'),
+    (N'OPPO', N'Trung Quốc'),
+    (N'NUBIA', N'Trung Quốc'),
+    (N'VIVO', N'Trung Quốc'),
+    (N'REALME', N'Trung Quốc'),
+    (N'XIAOMI', N'Trung Quốc');

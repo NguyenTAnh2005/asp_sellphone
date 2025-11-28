@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using old_phone.Models;
 using old_phone.Common;
-
+using PagedList;
 namespace old_phone.Controllers.Manage
 {
     public class ManageProductsController : Controller
@@ -17,10 +17,26 @@ namespace old_phone.Controllers.Manage
 
         // GET: ManageProducts
         [AuthorizeCheck(RequiredRole = 2)]
-        public ActionResult Index()
+        public ActionResult Index(string searchQuery, int? companyId, int? page)
         {
-            var products = db.Products.Include(p => p.Company).Include(p => p.Phone);
-            return View(products.ToList());
+            var products = db.Products.Include(p => p.Company).Include(p => p.Phone).AsQueryable();
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p => p.product_name.Contains(searchQuery));
+            }
+            if (companyId.HasValue)
+            {
+                products = products.Where(p => p.company_id == companyId.Value);
+            }
+            products=products.OrderBy(p => p.product_id);
+            ViewBag.CompanyList = new SelectList(db.Companies, "company_id", "company_name", companyId);
+            ViewBag.CurrentCompanyId = companyId;
+            ViewBag.CurrentSearchQuery = searchQuery;
+            var pageSize = 20;
+            var pageNumber =(page ?? 1);
+
+            var pageList= products.ToPagedList(pageNumber, pageSize);
+            return View(pageList);
         }
 
         // GET: ManageProducts/Details/5

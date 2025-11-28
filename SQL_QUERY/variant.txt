@@ -1,0 +1,181 @@
+INSERT INTO Variant_Phone 
+(product_id, variant_ph_ram, variant_ph_rom, variant_ph_color,
+ variant_ph_org_price, variant_ph_new_price, variant_ph_final_price,
+ variant_ph_img, variant_ph_state)
+VALUES
+(1, 3, 64, 'White', 26000, 15600, 15600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069194/pdt_1__v1_mwkjqt.jpg',
+ 'Máy dùng khoảng 5 tháng, ngoại hình đẹp 90%, trầy nhẹ ở viền. Hoạt động ổn định, pin tốt. Kèm sạc và kính cường lực. Bảo hành 4 tháng.'),
+(1, 3, 128, 'Black', 31000, 18600, 18600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069194/pdt_1__v1_mwkjqt.jpg',
+ 'Máy sử dụng 7 tháng, độ mới 92%. Vỏ có vài vết xước nhỏ. Hiệu năng tốt, không lỗi. Kèm sạc + ốp lưng. Bảo hành 4 tháng.'),
+(2, 4, 64, 'Silver', 28000, 16800, 16800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069239/pdt_2__v2_cticha.jpg',
+ 'Dùng 6 tháng, ngoại hình 93%, trầy rất nhẹ. Máy chạy mượt, màn đẹp. Kèm sạc và cường lực. Bảo hành 5 tháng.'),
+(2, 4, 256, 'Gray', 33000, 18150, 18150, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069239/pdt_2__v2_cticha.jpg',
+ 'Máy đẹp 95%, dùng 4 tháng. Không móp, chỉ xước nhẹ. Pin ổn, hoạt động tốt. Tặng sạc + ốp. Bảo hành 6 tháng.'),
+(3, 4, 64, 'Black', 23000, 13800, 13800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069273/pdt_3__v3_krtkd2.jpg',
+ 'Máy 8 tháng, độ mới 89%. Có vài điểm trầy nhỏ. Máy chạy ổn định, không lỗi. Có sạc đầy đủ. Bảo hành 3 tháng.'),
+(3, 4, 128, 'White', 25000, 14500, 14500, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069273/pdt_3__v3_krtkd2.jpg',
+ 'Máy 5 tháng, tình trạng 94%. Ngoại hình đẹp, màn rõ nét. Kèm sạc và dán cường lực. Bảo hành 5 tháng.'),
+(4, 4, 128, 'Green', 32000, 17600, 17600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069291/pdt_4__v4_ahiqn8.jpg',
+ 'Máy 3 tháng, đẹp 96%. Vỏ gần như mới. Hoạt động mượt, pin tốt. Kèm phụ kiện cơ bản. Bảo hành 6 tháng.'),
+(5, 4, 64, 'Black', 23000, 12650, 12650, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069310/pdt_5__v5_dn8osw.webp',
+ 'Máy 6 tháng, độ mới 91%. Trầy nhẹ mặt sau. Máy chạy ổn định. Tặng sạc nhanh và dán màn. Bảo hành 4 tháng.'),
+(5, 4, 128, 'Blue', 25000, 15000, 15000, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069310/pdt_5__v5_dn8osw.webp',
+ 'Máy 4 tháng, ngoại hình đẹp 95%. Không móp, trầy nhẹ khó thấy. Kèm sạc và cường lực. Bảo hành 5 tháng.'),
+(6, 6, 128, 'Silver', 35000, 19250, 19250, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069364/pdt_6__v6_byalo6.webp',
+ 'Máy 5 tháng, độ mới 93%. Vỏ đẹp, màn hình không trầy. Máy chạy tốt. Có sạc. Bảo hành 4 tháng.'),
+
+(7, 4, 128, 'Black', 24000, 13200, 13200, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069396/pdt_7__v7_z1i70c.webp',
+ 'Máy đã dùng 7 tháng, hình thức đẹp 90%. Viền hơi trầy nhẹ. Hoạt động mượt. Kèm sạc. Bảo hành 3 tháng.'),
+(7, 6, 128, 'White', 27000, 14850, 14850, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069396/pdt_7__v7_z1i70c.webp',
+ 'Dùng 5 tháng, ngoại hình 94%. Máy sáng bóng, không móp. Pin ổn định. Kèm sạc + ốp. Bảo hành 4 tháng.'),
+(8, 6, 128, 'Gold', 36000, 19800, 19800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069422/pdt_8__v8_xjfucc.webp',
+ 'Máy đẹp 95%, đã dùng 4 tháng. Vỏ đẹp, màn hình hiển thị tốt. Hoạt động mượt. Kèm phụ kiện. Bảo hành 5 tháng.'),
+(9, 6, 128, 'Blue', 34000, 18700, 18700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069440/pdt_9__v9_xcdcj6.webp',
+ 'Máy sử dụng 6 tháng, ngoại hình 92%. Trầy nhẹ cạnh viền. Máy chạy ổn định. Có sạc. Bảo hành 4 tháng.'),
+(9, 6, 256, 'Black', 38000, 20900, 20900, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069440/pdt_9__v9_xcdcj6.webp',
+ 'Máy 4 tháng, tình trạng đẹp 96%. Gần như không trầy. Pin tốt. Kèm sạc và ốp lưng. Bảo hành 6 tháng.'),
+(10, 6, 128, 'Silver', 39000, 21450, 21450, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069598/pdt_10__v10_cw65lq.webp',
+ 'Máy 5 tháng, độ mới 94%. Màn hình đẹp, vỏ trầy nhẹ. Hoạt động mượt. Kèm sạc. Bảo hành 4 tháng.'),
+(10, 6, 256, 'Purple', 43000, 23650, 23650, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069598/pdt_10__v10_cw65lq.webp',
+ 'Máy 3 tháng, ngoại hình 97%. Như mới 99%. Hoạt động mạnh mẽ. Kèm đầy đủ phụ kiện. Bảo hành 6 tháng.'),
+(11, 8, 256, 'Black', 32000, 17600, 17600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069628/pdt_11__v11_xemrnz.jpg',
+ 'Máy dùng 6 tháng, đẹp 93%. Một số vết xước nhỏ ở khung. Pin còn tốt. Có sạc. Bảo hành 4 tháng.'),
+(11, 12, 512, 'Green', 37000, 20350, 20350, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069628/pdt_11__v11_xemrnz.jpg',
+ 'Máy tình trạng 94%, dùng 5 tháng. Vỏ đẹp, màn không ám. Hoạt động mượt. Bảo hành 5 tháng.'),
+
+(12, 8, 128, 'White', 25000, 15000, 15000, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069937/pdt_12__v12_roz3ej.png',
+ 'Máy dùng 4 tháng, ngoại hình 96%. Không trầy đáng kể. Pin tốt. Kèm sạc đầy đủ. Bảo hành 6 tháng.'),
+(12, 8, 256, 'Blue', 27000, 15900, 15900, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069937/pdt_12__v12_roz3ej.png',
+ 'Máy 6 tháng, độ mới 92%. Trầy nhẹ mặt lưng. Hoạt động tốt. Kèm sạc + dán màn. Bảo hành 4 tháng.'),
+(13, 8, 256, 'Purple', 28000, 15400, 15400, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069976/pdt_13__v13_phrd0p.jpg',
+ 'Máy tình trạng 95%, dùng 4 tháng. Vỏ đẹp, màn không xước. Pin tốt. Tặng sạc. Bảo hành 6 tháng.'),
+(14, 6, 128, 'Gray', 12000, 6600, 6600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764069999/pdt_14__v14_hyakqw.jpg',
+ 'Máy dùng 7 tháng, độ mới 89%. Trầy nhẹ cạnh viền. Máy chạy ổn. Bảo hành 3 tháng.'),
+(15, 6, 128, 'Blue', 10000, 6000, 6000, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070065/pdt_15__v15_kvxe74.jpg',
+ 'Dùng 6 tháng, ngoại hình 92%. Một vài vết trầy nhẹ. Máy chạy mượt. Có sạc. Bảo hành 4 tháng.'),
+(16, 8, 128, 'Black', 21000, 11550, 11550, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070077/pdt_16__v16_lmenoh.jpg',
+ 'Máy đẹp 95%, sử dụng 5 tháng. Màn hình đẹp, không ám. Máy chạy mượt. Bảo hành 5 tháng.'),
+(16, 8, 256, 'White', 23000, 13800, 13800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070077/pdt_16__v16_lmenoh.jpg',
+ 'Máy 4 tháng, ngoại hình 96%. Vỏ đẹp, không cấn móp. Kèm sạc. Bảo hành 6 tháng.'),
+(17, 8, 128, 'Silver', 19000, 10450, 10450, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070090/pdt_17__v17_pxdljc.jpg',
+ 'Máy 6 tháng, độ mới 91%. Trầy nhẹ góc. Máy hoạt động ổn. Bảo hành 4 tháng.'),
+
+(18, 8, 128, 'Black', 8000, 4800, 4800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070102/pdt_18__v18_jbqq8n.jpg',
+ 'Máy dùng 7 tháng, ngoại hình 90%. Có vài vết xước mờ. Máy chạy mượt. Kèm sạc. Bảo hành 3 tháng.'),
+(19, 6, 128, 'Blue', 7500, 4125, 4125, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070118/pdt_19__v19_omkoay.jpg',
+ 'Máy tình trạng 92%, dùng 5 tháng. Vỏ đẹp, màn hình rõ. Pin ổn. Bảo hành 4 tháng.'),
+(20, 8, 256, 'Black', 15000, 8700, 8700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070130/pdt_20__v20_yeo0lj.webp',
+ 'Máy 4 tháng, độ mới 95%. Ngoại hình đẹp, pin tốt. Kèm phụ kiện. Bảo hành 5 tháng.'),
+(20, 12, 256, 'Green', 17000, 9350, 9350, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070130/pdt_20__v20_yeo0lj.webp',
+ 'Máy như mới 97%, dùng 3 tháng. Không trầy. Hiệu năng mạnh. Kèm sạc. Bảo hành 6 tháng.'),
+(21, 6, 128, 'Blue', 6500, 3900, 3900, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070162/pdt_21__v21_gfwd28.jpg',
+ 'Máy 6 tháng, độ mới 89%. Trầy nhẹ lưng. Máy hoạt động tốt. Bảo hành 3 tháng.'),
+
+(22, 8, 256, 'Silver', 14000, 7700, 7700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070195/pdt_22__v22_agmih4.png',
+ 'Máy 5 tháng, ngoại hình 94%. Màn đẹp, vỏ trầy nhẹ. Kèm phụ kiện. Bảo hành 5 tháng.'),
+(23, 8, 128, 'Black', 12000, 7200, 7200, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070203/pdt_23__v23_ahs5r2.webp',
+ 'Máy dùng 7 tháng, đẹp 90%. Trầy nhẹ ở cạnh. Hoạt động mượt. Bảo hành 3 tháng.'),
+(23, 8, 256, 'White', 13500, 7560, 7560, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070203/pdt_23__v23_ahs5r2.webp',
+ 'Máy 4 tháng, 95% đẹp. Không móp, chỉ xước nhẹ. Máy chạy tốt. Bảo hành 5 tháng.'),
+(24, 8, 256, 'Blue', 12500, 6875, 6875, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070221/pdt_24__v24_iu5jxt.webp',
+ 'Máy tình trạng 94%, dùng 5 tháng. Màn đẹp, pin tốt. Kèm sạc. Bảo hành 4 tháng.'),
+
+(25, 6, 128, 'Green', 9500, 5700, 5700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070247/pdt_25__v25_nhcdd3.jpg',
+ 'Máy 6 tháng, ngoại hình 92%. Trầy nhẹ lưng. Hoạt động ổn định. Bảo hành 4 tháng.'),
+
+(26, 12, 256, 'Black', 20000, 11000, 11000, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070261/pdt_26__v26_edsxby.jpg',
+ 'Máy dùng 5 tháng, đẹp 93%. Vỏ đẹp, màn rõ nét. Máy chạy tốt. Bảo hành 5 tháng.'),
+(26, 16, 512, 'Red', 23000, 13800, 13800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070261/pdt_26__v26_edsxby.jpg',
+ 'Máy 4 tháng, như mới 96%. Hầu như không trầy. Hiệu năng mạnh. Bảo hành 6 tháng.'),
+
+(27, 12, 128, 'Gray', 17000, 9350, 9350, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070276/pdt_27__v27_fv91xi.webp',
+ 'Máy 6 tháng, độ mới 91%. Có vết xước nhẹ. Hoạt động tốt. Bảo hành 4 tháng.'),
+
+(28, 4, 64, 'Black', 4500, 2700, 2700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070300/pdt_28__v28_dd0eyh.webp',
+ 'Máy dùng 8 tháng, độ mới 88%. Trầy nhẹ, pin ổn. Máy chạy tốt. Bảo hành 3 tháng.'),
+
+(29, 8, 128, 'Blue', 7500, 4125, 4125, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070314/pdt_29__v29_nzcmjd.jpg',
+ 'Máy 6 tháng, ngoại hình 91%. Màn sáng, vỏ trầy nhẹ. Máy chạy mượt. Bảo hành 4 tháng.'),
+
+(30, 8, 128, 'Silver', 12000, 7200, 7200, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070339/pdt_30__v30_vjmzza.webp',
+ 'Máy 5 tháng, 93% đẹp. Viền hơi xước. Hoạt động ổn định. Bảo hành 4 tháng.'),
+
+(31, 8, 256, 'Black', 13000, 7150, 7150, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070357/pdt_31__v31_lnr55w.webp',
+ 'Máy 4 tháng, ngoại hình 95%. Màn đẹp, pin còn tốt. Bảo hành 5 tháng.'),
+
+(32, 8, 256, 'Gray', 15000, 8250, 8250, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070371/pdt_32__v32_esodhc.webp',
+ 'Máy 5 tháng, đẹp 94%. Vỏ đẹp, không móp. Hoạt động mượt. Bảo hành 4 tháng.'),
+
+(33, 12, 256, 'Black', 14000, 7700, 7700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070762/pdt_33__v33_ekwms1.jpg',
+ 'Máy 6 tháng, độ mới 92%. Xước nhẹ lưng. Máy chạy tốt. Bảo hành 4 tháng.'),
+
+(34, 12, 256, 'Silver', 17500, 9625, 9625, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070600/pdt_34__v34_xixsxs.jpg',
+ 'Máy 4 tháng, đẹp 95%. Màn sắc nét. Hoạt động ổn định. Bảo hành 5 tháng.'),
+
+(35, 6, 128, 'Blue', 6000, 3300, 3300, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070614/pdt_35__v35_cxmxkq.webp',
+ 'Máy 7 tháng, 90% đẹp. Trầy nhẹ góc. Máy chạy mượt. Bảo hành 3 tháng.'),
+
+(36, 6, 128, 'Gray', 7000, 3850, 3850, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070629/pdt_36__v36_xpxrsk.jpg',
+ 'Máy 6 tháng, 91% mới. Vỏ hơi xước. Máy hoạt động tốt. Bảo hành 4 tháng.'),
+
+(37, 8, 128, 'Black', 8500, 4675, 4675, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070789/pdt_37__v37_xexugr.webp',
+ 'Máy 5 tháng, độ mới 93%. Màn đẹp, pin ổn. Hoạt động mượt. Bảo hành 4 tháng.'),
+
+(38, 6, 128, 'Silver', 7500, 4125, 4125, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070824/pdt_38__v38_r5c9ba.webp',
+ 'Máy 6 tháng, 92% đẹp. Trầy nhẹ. Máy chạy mượt. Bảo hành 4 tháng.'),
+
+(39, 8, 128, 'Green', 9000, 4950, 4950, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070850/pdt_39__v39_lrz2wg.jpg',
+ 'Máy 5 tháng, đẹp 94%. Hoạt động ổn định. Màn không trầy. Bảo hành 5 tháng.'),
+
+(40, 8, 256, 'Black', 14000, 7700, 7700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070916/pdt_40__v40_yktlry.webp',
+ 'Máy sử dụng 4 tháng, độ mới 95%. Vỏ đẹp, máy mượt. Bảo hành 6 tháng.'),
+
+(41, 8, 128, 'Blue', 10500, 5775, 5775, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764070934/pdt_41__v41_ctlkkk.jpg',
+ 'Máy 6 tháng, 92% đẹp. Có xước nhẹ. Pin ổn. Bảo hành 4 tháng.'),
+
+(42, 4, 64, 'Black', 4000, 2200, 2200, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071116/pdt_42__v42_ulkdzg.jpg',
+ 'Máy dùng 8 tháng, độ mới 88%. Trầy nhẹ. Chạy tốt. Bảo hành 3 tháng.'),
+
+(43, 4, 64, 'Green', 4500, 2475, 2475, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071131/pdt_43__v43_zwgody.jpg',
+ 'Máy tình trạng 90%, dùng 7 tháng. Hoạt động ổn định. Bảo hành 3 tháng.'),
+
+(44, 8, 128, 'Black', 11000, 6050, 6050, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071181/pdt_44__v44_zxp3k2.jpg',
+ 'Máy 5 tháng, đẹp 94%. Màn rõ, pin tốt. Bảo hành 5 tháng.'),
+
+(45, 8, 128, 'Blue', 12000, 6600, 6600, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071213/pdt_45__v45_mp5dj2.jpg',
+ 'Máy tình trạng 92%, vỏ đẹp, chạy mượt. Bảo hành 4 tháng.'),
+(45, 8, 256, 'Gray', 13000, 7150, 7150, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071213/pdt_45__v45_mp5dj2.jpg',
+ 'Máy 4 tháng, độ mới 95%. Gần như không trầy. Bảo hành 6 tháng.'),
+
+(46, 8, 128, 'Silver', 14000, 7700, 7700, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071226/pdt_46__v46_usttao.jpg',
+ 'Máy đẹp 96%, sử dụng 3 tháng. Hoạt động mạnh mẽ. Bảo hành 6 tháng.'),
+(46, 8, 256, 'Black', 15500, 8525, 8525, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071226/pdt_46__v46_usttao.jpg',
+ 'Máy 4 tháng, ngoại hình đẹp 94%. Máy chạy mượt. Bảo hành 5 tháng.'),
+
+(47, 12, 256, 'Black', 18000, 9900, 9900, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071251/pdt_47__v47__1_hbxurz.jpg',
+ 'Máy 5 tháng, đẹp 95%. Hoạt động ổn định. Kèm sạc. Bảo hành 5 tháng.'),
+
+(48, 8, 128, 'Blue', 16000, 8800, 8800, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071287/pdt_48__v48_ktsu63.webp',
+ 'Máy 4 tháng, 96% đẹp. Màn trong, pin tốt. Bảo hành 6 tháng.'),
+
+(49, 12, 256, 'Silver', 19000, 10450, 10450, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071299/pdt_49__v49_jkprs6.jpg',
+ 'Máy dùng 5 tháng, ngoại hình 94%. Vỏ đẹp. Máy chạy ổn định. Bảo hành 5 tháng.'),
+
+(50, 4, 64, 'Gray', 5000, 2750, 2750, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071393/pdt_50__v50_lisbhp.jpg',
+ 'Máy 7 tháng, 90% đẹp. Trầy nhẹ. Hoạt động tốt. Bảo hành 3 tháng.'),
+
+(51, 4, 64, 'Black', 5500, 3025, 3025, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071406/pdt_51__v51_gx6e7y.jpg',
+ 'Máy 6 tháng, 92% mới. Hoạt động ổn. Kèm sạc. Bảo hành 4 tháng.'),
+(51, 6, 128, 'Blue', 7000, 3850, 3850, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071406/pdt_51__v51_gx6e7y.jpg',
+ 'Máy 5 tháng, 94% đẹp. Màn sáng, chạy mượt. Bảo hành 5 tháng.'),
+
+(52, 6, 128, 'Green', 9000, 4950, 4950, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071419/pdt_52__v52_xrjsph.jpg',
+ 'Máy 6 tháng, ngoại hình 93%. Vỏ đẹp. Máy ổn định. Bảo hành 4 tháng.'),
+
+(52, 8, 128, 'Silver', 10000, 5500, 5500, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071419/pdt_52__v52_xrjsph.jpg',
+ 'Máy 4 tháng, 95% đẹp. Hoạt động mượt. Bảo hành 5 tháng.'),
+
+(53, 8, 128, 'Black', 9500, 5225, 5225, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071433/pdt_53__v53_bmcnw3.webp',
+ 'Máy dùng 6 tháng, 92% đẹp. Trầy nhẹ. Máy chạy tốt. Bảo hành 4 tháng.'),
+(53, 8, 256, 'Gray', 11000, 6050, 6050, 'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764071433/pdt_53__v53_bmcnw3.webp',
+ 'Máy 4 tháng, đẹp 95%. Màn rõ, pin tốt. Bảo hành 5 tháng.');

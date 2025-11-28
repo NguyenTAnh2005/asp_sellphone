@@ -20,15 +20,17 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold text-success">1. Chọn Sản Phẩm</label>
-                            @Html.DropDownList("variant_id", null, htmlAttributes: new { @class = "form-select form-select-lg shadow-sm" })
+                            @Html.DropDownList("variant_id", null, htmlAttributes: new { @class = "form-select form-select-lg shadow-sm", id = "variant_id" })
                             @Html.ValidationMessageFor(model => model.variant_id, "", new { @class = "text-danger small" })
-                            <div class="form-text text-muted">Giá niêm yết ban đầu</div>
+                            <div class="form-text text-muted">
+                                <span id="currentPriceDisplay">Chọn sản phẩm để xem giá niêm yết</span>
+                            </div>
                         </div>
 
                         <div class="mb-4 p-3 bg-light border rounded">
                             <label class="form-label fw-bold text-danger">2. Nhập Giá Khuyến Mãi (Final Price)</label>
                             <div class="input-group">
-                                @Html.EditorFor(model => model.DiscountPrice, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number" } })
+                                @Html.EditorFor(model => model.DiscountPrice, new { htmlAttributes = new { @class = "form-control fw-bold text-danger", type = "number", id = "DiscountPrice" } })
                                 <span class="input-group-text bg-danger text-white">VNĐ</span>
                             </div>
                             @Html.ValidationMessageFor(model => model.DiscountPrice, "", new { @class = "text-danger small" })
@@ -66,4 +68,67 @@
         </div>
     </div>
 </div>
-@section Scripts { @Scripts.Render("~/bundles/jqueryval") }
+
+@section Scripts { 
+    @Scripts.Render("~/bundles/jqueryval")
+    
+    <script type="text/javascript">
+        // JavaScript thuần để load giá sản phẩm
+        document.addEventListener('DOMContentLoaded', function() {
+            var variantDropdown = document.getElementById('variant_id');
+            var discountPriceInput = document.getElementById('DiscountPrice');
+            var currentPriceDisplay = document.getElementById('currentPriceDisplay');
+            
+            if (variantDropdown) {
+                variantDropdown.addEventListener('change', function() {
+                    var variantId = this.value;
+                    
+                    if (variantId) {
+                        // Gọi API để lấy giá sản phẩm
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', '@Url.Action("GetVariantPrice", "ManageSales")?variant_id=' + variantId, true);
+                        
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                
+                                if (response.success) {
+                                    // Format số với dấu phẩy
+                                    var newPriceFormatted = response.new_price.toLocaleString('vi-VN');
+                                    var finalPriceFormatted = response.final_price.toLocaleString('vi-VN');
+                                    
+                                    // Hiển thị giá niêm yết hiện tại
+                                    currentPriceDisplay.innerHTML = '<strong>Giá niêm yết hiện tại: <span class="text-primary">' + 
+                                        newPriceFormatted + ' VNĐ</span></strong>' +
+                                        (response.final_price < response.new_price ? 
+                                        ' <span class="text-danger">(Đang sale: ' + finalPriceFormatted + ' VNĐ)</span>' : '');
+                                    
+                                    // Tự động điền giá khuyến mãi (có thể là giá final hiện tại hoặc để trống)
+                                    if (response.final_price < response.new_price) {
+                                        discountPriceInput.value = response.final_price;
+                                    } else {
+                                        discountPriceInput.value = '';
+                                        discountPriceInput.placeholder = 'Nhập giá khuyến mãi (nhỏ hơn ' + newPriceFormatted + ' VNĐ)';
+                                    }
+                                } else {
+                                    currentPriceDisplay.innerHTML = '<span class="text-danger">Không tìm thấy thông tin giá</span>';
+                                    discountPriceInput.value = '';
+                                }
+                            }
+                        };
+                        
+                        xhr.onerror = function() {
+                            currentPriceDisplay.innerHTML = '<span class="text-danger">Lỗi khi tải giá sản phẩm</span>';
+                        };
+                        
+                        xhr.send();
+                    } else {
+                        currentPriceDisplay.innerHTML = 'Chọn sản phẩm để xem giá niêm yết';
+                        discountPriceInput.value = '';
+                        discountPriceInput.placeholder = '';
+                    }
+                });
+            }
+        });
+    </script>
+}

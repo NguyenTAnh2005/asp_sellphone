@@ -23,8 +23,8 @@ namespace old_phone.Models
 
         [Display(Name = "Số điện thoại")]
         [Required(ErrorMessage = "Vui lòng nhập SĐT.")]
-        [Phone(ErrorMessage = "SĐT không đúng định dạng.")]
-        [StringLength(15, ErrorMessage = "SĐT không hợp lệ.")]
+        // Regex cho SĐT Việt Nam: Bắt đầu bằng 0, theo sau là 9 chữ số
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "SĐT không hợp lệ (phải bắt đầu bằng 0 và có 10 số).")]
         public string hotline_phonenumber { get; set; }
 
         [Display(Name = "Địa chỉ mặc định")]

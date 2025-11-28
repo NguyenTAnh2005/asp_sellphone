@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace old_phone.Models
 {
     [MetadataType(typeof(SaleMetaData))]
-    public partial class Sale
+    // Kế thừa Interface IValidatableObject
+    public partial class Sale 
     {
     }
 

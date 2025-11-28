@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace old_phone.Models
 {
     [MetadataType(typeof(VariantPhoneMetaData))]
-    public partial class Variant_Phone
+    public partial class Variant_Phone 
     {
-        // Để trống
     }
 
     public class VariantPhoneMetaData

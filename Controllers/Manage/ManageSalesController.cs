@@ -22,15 +22,49 @@ namespace old_phone.Controllers.Manage
             var variants = db.Variant_Phone.Include(v => v.Product).ToList()
                 .Select(v => new {
                     variant_id = v.variant_id,
-                    DisplayText = $"{v.Product.product_name} - {v.variant_ph_color} ({v.variant_ph_ram}GB/{v.variant_ph_rom}GB) - Giá niêm yết ban đầu: {v.variant_ph_new_price:N0}đ"
+                    DisplayText = $"{v.Product.product_name} - {v.variant_ph_color} ({v.variant_ph_ram}GB/{v.variant_ph_rom}GB) - {v.variant_ph_color}"
                 });
             ViewBag.variant_id = new SelectList(variants, "variant_id", "DisplayText", selectedVariant);
+        }
+
+        // HÀM TỰ ĐỘNG XÓA SALE HẾT HẠN
+        private void AutoRemoveExpiredSales()
+        {
+            var expiredSales = db.Sales
+                .Where(s => s.sale_end < DateTime.Now)
+                .Include(s => s.Variant_Phone)
+                .ToList();
+
+            if (expiredSales.Any())
+            {
+                foreach (var expiredSale in expiredSales)
+                {
+                    // Reset giá Final về giá New (hết khuyến mãi)
+                    if (expiredSale.Variant_Phone != null)
+                    {
+                        expiredSale.Variant_Phone.variant_ph_final_price = expiredSale.Variant_Phone.variant_ph_new_price;
+                        db.Entry(expiredSale.Variant_Phone).State = EntityState.Modified;
+                    }
+
+                    // Xóa Sale đã hết hạn
+                    db.Sales.Remove(expiredSale);
+                }
+
+                db.SaveChanges();
+
+                // Thông báo cho admin biết đã tự động xóa
+                TempData["Message"] = $"Đã tự động xóa {expiredSales.Count} chương trình khuyến mãi hết hạn và reset giá sản phẩm.";
+                TempData["MsgType"] = "info";
+            }
         }
 
         // GET  INDEX 
         [AuthorizeCheck(RequiredRole =2)]
         public ActionResult Index(string eventName, int? page)
         {
+            // Tự động xóa các sale hết hạn
+            AutoRemoveExpiredSales();
+
             var sales = db.Sales.Include(s => s.Variant_Phone).Include(s => s.Variant_Phone.Product).AsQueryable();
             var saleNames = db.Sales.Select(s => s.sale_name).Distinct().OrderBy(n => n).ToList();
             ViewBag.eventList = new SelectList(saleNames, eventName);
@@ -70,6 +104,31 @@ namespace old_phone.Controllers.Manage
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create(ManageSaleViewModel model)
         {
+            // Lấy giá hiện tại từ DB để validate
+            var variant = db.Variant_Phone.Find(model.variant_id);
+            if (variant != null)
+            {
+                model.CurrentNewPrice = variant.variant_ph_new_price; // Gán giá để validate
+
+                if (model.DiscountPrice >= model.CurrentNewPrice)
+                {
+                    ModelState.AddModelError("DiscountPrice", "Giá khuyến mãi phải nhỏ hơn giá niêm yết hiện tại.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("variant_id", "Sản phẩm không tồn tại.");
+            }
+
+            if (model.sale_end < DateTime.Now)
+            {
+                ModelState.AddModelError("sale_end", "Ngày kết thúc khuyến mãi phải sau ngày hiện tại.");
+            }
+            if (model.sale_end <= model.sale_start)
+            {
+                ModelState.AddModelError("sale_end", "Ngày kết thúc khuyến mãi phải lớn hơn ngày bắt đầu.");
+            }
+
             if (ModelState.IsValid)
             {
                 // A. Lưu bảng Sale
@@ -83,14 +142,12 @@ namespace old_phone.Controllers.Manage
                 db.Sales.Add(sale);
 
                 // B. Cập nhật giá Final trong bảng Variant
-                var variant = db.Variant_Phone.Find(model.variant_id);
-                if (variant != null)
-                {
-                    variant.variant_ph_final_price = model.DiscountPrice; // Cập nhật giá giảm
-                    db.Entry(variant).State = EntityState.Modified;
-                }
+                variant.variant_ph_final_price = model.DiscountPrice; // Cập nhật giá giảm
+                db.Entry(variant).State = EntityState.Modified;
 
                 db.SaveChanges();
+                TempData["Message"] = "Đã tạo chương trình khuyến mãi thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -130,6 +187,27 @@ namespace old_phone.Controllers.Manage
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit(ManageSaleViewModel model)
         {
+            // Lấy giá hiện tại từ DB để validate
+            var variant = db.Variant_Phone.Find(model.variant_id);
+            if (variant != null)
+            {
+                model.CurrentNewPrice = variant.variant_ph_new_price;
+
+                if (model.DiscountPrice >= model.CurrentNewPrice)
+                {
+                    ModelState.AddModelError("DiscountPrice", "Giá khuyến mãi phải nhỏ hơn giá niêm yết hiện tại.");
+                }
+            }
+
+            if (model.sale_end < DateTime.Now)
+            {
+                ModelState.AddModelError("sale_end", "Ngày kết thúc khuyến mãi phải sau ngày hiện tại.");
+            }
+            if (model.sale_end <= model.sale_start)
+            {
+                ModelState.AddModelError("sale_end", "Ngày kết thúc khuyến mãi phải lớn hơn ngày bắt đầu.");
+            }
+
             if (ModelState.IsValid)
             {
                 // A. Cập nhật bảng Sale
@@ -139,7 +217,6 @@ namespace old_phone.Controllers.Manage
                 sale.sale_end = model.sale_end;
 
                 // B. Cập nhật lại giá Final trong bảng Variant
-                var variant = db.Variant_Phone.Find(model.variant_id);
                 if (variant != null)
                 {
                     variant.variant_ph_final_price = model.DiscountPrice; // Cập nhật giá giảm mới
@@ -147,6 +224,8 @@ namespace old_phone.Controllers.Manage
                 }
 
                 db.SaveChanges();
+                TempData["Message"] = "Đã cập nhật chương trình khuyến mãi thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             PopulateVariantDropDownList(model.variant_id);
@@ -182,6 +261,9 @@ namespace old_phone.Controllers.Manage
             // B. Xóa Sale
             db.Sales.Remove(sale);
             db.SaveChanges();
+            
+            TempData["Message"] = "Đã xóa chương trình khuyến mãi và reset giá sản phẩm!";
+            TempData["MsgType"] = "success";
             return RedirectToAction("Index");
         }
 
@@ -191,6 +273,21 @@ namespace old_phone.Controllers.Manage
             base.Dispose(disposing);
         }
 
-       
+        // API trả về giá của Variant để JS tự động điền
+        [HttpGet]
+        public JsonResult GetVariantPrice(int variant_id)
+        {
+            var variant = db.Variant_Phone.Find(variant_id);
+            if (variant != null)
+            {
+                return Json(new
+                {
+                    success = true,
+                    new_price = variant.variant_ph_new_price,
+                    final_price = variant.variant_ph_final_price
+                }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

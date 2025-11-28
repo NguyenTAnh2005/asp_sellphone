@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "Quản Lý Hệ Thống";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5 animate__animated animate__fadeInDown">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-gear-fill me-2"></i>QUẢN LÝ HỆ THỐNG
+        </h2>
+        <p class="text-muted">Các chức năng quản lý </p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Card 1: Quản lý hãng -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp ">
+            <a href="@Url.Action("Index", "ManageCompanies")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-building">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Hãng</h5>
+                    <p class="card-description">
+                        Quản lý thông tin hãng sản xuất các sản phẩm 
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Company</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 2: Quản lý sản phẩm -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageProducts")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-primary">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Sản Phẩm</h5>
+                    <p class="card-description">
+                        Quản lý thông tin chung các sản phẩm (Tên sản phẩm, nhà cung cấp, giới thiệu)
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Product</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 3: Quản lý ảnh sản phẩm -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageProduct_Image")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-success">
+                        <i class="bi bi-images"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Ảnh Sản Phẩm</h5>
+                    <p class="card-description">
+                        Mỗi sản phẩm sẽ có nhiều ảnh, những ảnh này được render vào carousel trên trang chi tiết sản phẩm
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Product_Images</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 4: Quản lý điện thoại -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManagePhones")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-warning">
+                        <i class="bi bi-phone-fill"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Điện Thoại</h5>
+                    <p class="card-description">
+                        Quản lý các thông số kỹ thuật chi tiết của điện thoại. (Sản phẩm thì không chỉ là điện thoại mà còn như laptop, pc,....)
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Phone</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 5: Quản lý biến thể -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageVariant_Phone")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-danger-card">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Biến Thể</h5>
+                    <p class="card-description">
+                        Quản lý các phiên bản khác nhau của 1 điện thoại: RAM, ROM, màu sắc, giá bán,...
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Phone Variants</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 6: Quản lý bài viết -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageBlogs")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-newspaper">
+                        <i class="bi bi-newspaper"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Bài Viết</h5>
+                    <p class="card-description">
+                        Tạo, chỉnh sửa và quản lý các bài viết tin tức, review sản phẩm trên website
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Blog</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 7: Quản lý giảm giá -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageSales")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-percent">
+                        <i class="bi bi-percent"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Giảm Giá</h5>
+                    <p class="card-description">
+                        Tạo và quản lý các chương trình khuyến mãi, giảm giá cho sản phẩm theo thời gian
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Sale</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 8: Quản lý tài khoản -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageAccounts")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-people">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Tài Khoản</h5>
+                    <p class="card-description">
+                        Quản lý người dùng, phân quyền admin cho các tài khoản
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Bảng Account</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 9: Quản lý hóa đơn -->
+        <div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp">
+            <a href="@Url.Action("Index", "ManageOrder_ViewModel")" class="text-decoration-none">
+                <div class="management-card">
+                    <div class="card-icon bg-receipt">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+                    <h5 class="card-title">Quản Lý Hóa Đơn</h5>
+                    <p class="card-description">
+                        Xem, xử lý và theo dõi trạng thái các đơn hàng, cập nhật tình trạng giao hàng
+                    </p>
+                    <div class="card-footer-info">
+                        <span class="text-muted small">Order Management</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Management Card Styles */
+    .management-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border: 2px solid transparent;
+    }
+
+    .management-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+
+    .card-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #2d3748;
+        margin-bottom: 15px;
+        font-size: 1.25rem;
+    }
+
+    .card-description {
+        color: #718096;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .card-footer-info {
+        padding-top: 15px;
+        border-top: 1px solid #e2e8f0;
+        width: 100%;
+    }
+
+    /* Màu cho từng icon - 9 gradient đẹp */
+    .bg-building {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bg-primary {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .bg-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .bg-warning {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .bg-danger-card {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+
+    .bg-newspaper {
+        background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+    }
+
+    .bg-percent {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+    }
+
+    .bg-people {
+        background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    }
+
+    .bg-receipt {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .management-card {
+            padding: 20px 15px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+

@@ -53,7 +53,10 @@ namespace old_phone.Controllers.Manage
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Variant_Phone variant_Phone = db.Variant_Phone.Find(id);
+            Variant_Phone variant_Phone = db.Variant_Phone
+                                     .Include(v => v.Product) 
+                                     .Include(v => v.Stock)
+                                     .FirstOrDefault(v => v.variant_id == id);
             if (variant_Phone == null)
             {
                 return HttpNotFound();
@@ -69,11 +72,18 @@ namespace old_phone.Controllers.Manage
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name");
             return View();
         }
+
+        // POST: ManageVariant_Phone/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create(ManageVariant_PhoneViewModel model)
         {
+            // A. Validate thủ công (Nếu bạn chưa làm IValidatableObject bên Model)
+            if (model.variant_ph_new_price > model.variant_ph_org_price)
+            {
+                ModelState.AddModelError("variant_ph_new_price", "Giá niêm yết (Mới) không được cao hơn giá gốc.");
+            }
             if (ModelState.IsValid)
             {
                 Variant_Phone variant_Phone = new Variant_Phone
@@ -108,14 +118,19 @@ namespace old_phone.Controllers.Manage
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit(int? id)
         {
-            var variant = db.Variant_Phone.Find(id);
+            var variant = db.Variant_Phone
+                    .Include(v => v.Product) 
+                    .Include(v => v.Stock)
+                    .FirstOrDefault(v => v.variant_id == id);
             if (variant == null)
             {
                 return HttpNotFound();
             }
-            var stock = db.Stocks.FirstOrDefault(s => s.variant_id == variant.variant_id);
+            var stock = variant.Stock; 
+
             var model = new ManageVariant_PhoneViewModel
             {
+                variant_id = variant.variant_id,
                 product_id = variant.Product.product_id,
                 variant_ph_ram = variant.variant_ph_ram,
                 variant_ph_rom = variant.variant_ph_rom,
@@ -126,50 +141,75 @@ namespace old_phone.Controllers.Manage
                 variant_ph_state = variant.variant_ph_state,
                 InitialStockCount = stock != null ? stock.stock_count : 0
             };
+
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name", model.product_id);
-            ViewBag.ProductName = variant.Product.product_name;
+            ViewBag.ProductName = variant.Product?.product_name ?? "Sản phẩm không xác định";
+
             return View(model);
         }
 
         // POST: ManageVariant_Phone/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Edit(ManageVariant_PhoneViewModel model)
         {
-            var variant = db.Variant_Phone.Find(model.variant_id);
-            if (variant != null)
+            // A. Validate giá thủ công
+            if (model.variant_ph_new_price > model.variant_ph_org_price)
             {
-                if (ModelState.IsValid)
-                {
-                    variant.product_id = model.product_id;
-                    variant.variant_ph_ram = model.variant_ph_ram;
-                    variant.variant_ph_rom = model.variant_ph_rom;
-                    variant.variant_ph_color = model.variant_ph_color;
-                    variant.variant_ph_org_price = model.variant_ph_org_price;
-                    variant.variant_ph_new_price = model.variant_ph_new_price;
-                    variant.variant_ph_final_price = model.variant_ph_new_price; // Cập nhật giá final
-                    variant.variant_ph_img = model.variant_ph_img;
-                    variant.variant_ph_state = model.variant_ph_state;
-                    db.Entry(variant).State = EntityState.Modified;
+                ModelState.AddModelError("", "Giá niêm yết (Mới) không được cao hơn giá gốc.");
+            }
 
-                    // Cập nhật stock
-                    var stock = db.Stocks.FirstOrDefault(s => s.variant_id == variant.variant_id);
-                    if (stock != null)
+            if (ModelState.IsValid)
+            {
+                var variantInDb = db.Variant_Phone
+                                    .Include(v => v.Stock)
+                                    .FirstOrDefault(v => v.variant_id == model.variant_id);
+
+                if (variantInDb != null)
+                {
+                    variantInDb.product_id = model.product_id;
+                    variantInDb.variant_ph_ram = model.variant_ph_ram;
+                    variantInDb.variant_ph_rom = model.variant_ph_rom;
+                    variantInDb.variant_ph_color = model.variant_ph_color;
+                    variantInDb.variant_ph_org_price = model.variant_ph_org_price;
+                    variantInDb.variant_ph_new_price = model.variant_ph_new_price;
+                    variantInDb.variant_ph_final_price = model.variant_ph_new_price;
+                    variantInDb.variant_ph_img = model.variant_ph_img;
+                    variantInDb.variant_ph_state = model.variant_ph_state;
+                    if (variantInDb.Stock == null)
                     {
-                        stock.stock_count = model.InitialStockCount;
-                        db.Entry(stock).State = EntityState.Modified;
+                        variantInDb.Stock = new Stock
+                        {
+                            variant_id = variantInDb.variant_id,
+                            stock_count = model.InitialStockCount
+                        };
+                        db.Stocks.Add(variantInDb.Stock);
                     }
+                    else
+                    {
+                        variantInDb.Stock.stock_count = model.InitialStockCount;
+                    }
+
+                    // 4. Lưu thay đổi
                     db.SaveChanges();
+
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Không tìm thấy biến thể cần sửa.");
+                }
             }
+
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name", model.product_id);
+
+            // Lấy lại tên sản phẩm để hiển thị trên tiêu đề (tránh null)
+            var prodName = db.Products.Find(model.product_id)?.product_name;
+            ViewBag.ProductName = prodName;
+
             return View(model);
         }
-
         // GET: ManageVariant_Phone/Delete/5
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Delete(int? id)
@@ -193,6 +233,11 @@ namespace old_phone.Controllers.Manage
         public ActionResult DeleteConfirmed(int id)
         {
             Variant_Phone variant_Phone = db.Variant_Phone.Find(id);
+            Stock stock = db.Stocks.FirstOrDefault(s => s.variant_id == variant_Phone.variant_id);
+            if (stock != null)
+            {
+                db.Stocks.Remove(stock);
+            }
             db.Variant_Phone.Remove(variant_Phone);
             db.SaveChanges();
             return RedirectToAction("Index");

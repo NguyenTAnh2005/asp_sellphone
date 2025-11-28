@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using old_phone.Models;
 using old_phone.Common;
+using PagedList;
 
 namespace old_phone.Controllers.Manage
 {
@@ -17,9 +18,20 @@ namespace old_phone.Controllers.Manage
 
         // GET: ManageBlogs
         [AuthorizeCheck(RequiredRole =2)]
-        public ActionResult Index()
+        public ActionResult Index(string searchQuery, int?page)
         {
-            return View(db.Blogs.ToList());
+            var blogs = db.Blogs.AsQueryable();
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                blogs = blogs.Where(b => b.blog_name.Contains(searchQuery) || b.blog_author.Contains(searchQuery));
+            }
+            blogs = blogs.OrderByDescending(b => b.blog_id);
+            var pageSize = 20;
+            var pageNumber = (page ?? 1);
+            var PageList = blogs.ToPagedList(pageNumber, pageSize);
+            ViewBag.CurrentSearchQuery = searchQuery;
+
+            return View(PageList);
         }
 
         // GET: ManageBlogs/Details/5

@@ -30,7 +30,7 @@ namespace old_phone.ViewModels
 
         [Display(Name = "Giá Sau Giảm (Final Price)")]
         [Required(ErrorMessage = "Vui lòng nhập giá sau giảm.")]
-        [Range(0, double.MaxValue, ErrorMessage = "Giá không hợp lệ.")]
+        [Range(1, long.MaxValue, ErrorMessage = "Giá khuyến mãi phải lớn hơn 0.")]
         public long DiscountPrice { get; set; } // Đây là giá sẽ lưu vào variant_ph_final_price
     }
 }

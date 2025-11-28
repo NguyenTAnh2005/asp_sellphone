@@ -1,127 +1,190 @@
 ﻿@model IEnumerable<old_phone.Models.Hotline>
 @{
-    ViewBag.Title = "Sổ địa chỉ";
+    ViewBag.Title = "Sổ Địa Chỉ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-5">
-    <h3 class="fw-bold mb-4">Sổ địa chỉ</h3>
-    <button type="button" class="btn text-white fw-bold mb-4 rounded-3 px-4 py-2 shadow-sm"
-            style="background-color: #ff5722;" onclick="openModal()">
-        <i class="bi bi-house-add-fill me-2"></i> Thêm địa chỉ mới
-    </button>
+@* --- CSS TÙY CHỈNH --- *@
+<style>
+    /* Hiệu ứng hover cho card */
+    .address-card {
+        transition: all 0.2s ease-in-out;
+        border: 1px solid #e9ecef;
+    }
 
-    <div class="row g-3" id="hotlineList">
-        @foreach (var item in Model)
+    .address-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important;
+            border-color: #0d6efd; /* Viền xanh khi hover */
+    }
+
+    /* Style cho badge mặc định */
+    .badge-default {
+        background-color: #0d6efd; /* Màu chủ đạo */
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /* Nút thêm mới */
+    .btn-add-new {
+        background-color: #0d6efd;
+        border: none;
+        box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+        transition: all 0.2s;
+    }
+
+        .btn-add-new:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+        }
+</style>
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeInDown">
+        <div>
+            <h3 class="fw-bold text-dark mb-1"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Sổ Địa Chỉ</h3>
+            <p class="text-muted small mb-0">Quản lý danh sách địa chỉ nhận hàng của bạn</p>
+        </div>
+        <button type="button" class="btn btn-add-new text-white fw-bold rounded-pill px-4 py-2" onclick="openModal()">
+            <i class="bi bi-plus-lg me-1"></i> Thêm Mới
+        </button>
+    </div>
+
+    <div class="row g-4" id="hotlineList">
+        @if (Model != null && Model.Any())
         {
-            <div class="col-12">
-                <div class="card border shadow-sm rounded-3 @(item.hotline_default == true ? "border-danger border-opacity-50" : "")">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start">
-                            @* Thông tin bên trái *@
-                            <div>
-                                <div class="d-flex align-items-center gap-3 mb-1">
-                                    <h5 class="fw-bold mb-0 text-uppercase">@item.hotline_name</h5>
+            foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 animate__animated animate__fadeInUp">
+                    <div class="card address-card h-100 rounded-4 shadow-sm @(item.hotline_default == true ? "border-primary border-2" : "")">
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold text-dark mb-1">@item.hotline_name</h5>
                                     @if (item.hotline_default == true)
                                     {
-                                        <span class="badge bg-danger rounded-pill">Mặc định</span>
+                                        <span class="badge badge-default rounded-pill"><i class="bi bi-check-circle-fill me-1"></i>Mặc định</span>
                                     }
                                 </div>
-                                <p class="text-muted mb-1"><span class="fw-bold text-dark">SĐT:</span> @item.hotline_phonenumber</p>
-                                <p class="text-muted mb-0"><span class="fw-bold text-dark">Địa chỉ:</span> @item.hotline_address</p>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm rounded-circle" type="button" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                                        <li>
+                                            <button class="dropdown-item py-2" onclick="openModal('@item.hotline_id', '@item.hotline_name', '@item.hotline_phonenumber', '@item.hotline_address', '@item.hotline_default')">
+                                                <i class="bi bi-pencil-square me-2 text-warning"></i> Chỉnh sửa
+                                            </button>
+                                        </li>
+                                        @if (item.hotline_default != true)
+                                        {
+                                            <li>
+                                                <button class="dropdown-item py-2" onclick="setDefaultJS(@item.hotline_id)">
+                                                    <i class="bi bi-star me-2 text-primary"></i> Đặt mặc định
+                                                </button>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <button class="dropdown-item py-2 text-danger" onclick="deleteHotlineJS(@item.hotline_id)">
+                                                    <i class="bi bi-trash me-2"></i> Xóa địa chỉ
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
 
-                            @* Nút thao tác bên phải (AJAX) *@
-                            <div class="d-flex flex-column align-items-end gap-2">
-                                <div>
-                                    @* Nút Sửa *@
-                                    <button class="btn btn-link text-warning text-decoration-none fw-bold p-0 me-3"
-                                            onclick="openModal('@item.hotline_id', '@item.hotline_name', '@item.hotline_phonenumber', '@item.hotline_address', '@item.hotline_default')">
-                                        Sửa
-                                    </button>
-
-                                    @* Nút Xóa (Gọi hàm deleteHotlineJS) *@
-                                    @if (item.hotline_default != true)
-                                    {
-                                        <button class="btn btn-link text-danger text-decoration-none fw-bold p-0"
-                                                onclick="deleteHotlineJS(@item.hotline_id)">
-                                            Xóa
-                                        </button>
-                                    }
+                            <div class="mb-3 flex-grow-1">
+                                <div class="d-flex align-items-center mb-2 text-secondary">
+                                    <i class="bi bi-telephone me-2"></i>
+                                    <span class="fw-medium text-dark">@item.hotline_phonenumber</span>
                                 </div>
+                                <div class="d-flex align-items-start text-secondary">
+                                    <i class="bi bi-house-door me-2 mt-1"></i>
+                                    <span>@item.hotline_address</span>
+                                </div>
+                            </div>
 
-                                @* Nút Set Default (Gọi hàm setDefaultJS) *@
-                                @if (item.hotline_default != true)
-                                {
-                                    <button class="btn btn-outline-secondary btn-sm rounded-pill"
-                                            onclick="setDefaultJS(@item.hotline_id)">
+                            @if (item.hotline_default != true)
+                            {
+                                <div class="mt-auto pt-3 border-top">
+                                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100" onclick="setDefaultJS(@item.hotline_id)">
                                         Đặt làm mặc định
                                     </button>
-                                }
-                            </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5 animate__animated animate__fadeInUp">
+                <i class="bi bi-geo-alt display-1 text-muted opacity-25"></i>
+                <p class="text-muted mt-3">Bạn chưa có địa chỉ nào. Hãy thêm mới ngay!</p>
             </div>
         }
     </div>
 </div>
 
-@* --- MODAL (POPUP) THÊM / SỬA --- *@
+@* --- MODAL (POPUP) --- *@
 <div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0 shadow-lg">
             <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold text-danger" id="modalTitle">Thêm địa chỉ mới</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-bold text-primary" id="modalTitle">
+                    <i class="bi bi-pencil-square me-2"></i>Thêm/Sửa Địa Chỉ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            @* Dùng form thường để JS xử lý *@
             <form id="hotlineForm">
-                <div class="modal-body">
+                <div class="modal-body pt-4">
                     <input type="hidden" name="hotline_id" id="inpId" value="0" />
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Tên Người Nhận</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
-                            <input type="text" class="form-control border-start-0" name="hotline_name" id="inpName" required placeholder="VD: Nguyễn Văn A">
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" name="hotline_name" id="inpName" required placeholder="Họ tên">
+                        <label for="inpName" class="text-muted">Họ và tên người nhận</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Số Điện Thoại</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-telephone"></i></span>
-                            <input type="text" class="form-control border-start-0" name="hotline_phonenumber" id="inpPhone" required placeholder="VD: 0988xxxxxx">
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="tel" class="form-control rounded-3" name="hotline_phonenumber" id="inpPhone" required placeholder="SĐT">
+                        <label for="inpPhone" class="text-muted">Số điện thoại</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Địa Chỉ Chi Tiết</label>
-                        <textarea class="form-control" name="hotline_address" id="inpContent" rows="3" required placeholder="Số nhà, tên đường, phường/xã..."></textarea>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control rounded-3" name="hotline_address" id="inpContent" style="height: 100px" required placeholder="Địa chỉ"></textarea>
+                        <label for="inpContent" class="text-muted">Địa chỉ chi tiết (Số nhà, đường, xã...)</label>
                     </div>
 
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="hotline_default" value="true" id="inpDefault">
-                        <label class="form-check-label user-select-none" for="inpDefault">
+                    <div class="form-check form-switch ps-5">
+                        <input class="form-check-input scale-125" type="checkbox" name="hotline_default" value="true" id="inpDefault" style="cursor: pointer;">
+                        <label class="form-check-label ms-2 user-select-none fw-medium" for="inpDefault">
                             Đặt làm địa chỉ mặc định
                         </label>
                     </div>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
-                    @* Nút Submit gọi hàm JS *@
-                    <button type="button" onclick="submitHotline()" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: #ff5722; border:none;">Lưu thay đổi</button>
+
+                <div class="modal-footer border-0 pt-0 pb-4 justify-content-center">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="submitHotline()" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                        <i class="bi bi-check2 me-1"></i> Lưu Lại
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-@* --- SCRIPT XỬ LÝ AJAX --- *@
+@* --- SCRIPT GIỮ NGUYÊN NHƯ CŨ (Chỉ chỉnh lại chút tên hàm cho khớp nếu cần) --- *@
 <script>
-    // 1. Hàm Mở Modal (Giữ nguyên logic cũ)
+    // ... (Phần script của bạn giữ nguyên, không cần sửa đổi logic) ...
+    // Copy lại toàn bộ script cũ vào đây
     function openModal(id = 0, name = '', phone = '', content = '', isDefault = 'False') {
         document.getElementById('inpId').value = id;
         document.getElementById('inpName').value = name;
@@ -130,66 +193,44 @@
         document.getElementById('inpDefault').checked = (isDefault === 'True');
 
         var title = document.getElementById('modalTitle');
-        title.innerText = (id == 0) ? "Thêm địa chỉ mới" : "Chỉnh sửa địa chỉ";
+        // Cập nhật tiêu đề modal linh hoạt
+        title.innerHTML = (id == 0)
+            ? '<i class="bi bi-plus-circle me-2"></i>Thêm Địa Chỉ Mới'
+            : '<i class="bi bi-pencil-square me-2"></i>Cập Nhật Địa Chỉ';
 
         var myModal = new bootstrap.Modal(document.getElementById('addressModal'));
         myModal.show();
     }
 
-    // 2. Lưu (Thêm/Sửa) Hotline - AJAX
+    // Các hàm submitHotline, deleteHotlineJS, setDefaultJS giữ nguyên như cũ
     async function submitHotline() {
         var form = document.getElementById('hotlineForm');
-        // Validate cơ bản
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
+        if (!form.checkValidity()) { form.reportValidity(); return; }
         var formData = new FormData(form);
-        // Fix lỗi checkbox: Nếu không check thì FormData không gửi value 'false', ta phải tự xử lý hoặc để backend lo
-        // (Trong C#, bool mặc định là false nếu ko gửi lên -> OK)
-
         try {
-            const response = await fetch('@Url.Action("AddOrEditJS", "Hotlines")', {
-                method: 'POST',
-                body: formData
-            });
+            const response = await fetch('@Url.Action("AddOrEditJS", "Hotlines")', { method: 'POST', body: formData });
             const data = await response.json();
-
             alert(data.message);
-            if (data.success) location.reload(); // Reload để cập nhật danh sách
+            if (data.success) location.reload();
         } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
     }
 
-    // 3. Xóa Hotline - AJAX
     async function deleteHotlineJS(id) {
         if (!confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) return;
-
         try {
-            const response = await fetch('@Url.Action("DeleteJS", "Hotlines")', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id })
-            });
+            const response = await fetch('@Url.Action("DeleteJS", "Hotlines")', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) });
             const data = await response.json();
-
             alert(data.message);
             if (data.success) location.reload();
-        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+        } catch (e) { alert("Lỗi kết nối!"); }
     }
 
-    // 4. Đặt Mặc định - AJAX
     async function setDefaultJS(id) {
         try {
-            const response = await fetch('@Url.Action("SetDefaultJS", "Hotlines")', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id })
-            });
+            const response = await fetch('@Url.Action("SetDefaultJS", "Hotlines")', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) });
             const data = await response.json();
-
             alert(data.message);
             if (data.success) location.reload();
-        } catch (e) { console.error(e); alert("Lỗi kết nối!"); }
+        } catch (e) { alert("Lỗi kết nối!"); }
     }
 </script>

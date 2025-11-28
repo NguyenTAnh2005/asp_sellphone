@@ -1,0 +1,157 @@
+INSERT INTO Blog (blog_name, blog_author, blog_link, blog_time, blog_img)
+VALUES
+(N'TOP điện thoại Android ấn tượng & thất vọng', N'Pnghuy',
+ N'https://tinhte.vn/thread/top-dien-thoai-android-minh-an-tuong-nhat-that-vong-nhat-tu-truoc-den-nay.3961856/',
+ '2025-02-22',
+ 'https://photo2.tinhte.vn/data/attachment-files/2025/02/8648952_cover-tinhte-top-ranking-android.jpg'),
+
+(N'Review Xiaomi 15 Ultra', N'cuhiep',
+ N'https://tinhte.vn/thread/review-xiaomi-15-ultra-may-dep-camera-ngon-zoom-khong-can-nghi.4017323/',
+ '2025-05-10',
+ 'https://photo2.tinhte.vn/data/attachment-files/2025/05/8728225_Review-Xiaomi-15-Ultra-tinhte-cuhiep-024.jpg'),
+
+(N'Review Sony Xperia 1 V', N'Pnghuy',
+ N'https://tinhte.vn/thread/review-sony-xperia-1-v-dien-thoai-danh-cho-fan-dich-thuc.3731002/',
+ '2023-10-24',
+ 'https://photo2.tinhte.vn/data/attachment-files/2023/10/8162850_cover-danh-gia-sony-tinhte-30.jpg'),
+
+(N'Review iPhone 15 Pro sau 1 năm', N'Anh Tú',
+ N'https://tinhte.vn/thread/review-iphone-15-pro-sau-1-nam-van-la-chiec-dien-thoai-tot-nhung-khong-con-vui.3825063/',
+ '2024-09-07',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/09/8445269_Cover-review-iphone-15-pro-tinhte-anhtu.jpg'),
+
+(N'Đánh giá Samsung Galaxy S24', N'Cáo - foxtek',
+ N'https://tinhte.vn/thread/danh-gia-samsung-galaxy-s24-flagship-android-nho-gon-cuc-chat-luong-o-thoi-diem-hien-tai.3791734/',
+ '2024-06-01',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/05/8347632_tinhte-galaxy-s24-29.jpg'),
+
+(N'Đánh giá Oppo Find N5', N'Tuấn Hưng – Quang Đồng',
+ N'https://vnexpress.net/danh-gia-oppo-find-n5-dien-thoai-gap-sang-trang-4873500.html',
+ '2025-04-14',
+ 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-find-n5_h_nh_2.png'),
+
+(N'Trải nghiệm bộ đôi Galaxy S24 (ảnh thực tế)', N'Tuấn Hưng',
+ N'https://vnexpress.net/anh-thuc-te-bo-doi-galaxy-s24-va-s24-4701992.html',
+ '2024-01-18',
+ 'https://i1-sohoa.vnecdn.net/2024/01/17/DSCF5689-1705487379.jpg?w=1200&h=0&q=100&dpr=2&fit=crop&s=FOA9tInnRo07wHd7hjXpqQ'),
+
+(N'Thử độ bền điện thoại Oppo tầm giá 5 triệu', N'Hoài Phương',
+ N'https://vnexpress.net/thu-do-ben-tren-dien-thoai-tam-gia-5-trieu-dong-cua-oppo-4785539.html',
+ '2024-08-26',
+ 'https://i1-sohoa.vnecdn.net/2024/08/25/f2fde715a09504cb5d84-1724594479.jpg?w=1200&h=0&q=100&dpr=2&fit=crop&s=NiF7WWV5cMzA_un-Jm0j1A'),
+
+-- Gợi ý ngày gần hiện tại
+(N'Top 10 điện thoại Android hiệu năng tốt nhất', N'Luancs Yenkitty',
+ N'https://www.thegioididong.com/hoi-dap/top-10-dien-thoai-android-co-hieu-nang-tot-nhat-to-1171884',
+ '2025-09-01',
+ 'https://cdn.tgdd.vn/News/1435187/Bannerdt(1)-800x200.jpg'),
+
+(N'Đánh giá Xiaomi Redmi Note 14 (đánh giá khách hàng)', N'TheGioiDiDong.com',
+ N'https://www.thegioididong.com/dtdd/xiaomi-redmi-note-14-8gb-128gb/danh-gia',
+ '2025-09-10',
+ 'https://www.didongmy.com/vnt_upload/news/10_2024/danh-gia-redmi-note-14-5g-didongmy.jpg'),
+
+(N'Top 7 điện thoại tầm trung tốt nhất 2025', N'Minh Chí',
+ N'https://fptshop.com.vn/tin-tuc/danh-gia/dien-thoai-tam-trung-tot-nhat-2025-172990',
+ '2025-04-01',
+ 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/dien_thoai_tam_trung_tot_nhat_2025_thumb_8a4e5dcc2f.jpg'),
+
+(N'Dưới 5 triệu nên mua điện thoại gì 2025?', N'Minh Chí',
+ N'https://fptshop.com.vn/tin-tuc/danh-gia/duoi-5-trieu-nen-mua-dien-thoai-gi-2025-173253',
+ '2025-04-01',
+ 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/duoi_5_trieu_nen_mua_dien_thoai_gi_2025_thumb_643a781e07.jpg'),
+
+(N'Tầm 12 triệu nên mua điện thoại nào 2025?', N'Minh Chí',
+ N'https://fptshop.com.vn/tin-tuc/danh-gia/tam-12-trieu-nen-mua-dien-thoai-nao-2025-172602',
+ '2025-04-01',
+ 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/12_trieu_nen_mua_dien_thoai_nao_2025_thumb_6a1fc26a29.jpg'),
+
+(N'Top 5 điện thoại đáng mua (Nov 2025)', N'HP, Đời sống pháp luật',
+ N'https://genk.vn/top-5-dien-thoai-dang-mua-gia-hop-ly-thang-11-2025-vua-tui-tien-cung-du-thong-minh-cho-gioi-tre-165251105145529999.chn',
+ '2025-11-05',
+ 'https://genk.mediacdn.vn/139269124445442048/2025/11/5/image1-1762329292456-1762329293032290090134.png'),
+
+(N'Trải nghiệm Balmuda Phone', N'Anh Tú',
+ N'https://tinhte.vn/thread/trai-nghiem-balmuda-phone-co-nhieu-diem-yeu-nhung-quan-trong-hon-het-la-rat-vui.3792396/',
+ '2024-05-30',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/05/8349145_DSC-2153.jpg'),
+
+(N'Review iPhone 15 Pro Max 1TB', N'cuhiep',
+ N'https://tinhte.vn/thread/review-iphone-15-pro-max-1tb-van-la-smartphone-dinh-nhat-nhung-khong-con-nhieu-dieu-vui-ve.3769610/',
+ '2024-03-20',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/03/8288928_review-iphone-15promax.jpg'),
+
+(N'7 lỗi bất thường trên iPhone 15', N'Khương Nha',
+ N'https://vnexpress.net/7-loi-bat-thuong-tren-iphone-15-4664964.html',
+ '2023-10-17',
+ 'https://i1-sohoa.vnecdn.net/2023/10/15/iPhone-15-Pro-Max-Charging-Tem-2177-8041-1697370487.png?w=1020&h=0&q=100&dpr=1&fit=crop&s=qldE4E4A61gxijQw9N0aqw'),
+
+(N'Review iPhone 15 (ra mắt)', N'comming_home',
+ N'https://tinhte.vn/thread/review-iphone-15-ra-mat-cung-la-luc-nuoc-mat-toi-roi-vi-khong-duoc-ton-trong.3715864/',
+ '2023-09-13',
+ 'https://photo2.tinhte.vn/data/attachment-files/2023/09/8117757_image.jpg'),
+
+(N'Độ hài lòng với iPhone 15 Pro giảm', N'Bảo Lâm',
+ N'https://vnexpress.net/do-hai-long-voi-iphone-15-pro-ngay-cang-giam-4707698.html',
+ '2024-02-02',
+ 'https://i1-sohoa.vnecdn.net/2024/02/01/DSCF0927-1694548721-3196-16945-6074-7676-1706776030.png?w=1020&h=0&q=100&dpr=1&fit=crop&s=tqEXXvNhcw6GaQxdxyVX4A'),
+
+(N'Đánh giá hiệu năng Samsung Galaxy S24 (Exynos)', N'Cáo - foxtek',
+ N'https://tinhte.vn/thread/danh-gia-hieu-nang-samsung-galaxy-s24-exynos-2400-chien-muot-cac-game-pho-bien.3790829/',
+ '2024-05-26',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/05/8345587_Galaxy_S24-71.jpg'),
+
+(N'Đánh giá Oppo Find X (TheGioiDiDong)', N'TheGioiDiDong.com',
+ N'https://www.thegioididong.com/tin-tuc/danh-gia/210',
+ '2024-06-01',
+ 'https://cdnv2.tgdd.vn/mwg-static/common/News/Thumb/1585834/tp-link-deco-x10-ax1500-41638990722335107197.jpg'),
+
+(N'Điện thoại - GenK (chuyên mục)', N'GenK.vn',
+ N'https://genk.vn/mobile/dien-thoai.chn',
+ '2025-11-01',
+ 'https://genk.mediacdn.vn/zoom/480_300/139269124445442048/2025/11/26/avatar1764174214280-17641742146221189712757-0-91-1080-1819-crop-1764174231352233247468.jpg'),
+
+(N'Mobile - ZingNews (chuyên mục)', N'ZingNews (lifestyle)',
+ N'https://zingnews.vn/mobile.html',
+ '2025-11-01',
+ 'https://cdn.tgdd.vn/GameApp/3/222259/Screentshots/bao-zing-vn-cap-nhat-tin-tuc-nong-hoi-moi-nhat-24-7-222259-logo-11-05-2020.png'),
+
+(N'Apple iPhone 15 topic - VnExpress', N'VnExpress',
+ N'https://vnexpress.net/chu-de/iphone-15-3885',
+ '2025-08-20',
+ 'https://i1-vnexpress.vnecdn.net/2025/08/20/untitled-2-1755686576-17556865-2469-2740-1755686649.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=PQRrQRnEZDNwCnJz_myntA'),
+
+(N'Galaxy S24 FE - đánh giá (VnExpress)', N'Hoài Phương',
+ N'https://vnexpress.net/galaxy-s24-fe-smartphone-dang-chu-y-phan-khuc-can-cao-cap-4824282.html',
+ '2024-12-05',
+ 'https://i1-sohoa.vnecdn.net/2024/12/05/S34-2948-1733388158.png?w=1020&h=0&q=100&dpr=1&fit=crop&s=gFBXztsQyOfUyONAfPomug'),
+
+(N'Trên tay Samsung Galaxy S24 và S24 Plus (Tinhte)', N'Pnghuy',
+ N'https://tinhte.vn/thread/tren-tay-samsung-galaxy-s24-va-s24-plus-thay-doi-thiet-ke-nang-cap-trai-nghiem-voi-galaxy-ai.3757010/',
+ '2024-01-17',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/01/8242663_cover-trentay-Samsung-Galaxy-s24-s24-Plus-tinhte-pnghuy19.jpg'),
+
+(N'Review Xiaomi 14T Pro (FPT/GenK coverage)', N'Minh Chí',
+ N'https://fptshop.com.vn/tin-tuc/danh-gia/tam-12-trieu-nen-mua-dien-thoai-nao-2025-172602',
+ '2025-04-01',
+ 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/12_trieu_nen_mua_dien_thoai_nao_2025_thumb_6a1fc26a29.jpg'),
+
+(N'iPhone 15 Pro Max phổ biến nhất nửa đầu 2024', N'Bảo Lâm (theo Omdia)',
+ N'https://vnexpress.net/iphone-15-pro-max-pho-bien-nhat-nua-dau-2024-4794689.html',
+ '2024-09-19',
+ 'https://i1-sohoa.vnecdn.net/2024/09/19/DSCF1158-8282-1726732526.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=ypf6wl3sXS6cER5kIC-iaw'),
+
+(N'Đánh giá pin iPhone 15 (Tinhte)', N'Cáo - foxtek',
+ N'https://tinhte.vn/thread/danh-gia-pin-iphone-15-hoat-dong-lien-tuc-gan-9-tieng-thoi-gian-sac-hon-2-tieng.3783302/',
+ '2024-05-03',
+ 'https://photo2.tinhte.vn/data/attachment-files/2024/05/8322333_tinhte-iphone-15-danh-gia-pin-thumb.jpg'),
+
+(N'Review Oppo Find N5 (GenK/VnExpress coverage)', N'Phạm Hoàng, ĐSPL',
+ N'https://genk.vn/dien-thoai-5-inch-cua-xiaomi-trong-nhu-iphone-4-huyen-thoai-cau-hinh-tam-tam-dung-lam-may-phu-rat-hop-ly-165251123174938271.chn',
+ '2025-11-23',
+ 'https://genk.mediacdn.vn/139269124445442048/2025/11/23/img0872-1763894817412-1763894817880224923901.jpeg'),
+
+(N'Chuyên mục Điện thoại - TheGioiDiDong', N'TheGioiDiDong',
+ N'https://www.thegioididong.com/tin-tuc/danh-gia/210',
+ '2025-03-01',
+ 'https://cdnv2.tgdd.vn/mwg-static/tgdd/News/Thumb/1585744/honor-earbuds-open-t638988172228982991.jpg');

@@ -1,70 +1,179 @@
 ﻿@model IEnumerable<old_phone.Models.Cart>
 
 @{
-    ViewBag.Title = "Giỏ hàng";
+    ViewBag.Title = "Giỏ Hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-danger text-uppercase">
-            <i class="bi bi-bag-heart-fill"></i> Giỏ hàng của tôi
-        </h3>
-        <span class="text-muted">@Model.Count() sản phẩm</span>
+@* --- CUSTOM CSS --- *@
+<style>
+    /* 1. Card sản phẩm */
+    .cart-item-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #eee;
+    }
+    .cart-item-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+        border-color: transparent;
+    }
+
+    /* 2. Input số lượng */
+    .qty-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50% !important;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 1px solid #dee2e6;
+        background-color: #fff;
+        color: #333;
+        transition: all 0.2s;
+    }
+    .qty-btn:hover {
+        background-color: #f8f9fa;
+        border-color: #333;
+    }
+    .qty-input {
+        width: 40px !important;
+        border: none;
+        background: transparent;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0;
+    }
+
+    /* 3. Checkbox to hơn */
+    .custom-checkbox {
+        width: 1.3em;
+        height: 1.3em;
+        cursor: pointer;
+        border: 2px solid #ccc;
+    }
+    .custom-checkbox:checked {
+        background-color: #dc3545; /* Màu đỏ chủ đạo */
+        border-color: #dc3545;
+    }
+
+    /* 4. Bottom Bar */
+    .bottom-bar {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="container py-5 mb-5">
+
+    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2 animate__animated animate__fadeInDown">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">
+                <i class="bi bi-cart3 me-2 text-danger"></i> Giỏ Hàng
+            </h2>
+            <small class="text-muted">Bạn đang có <span class="fw-bold text-danger">@Model.Count()</span> sản phẩm</small>
+        </div>
+        <div>
+            <a href="@Url.Action("Index", "Shop")" class="text-decoration-none fw-bold small text-muted hover-underline">
+                <i class="bi bi-chevron-left"></i> Tiếp tục mua sắm
+            </a>
+        </div>
+    </div>
+    <div class="alert alert-info border-0 shadow-sm rounded-3 mb-4 animate__animated animate__fadeInUp">
+        <div class="d-flex">
+            <div class="me-3">
+                <i class="bi bi-lightbulb-fill fs-2 text-info"></i>
+            </div>
+            <div>
+                <h6 class="fw-bold text-dark mb-2">Hướng dẫn mua sắm thông minh</h6>
+                <ul class="mb-0 small text-muted ps-3">
+                    <li class="mb-1">Giỏ hàng cho phép bạn gom nhiều món và thanh toán một lần.</li>
+                    <li class="mb-1">Hãy nhấn <b>"Cập nhật số lượng"</b> sau khi bạn chỉnh sửa số lượng để hệ thống ghi nhận.</li>
+                    <li>Nếu bạn muốn mua một sản phẩm nhưng nhiều số lượng, lưu vào giỏ hàng sẽ rất có ích!</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     @if (Model.Count() > 0)
     {
-        // *** FORM GỬI API về Controller ***
+        // *** FORM CHÍNH ***
         <form id="cartForm" method="post" action="@Url.Action("ProceedToCheckout", "Carts")">
             @Html.AntiForgeryToken()
 
-            <div class="row g-4">
+            <div class="row g-3 pb-5 mb-5 animate__animated animate__fadeInUp">
                 @{ int i = 0; }
                 @foreach (var item in Model)
                 {
                     <div class="col-12 col-lg-6">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 p-2 hover-shadow transition-all">
-                            <div class="card-body d-flex align-items-center">
-                                @* Dữ liệu input gửi sang controller *@
-                                <div class="form-check me-3">
-                                    <input class="form-check-input border-2 scale-125"
-                                           type="checkbox" name="selectedItems" value="@item.cart_id">
-                                </div>
+                        <div class="card cart-item-card rounded-4 shadow-sm h-100">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
 
-                                <div class="flex-shrink-0 border rounded-3 p-2 bg-white">
-                                    <img src="@item.Variant_Phone.variant_ph_img"
-                                         alt="@item.Variant_Phone.Product.product_name"
-                                         style="width: 80px; height: 80px; object-fit: contain;">
-                                </div>
+                                    @* 1. Checkbox chọn *@
+                                    <div class="me-3">
+                                        <input class="form-check-input custom-checkbox" type="checkbox" name="selectedItems" value="@item.cart_id">
+                                    </div>
 
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="fw-bold mb-1 text-truncate-2">
-                                        <a href="@Url.Action("ProductDetails", "Shop", new { id = item.variant_id })" class="text-decoration-none text-dark">
-                                            @item.Variant_Phone.Product.product_name
-                                        </a>
-                                    </h6>
+                                    @* 2. Hình ảnh *@
+                                    <div class="flex-shrink-0 bg-light rounded-3 p-2 border" style="width: 90px; height: 90px;">
+                                        <img src="@item.Variant_Phone.variant_ph_img"
+                                             alt="@item.Variant_Phone.Product.product_name"
+                                             class="w-100 h-100 object-fit-contain">
+                                    </div>
 
-                                    <small class="text-muted d-block mb-2">
-                                        @item.Variant_Phone.variant_ph_ram GB / @item.Variant_Phone.variant_ph_rom GB • @item.Variant_Phone.variant_ph_color
-                                    </small>
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div class="input-group input-group-sm" style="width: 100px;">
-                                            @* Nút Trừ *@
-                                            <button class="btn btn-outline-danger btn-sm fw-bold" type="button" onclick="updateQty(this, -1)">-</button>
+                                    @* 3. Thông tin & Giá *@
+                                    <div class="flex-grow-1 ms-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <div>
+                                                <h6 class="fw-bold mb-0 text-truncate-2" style="max-width: 200px;">
+                                                    <a href="@Url.Action("ProductDetails", "Shop", new { id = item.variant_id })" class="text-dark text-decoration-none">
+                                                        @item.Variant_Phone.Product.product_name
+                                                    </a>
+                                                </h6>
+                                                <div class="text-muted small">
+                                                    @item.Variant_Phone.variant_ph_ram GB / @item.Variant_Phone.variant_ph_rom GB
+                                                    <span class="mx-1">•</span>
+                                                    <span class="text-uppercase">@item.Variant_Phone.variant_ph_color</span>
+                                                </div>
+                                            </div>
 
-                                            @* Input số lượng (chúng ta không cần gửi cái này khi checkout, nhưng vẫn cần cho hàm updateQty) *@
-                                            <input type="hidden" name="carts[@i].cart_id" value="@item.cart_id" />
-                                            <input type="text" class="form-control text-center fw-bold text-danger border-danger bg-white"
-                                                   name="carts[@i].cart_count" value="@item.cart_count" data-cart-id="@item.cart_id" readonly>
-
-                                            @* Nút Cộng *@
-                                            <button class="btn btn-outline-danger btn-sm fw-bold" type="button" onclick="updateQty(this, 1)">+</button>
+                                            @* Giá tiền *@
+                                            <div class="text-end">
+                                                <div class="fw-bold text-danger fs-5">
+                                                    @string.Format("{0:N0} đ", item.Variant_Phone.variant_ph_final_price)
+                                                </div>
+                                                @if (item.Variant_Phone.variant_ph_org_price > item.Variant_Phone.variant_ph_final_price)
+                                                {
+                                                    <small class="text-decoration-line-through text-muted" style="font-size: 0.8rem;">
+                                                        @string.Format("{0:N0} đ", item.Variant_Phone.variant_ph_org_price)
+                                                    </small>
+                                                }
+                                            </div>
                                         </div>
 
-                                        <span class="fw-bold text-danger fs-5">
-                                            @string.Format("{0:N0} đ", item.Variant_Phone.variant_ph_final_price)
-                                        </span>
+                                        @* 4. Bộ điều chỉnh số lượng *@
+                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
+                                            <div class="d-flex align-items-center bg-light rounded-pill px-1 py-1">
+                                                <button class="qty-btn" type="button" onclick="updateQty(this, -1)">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+
+                                                <input type="hidden" name="carts[@i].cart_id" value="@item.cart_id" />
+                                                <input type="text" class="form-control qty-input text-center bg-transparent"
+                                                       name="carts[@i].cart_count" value="@item.cart_count" readonly>
+
+                                                <button class="qty-btn" type="button" onclick="updateQty(this, 1)">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+
+                                            <button type="button" class="btn btn-link text-danger text-decoration-none p-0 small" onclick="deleteSingleItem(@item.cart_id)">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,18 +183,30 @@
                 }
             </div>
         </form>
-        @* --- THANH CÔNG CỤ PHÍA DƯỚI --- *@
-        <div class="fixed-bottom bg-white shadow-lg border-top py-3 animate__animated animate__fadeInUp" style="z-index: 1000;">
+
+        @* --- THANH CÔNG CỤ CỐ ĐỊNH (BOTTOM BAR) --- *@
+        <div class="fixed-bottom bottom-bar py-3 shadow-lg animate__animated animate__fadeInUp">
             <div class="container">
-                <div class="d-flex justify-content-end align-items-center gap-2">
-                    <button type="button" class="btn btn-outline-danger rounded-3 fw-bold px-4" onclick="deleteSelected()">
-                        Xóa
+                <div class="d-flex justify-content-between align-items-center">
+
+                    @* Bên trái: Nút chức năng phụ *@
+                    <div class="d-none d-md-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill fs-6 px-3 fw-bold btn-sm" onclick="saveQuantityChanges()">
+                            <i class="bi bi-arrow-repeat me-1"></i> Cập nhật giỏ
+                        </button>
+                        <button type="button" class="btn btn-outline-danger rounded-pill fs-6 px-3 fw-bold btn-sm" onclick="deleteSelected()">
+                            <i class="bi bi-trash me-1"></i> Xóa đã chọn
+                        </button>
+                    </div>
+
+                    @* Nút xóa mobile *@
+                    <button type="button" class="btn btn-light rounded-circle shadow-sm d-md-none text-danger" onclick="deleteSelected()" title="Xóa chọn">
+                        <i class="bi bi-trash"></i>
                     </button>
-                    <button type="button" class="btn btn-success rounded-3 fw-bold px-4 text-white" onclick="saveQuantityChanges()">
-                        Lưu thay đổi số lượng
-                    </button>
-                    <button type="button" class="btn btn-danger rounded-3 fw-bold px-5 shadow-sm" onclick="checkoutSelected()">
-                        Mua ngay
+
+                    @* Bên phải: Nút thanh toán lớn *@
+                    <button type="button" class="btn btn-danger rounded-pill px-5 py-2 fw-bold shadow-sm h-100" onclick="checkoutSelected()">
+                        Mua Ngay <i class="bi bi-arrow-right ms-2"></i>
                     </button>
                 </div>
             </div>
@@ -93,34 +214,34 @@
     }
     else
     {
-    @* HIỂN THỊ KHI GIỎ TRỐNG *@
-    <div class="text-center py-5">
-        <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="Empty" style="width: 150px; opacity: 0.5;">
-        <h4 class="mt-3 text-muted fw-bold">Giỏ hàng trống trơn</h4>
-        <a href="@Url.Action("Index", "Shop")" class="btn btn-danger rounded-pill mt-3 px-4">
-            <i class="bi bi-arrow-left"></i> Mua sắm ngay
-        </a>
-    </div>
+        @* GIỎ HÀNG TRỐNG *@
+        <div class="text-center py-5 my-5 animate__animated animate__fadeInUp">
+            <div class="mb-4">
+                <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                    <i class="bi bi-cart-x text-muted display-1 opacity-50"></i>
+                </div>
+            </div>
+            <h4 class="fw-bold text-secondary">Giỏ hàng của bạn đang trống</h4>
+            <p class="text-muted mb-4">Hãy dạo một vòng và chọn cho mình sản phẩm ưng ý nhé!</p>
+            <a href="@Url.Action("Index", "Shop")" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+                Đến Cửa Hàng Ngay
+            </a>
+        </div>
     }
 </div>
 
-@* --- SCRIPT XỬ LÝ NÚT CỘNG TRỪ --- *@
+@* --- GIỮ NGUYÊN SCRIPT LOGIC CỦA BẠN --- *@
 <script>
     function updateQty(btn, change) {
         var input = btn.parentElement.querySelector('input[type="text"]');
         var currentVal = parseInt(input.value);
         var newVal = currentVal + change;
-
-        if (newVal >= 1) {
-            input.value = newVal;
-        }
+        if (newVal >= 1) { input.value = newVal; }
     }
-    // Hàm lưu thay đổi số lượng - JSON API
+
     async function saveQuantityChanges() {
-        // Lấy tất cả các cart item
         var cartItems = [];
         var cartIdInputs = document.querySelectorAll('input[name*=".cart_id"]');
-
         cartIdInputs.forEach((idInput, index) => {
             var countInput = document.querySelector('input[name*="[' + index + '].cart_count"]');
             if (countInput) {
@@ -131,105 +252,70 @@
             }
         });
 
-        if (cartItems.length === 0) {
-            alert("Không có sản phẩm nào để cập nhật!");
-            return;
-        }
+        if (cartItems.length === 0) { alert("Không có sản phẩm nào!"); return; }
 
         try {
             const response = await fetch('/Carts/UpdateCountJS', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ carts: cartItems })
             });
-
-            if (!response.ok) {
-                throw new Error("Lỗi mạng hoặc server!");
-            }
-
+            if (!response.ok) throw new Error("Lỗi mạng!");
             const data = await response.json();
-
+            
             if (data.requireLogin) {
-                alert(data.message);
-                window.location.href = "/Account/Login";
-                return;
+                alert(data.message); window.location.href = "/Account/Login"; return;
             }
-
-            if (data.success) {
-                alert(data.message);
-                window.location.reload();
-            } else {
-                alert(data.message);
-            }
+            alert(data.message);
+            if (data.success) window.location.reload();
         } catch (error) {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại!');
+            console.error('Error:', error); alert('Có lỗi xảy ra!');
         }
     }
+
     async function deleteSelected() {
         var listChecked = document.querySelectorAll('input[name="selectedItems"]:checked');
-        if (listChecked.length === 0) {
-            alert("Vui lòng chọn sản phẩm để xóa!");
-            return;
-        }
+        if (listChecked.length === 0) { alert("Vui lòng chọn sản phẩm để xóa!"); return; }
+        if (!confirm("Xóa các sản phẩm đã chọn khỏi giỏ hàng?")) return;
 
-        if (!confirm("Bạn có chắc chắn muốn xóa các sản phẩm này khỏi giỏ hàng?")) {
-            return;
-        }
-
-        // Lấy danh sách ID
-        var selectedIds = Array.from(listChecked).map(cb => parseInt(cb.value));
-
-        // Tạo FormData
         var formData = new FormData();
-        selectedIds.forEach(id => {
-            formData.append('selectedItems', id);
-        });
+        listChecked.forEach(cb => formData.append('selectedItems', parseInt(cb.value)));
 
         try {
-            const response = await fetch('/Carts/DeleteCartJS', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error("Lỗi mạng hoặc server!");
-            }
-
+            const response = await fetch('/Carts/DeleteCartJS', { method: 'POST', body: formData });
+            if (!response.ok) throw new Error("Lỗi mạng!");
             const data = await response.json();
-
+            
             if (data.requireLogin) {
-                alert(data.message);
-                window.location.href = "/Account/Login";
-                return;
+                alert(data.message); window.location.href = "/Account/Login"; return;
             }
-
-            if (data.success) {
-                alert(data.message);
-                // Reload trang để cập nhật giỏ hàng
-                window.location.reload();
-            } else {
-                alert(data.message);
-            }
+            alert(data.message);
+            if (data.success) window.location.reload();
         } catch (error) {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại!');
+            console.error('Error:', error); alert('Có lỗi xảy ra!');
         }
     }
-    function checkoutSelected() {
-    var listChecked = document.querySelectorAll('input[name="selectedItems"]:checked');
-    if (listChecked.length === 0) {
-        alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
-        return;
+
+    // Hàm xóa lẻ 1 item (gọi lại hàm deleteSelected bằng cách trick check input đó)
+    async function deleteSingleItem(id) {
+        if(!confirm("Bạn muốn xóa sản phẩm này?")) return;
+        
+        var formData = new FormData();
+        formData.append('selectedItems', id);
+        
+        try {
+            const response = await fetch('/Carts/DeleteCartJS', { method: 'POST', body: formData });
+            const data = await response.json();
+            if (data.success) window.location.reload();
+            else alert(data.message);
+        } catch (e) { alert("Lỗi xóa sản phẩm"); }
     }
 
-    var form = document.getElementById("cartForm");
-
-    form.action = "@Url.Action("ProceedToCheckout", "Carts")";
-
-    // Submit form. Chỉ các input: checkbox đã check (selectedItems) và Anti-Forgery Token sẽ được gửi đi.
-    form.submit();
-}
+    function checkoutSelected() {
+        var listChecked = document.querySelectorAll('input[name="selectedItems"]:checked');
+        if (listChecked.length === 0) { alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!"); return; }
+        var form = document.getElementById("cartForm");
+        form.action = "@Url.Action("ProceedToCheckout", "Carts")";
+        form.submit();
+    }
 </script>

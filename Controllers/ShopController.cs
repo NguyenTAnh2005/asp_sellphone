@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using old_phone.ViewModels;
 using PagedList;
-
+using old_phone.Common;
 namespace old_phone.Controllers
 {
     public class ShopController : Controller
@@ -30,7 +30,7 @@ namespace old_phone.Controllers
 
             // 2. Lấy sản phẩm NỔI BẬT (Ví dụ lấy các dòng máy đắt tiền hoặc mới nhất)
             var featured = db.Variant_Phone
-                             .Where(v => v.variant_ph_new_price==v.variant_ph_final_price)
+                             .Where(v => v.variant_ph_new_price == v.variant_ph_final_price)
                              .Include(v => v.Product)
                              .OrderBy(v => v.variant_id) // Lấy máy mới nhập
                              .Take(12)
@@ -83,7 +83,7 @@ namespace old_phone.Controllers
                 ListImages = list_product_image
             };
 
-            return View( model);
+            return View(model);
         }
 
         // Tra ve du lieu cho trang PHONES
@@ -176,9 +176,9 @@ namespace old_phone.Controllers
         }
 
         // TRa ve danh sach cac san pham sale 
-        public ActionResult Sales(int?page)
+        public ActionResult Sales(int? page)
         {
-            var listSales= db.Sales
+            var listSales = db.Sales
                            .Where(s => s.sale_start <= DateTime.Now && s.sale_end >= DateTime.Now)
                            .Include(s => s.Variant_Phone)
                            .Include(s => s.Variant_Phone.Product)
@@ -211,6 +211,12 @@ namespace old_phone.Controllers
             return View(model);
         }
 
-        
+        // Trả về middle View 
+        [AuthorizeCheck(RequiredRole = 2)]
+        public ActionResult ManageOptionView()
+        {
+            return View();
+
+        }
     }
 }

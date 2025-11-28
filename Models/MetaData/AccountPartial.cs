@@ -41,7 +41,6 @@ namespace old_phone.Models
         [Display(Name = "Mật khẩu")]
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         [StringLength(100, ErrorMessage = "Mật khẩu không được vượt quá 100 ký tự!")]
-        [DataType(DataType.Password)]
         public string account_password { get; set; }
     }
 }
