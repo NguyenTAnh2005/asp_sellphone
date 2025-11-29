@@ -56,7 +56,7 @@
 
     <div class="mt-5 d-flex justify-content-center animate__animated animate__fadeInUp">
         @* Truyền tham số 'search' để khi chuyển trang không bị mất tìm kiếm *@
-        @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page, search = Model.Search }),
+        @Html.PagedListPager(Model.Blogs, page => Url.Action("Blogs", new { page, search = Model.Search }),
             new PagedListRenderOptions
                  {
                 LiElementClasses = new string[] { "page-item" },

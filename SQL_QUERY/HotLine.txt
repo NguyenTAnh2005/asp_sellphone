@@ -1,34 +1,31 @@
 -- Thêm dữ liệu mẫu vào bảng Hotline (Sổ địa chỉ)
 INSERT INTO Hotline (account_id, hotline_name, hotline_address, hotline_phonenumber, hotline_default)
 VALUES 
--- 1. User ID 11: An
-(11, N'Nguyễn Văn An', N'Số 123 Đường Láng, Phường Láng Thượng, Quận Đống Đa, Hà Nội', '0901112233', 1),
+(1, N'Nguyễn Tuấn Anh Admin', N'Thôn 7, xã Cẩm Xuyên, tỉnh Hà Tĩnh', '0328884320', 1),
+(1, N'Nguyễn Tuấn Anh Admin', N'Kp. Bình Hòa, Lải Thiều, TP.Thuận An', '0328884320', 0),
+(2,  N'Nguyễn Tuấn Anh User', N'Thôn 7, xã Cẩm Xuyên, tỉnh Hà Tĩnh', '0328884320', 1),
+(2, N'Nguyễn Tuấn Anh User', N'Kp. Bình Hòa, Lải Thiều, TP.Thuận An', '0328884320', 0),
+(3, N'Nguyễn Văn An', N'Số 123 Đường Láng, Phường Láng Thượng, Quận Đống Đa, Hà Nội', '0901112233', 1),
 
--- 2. User ID 12: Bình (Người này có 2 địa chỉ để test)
-(12, N'Trần Thị Bình', N'456 Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh', '0902223344', 1),
-(12, N'Trần Thị Bình (Cơ quan)', N'Tòa nhà Bitexco, Số 2 Hải Triều, Quận 1, TP. Hồ Chí Minh', '0902223344', 0),
+(4, N'Trần Thị Bình', N'456 Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh', '0902223344', 1),
+(4, N'Trần Thị Bình (Cơ quan)', N'Tòa nhà Bitexco, Số 2 Hải Triều, Quận 1, TP. Hồ Chí Minh', '0902223344', 0),
 
--- 3. User ID 13: Cường
-(13, N'Lê Mạnh Cường', N'789 Nguyễn Văn Linh, Quận Hải Châu, Đà Nẵng', '0903334455', 1),
+(5, N'Lê Mạnh Cường', N'789 Nguyễn Văn Linh, Quận Hải Châu, Đà Nẵng', '0903334455', 1),
 
--- 4. User ID 14: Dung
-(14, N'Phạm Mỹ Dung', N'32 Đường Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Khánh Hòa', '0904445566', 1),
+(6, N'Phạm Mỹ Dung', N'32 Đường Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Khánh Hòa', '0904445566', 1),
 
--- 5. User ID 15: Em
-(15, N'Hoàng Văn Em', N'12 Đại lộ Hòa Bình, Quận Ninh Kiều, TP. Cần Thơ', '0905556677', 1),
+(7, N'Hoàng Văn Em', N'12 Đại lộ Hòa Bình, Quận Ninh Kiều, TP. Cần Thơ', '0905556677', 1),
 
--- 6. User ID 16: Giang
-(16, N'Vũ Hương Giang', N'99 Lạch Tray, Quận Ngô Quyền, Hải Phòng', '0906667788', 1),
+(8, N'Vũ Hương Giang', N'99 Lạch Tray, Quận Ngô Quyền, Hải Phòng', '0906667788', 1),
 
--- 7. User ID 17: Huy (Địa chỉ KTX/Nhà trọ)
-(17, N'Đặng Quang Huy', N'Ký túc xá Khu B, ĐHQG TP.HCM, Dĩ An, Bình Dương', '0907778899', 1),
+(9, N'Đặng Quang Huy', N'Ký túc xá Khu B, ĐHQG TP.HCM, Dĩ An, Bình Dương', '0907778899', 1),
 
--- 8. User ID 18: Lan
-(18, N'Bùi Ngọc Lan', N'15 Phố Hàng Gai, Quận Hoàn Kiếm, Hà Nội', '0908889900', 1),
+(10, N'Bùi Ngọc Lan', N'15 Phố Hàng Gai, Quận Hoàn Kiếm, Hà Nội', '0908889900', 1),
 
--- 9. User ID 19: Khánh
-(19, N'Đỗ Minh Khánh', N'Số 50 Đường 3/2, Phường 12, Quận 10, TP. Hồ Chí Minh', '0909990011', 1),
+(11, N'Đỗ Minh Khánh', N'Số 50 Đường 3/2, Phường 12, Quận 10, TP. Hồ Chí Minh', '0909990011', 1),
 
--- 10. User ID 20: Yến
-(20, N'Ngô Hải Yến', N'88 Đường Hùng Vương, TP. Huế, Thừa Thiên Huế', '0910001122', 1);
+(12, N'Ngô Hải Yến', N'88 Đường Hùng Vương, TP. Huế, Thừa Thiên Huế', '0910001122', 1);
 GO
+
+Select * from Account
+Select * from Hotline

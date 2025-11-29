@@ -12,16 +12,12 @@ namespace old_phone.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class sysdiagram
     {
-        public int cart_id { get; set; }
-        public int account_id { get; set; }
-        public int variant_id { get; set; }
-        public int cart_count { get; set; }
-    
-        public virtual Account Account { get; set; }
-        public virtual Account Account1 { get; set; }
-        public virtual Variant_Phone Variant_Phone { get; set; }
-        public virtual Variant_Phone Variant_Phone1 { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

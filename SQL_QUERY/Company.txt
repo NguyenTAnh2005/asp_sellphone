@@ -7,3 +7,4 @@ VALUES
     (N'VIVO', N'Trung Quốc'),
     (N'REALME', N'Trung Quốc'),
     (N'XIAOMI', N'Trung Quốc');
+Select * from Company

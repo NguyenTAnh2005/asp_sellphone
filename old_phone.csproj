@@ -219,6 +219,9 @@
     <Compile Include="Models\Stock.cs">
       <DependentUpon>Mycontext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>Mycontext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Variant_Phone.cs">
       <DependentUpon>Mycontext.tt</DependentUpon>
     </Compile>

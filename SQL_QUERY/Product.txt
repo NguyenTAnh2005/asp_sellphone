@@ -129,3 +129,5 @@ UPDATE Product SET product_desc = N'Ông vua tầm trung với màn hình AMOLED
 UPDATE Product SET product_desc = N'Nâng cấp toàn diện với màn hình 90Hz mượt mà. Chip Snapdragon 680 tiết kiệm điện, thiết kế phẳng hiện đại và camera 50MP.' WHERE product_name = N'Redmi Note 11';
 UPDATE Product SET product_desc = N'Thiết kế vuông vức nam tính, mặt lưng kính. Camera 108MP, màn hình 120Hz và sạc nhanh 67W Turbo Charge hàng đầu phân khúc.' WHERE product_name = N'Redmi Note 11 Pro';
 UPDATE Product SET product_desc = N'Flagship killer với màn hình E4 AMOLED cao cấp. Hiệu năng Snapdragon 870 mát mẻ, loa kép Dolby Atmos và thiết kế mỏng nhẹ.' WHERE product_name = N'Redmi K40';
+
+Select * from Product

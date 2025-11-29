@@ -1,4 +1,4 @@
-1
+
 INSERT INTO Product_Image (product_id, image_url) VALUES
 (1,'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764056275/pdt_1__v1__1_iili1z.jpg'),
 (1,'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764056275/pdt_1__v1__1_iili1z.jpg'),
@@ -177,3 +177,5 @@ INSERT INTO Product_Image (product_id, image_url) VALUES
 (52,'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764067823/pdt_52__v52__3_roibjo.webp'),
 (53,'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764067844/pdt_53__v53__1_dtbp7g.jpg'),
 (53,'https://res.cloudinary.com/dp5ipjzct/image/upload/v1764067838/pdt_53__v53__2_ijglpt.png');
+
+select * from Product_Image;

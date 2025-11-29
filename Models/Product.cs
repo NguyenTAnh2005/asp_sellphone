@@ -27,9 +27,9 @@ namespace old_phone.Models
         public string product_desc { get; set; }
     
         public virtual Company Company { get; set; }
+        public virtual Phone Phone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product_Image> Product_Image { get; set; }
-        public virtual Phone Phone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Variant_Phone> Variant_Phone { get; set; }
     }

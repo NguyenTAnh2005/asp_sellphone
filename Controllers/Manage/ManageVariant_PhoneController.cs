@@ -232,14 +232,31 @@ namespace old_phone.Controllers.Manage
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult DeleteConfirmed(int id)
         {
-            Variant_Phone variant_Phone = db.Variant_Phone.Find(id);
-            Stock stock = db.Stocks.FirstOrDefault(s => s.variant_id == variant_Phone.variant_id);
-            if (stock != null)
+            // 1. Tìm biến thể
+            Variant_Phone variant = db.Variant_Phone.Find(id);
+
+            if (variant != null)
             {
-                db.Stocks.Remove(stock);
+                // 2. Tìm kho của nó
+                Stock stock = db.Stocks.FirstOrDefault(s => s.variant_id == variant.variant_id);
+
+                // --- GIẢI PHÁP CỦA BẠN: KHÔNG XÓA, CHỈ SET VỀ 0 ---
+
+                // A. Set kho về 0 (Khách không thể mua)
+                if (stock != null)
+                {
+                    stock.stock_count = 0;
+                    // (Optional) stock.stock_last_update = DateTime.Now;
+                }
+
+                // B. Đổi trạng thái hiển thị để Admin biết đây là hàng đã xóa/ngừng bán
+                // Bạn có thể nối thêm chữ "(Đã xóa)" hoặc set cứng text
+                variant.variant_ph_state = "[SẢN PHẨM ĐÃ NGỪNG KINH DOANH] " + variant.variant_ph_state ;
+
+                // C. Lưu lại thay đổi (Update) thay vì Xóa (Remove)
+                db.SaveChanges();
             }
-            db.Variant_Phone.Remove(variant_Phone);
-            db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

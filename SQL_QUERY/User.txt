@@ -1,5 +1,7 @@
 INSERT INTO Account (account_first_name, account_last_name, account_email, account_gender, account_date, account_password, role_id, RememberMeToken, TokenExpiryDate)
 VALUES 
+(N'Admin', N'Nguyen', 'anhnguyentaun@gmail.com', 1, '2005-10-06', 'c4ca4238a0b923820dcc509a6f75849b', 1, NULL, NULL),
+(N'Anh', N'Nguyễn Tuấn', 'tuananhnguyen2555@gmail.com', 1, '2005-10-06', 'c81e728d9d4c2f636f067f89cc14862c', 2, NULL, NULL),
 (N'An', N'Nguyễn Văn', 'an.nguyen@test.com', 1, '1995-01-15', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, NULL),
 (N'Bình', N'Trần Thị', 'binh.tran@test.com', 0, '1998-05-20', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, NULL),
 (N'Cường', N'Lê Mạnh', 'cuong.le@test.com', 1, '1990-12-10', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, NULL),
@@ -11,3 +13,9 @@ VALUES
 (N'Khánh', N'Đỗ Minh', 'khanh.do@test.com', 1, '1993-06-18', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, NULL),
 (N'Yến', N'Ngô Hải', 'yen.ngo@test.com', 0, '1997-08-25', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, NULL);
 GO
+
+--mk: 
+--c4ca4238a0b923820dcc509a6f75849b --- 1
+--e10adc3949ba59abbe56e057f20f883e ----- 123456
+--c81e728d9d4c2f636f067f89cc14862c ---- 2
+

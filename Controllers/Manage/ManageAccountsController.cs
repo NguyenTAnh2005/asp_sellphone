@@ -194,7 +194,14 @@ namespace old_phone.Controllers.Manage
                     return View(account);
                 }
             }
-            db.Accounts.Remove(account);
+            // Không xóa hẳn khỏi DB, chỉ đổi thông tin để tránh mất dữ liệu liên quan
+            account.account_first_name += " Người dùng đã bị xóa";
+
+            // Quan trọng: Email thường có Unique Constraint, nên phải thêm ID vào đuôi
+            account.account_email = "deleted_" + account.account_id + "_" + Guid.NewGuid().ToString().Substring(0, 5) + "@system.local";
+
+            // Đổi mật khẩu thành chuỗi không thể giải mã/đoán được
+            account.account_password = Guid.NewGuid().ToString();
             db.SaveChanges();
             return RedirectToAction("Index");
         }

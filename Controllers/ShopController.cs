@@ -23,7 +23,6 @@ namespace old_phone.Controllers
                             // Include bảng Variant và Product để dùng trong View
                             .Include(s => s.Variant_Phone)          // Lấy thông tin biến thể
                             .Include(s => s.Variant_Phone.Product)  // Lấy thông tin tên máy gốc
-
                             .OrderBy(s => s.Variant_Phone.variant_ph_final_price)
                             .Take(6)
                             .ToList();

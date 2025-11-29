@@ -155,3 +155,6 @@ VALUES
  N'https://www.thegioididong.com/tin-tuc/danh-gia/210',
  '2025-03-01',
  'https://cdnv2.tgdd.vn/mwg-static/tgdd/News/Thumb/1585744/honor-earbuds-open-t638988172228982991.jpg');
+
+
+ Select * from blog

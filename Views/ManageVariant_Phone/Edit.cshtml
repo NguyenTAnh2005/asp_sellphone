@@ -61,6 +61,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Trạng Thái / Mô Tả</label>
+                            <div class="form-text small text-muted">Nếu số lượng = 0, hãy cập nhật thêm [SẢN PHẨM ĐÃ NGỪNG KINH DOANH], ngược lại, khi chỉnh sửa sản phẩm từ 0 lên số khác thì hãy nhớ xóa [SẢN PHẨM ĐÃ NGỪNG KINH DOANH] ra khỏi mô tả!</div>
                             @Html.TextAreaFor(model => model.variant_ph_state, new { @class = "form-control", rows = 2 })
                             @Html.ValidationMessageFor(model => model.variant_ph_state, "", new { @class = "text-danger small" })
                         </div>

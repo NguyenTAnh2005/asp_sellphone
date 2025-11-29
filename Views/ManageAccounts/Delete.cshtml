@@ -19,6 +19,7 @@
                     <h5 class="text-muted mb-3">Bạn sắp xóa:</h5>
                     <h3 class="fw-bold text-dark mb-2">@Model.account_last_name @Model.account_first_name</h3>
                     <p class="text-muted">@Model.account_email</p>
+                    <h5 class="text-muted mb-3">Thực chất quá trình này sẽ không xóa ngay, chỉ thay đổi thông tin bảo mật là email và mật khẩu bằng (có kết hợp hash) để tránh mất DL liên quan!</h5>
 
                     @using (Html.BeginForm())
                     {

@@ -1,4 +1,4 @@
-INSERT INTO Stock (stock_id, variant_id, stock_count)
+INSERT INTO Stock (variant_id, stock_count)
 VALUES
 (1, 28),
 (2, 22),
@@ -71,3 +71,5 @@ VALUES
 (69, 30),
 (70, 24),
 (71, 29);
+
+select * from Stock
