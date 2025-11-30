@@ -67,8 +67,6 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManageProduct_Image/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
@@ -78,6 +76,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Product_Image.Add(product_Image);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo mới ảnh sản phẩm thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -114,6 +114,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Entry(product_Image).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Cập nhật ảnh sản phẩm thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name", product_Image.product_id);
@@ -145,6 +147,8 @@ namespace old_phone.Controllers.Manage
             Product_Image product_Image = db.Product_Image.Find(id);
             db.Product_Image.Remove(product_Image);
             db.SaveChanges();
+            TempData["Message"] = "Xóa ảnh sản phẩm thành công!";
+            TempData["MsgType"] = "success";
             return RedirectToAction("Index");
         }
 

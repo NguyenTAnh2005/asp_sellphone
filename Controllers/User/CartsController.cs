@@ -151,6 +151,14 @@ namespace old_phone.Controllers.User
         [AuthorizeCheck]
         public ActionResult ProceedToCheckout(List<int> selectedItems)
         {
+            var acc_id = Session["acc_id"] as int?;
+            var list_hotlines = db.Hotlines.Where(h => h.account_id == acc_id).ToList();
+            if (list_hotlines == null || list_hotlines.Count == 0)
+            {
+                TempData["Message"] = "Vui lòng tạo địa chỉ trước khi mua hàng!";
+                TempData["MsgType"] = "error";
+                return RedirectToAction("Index","Hotlines");
+            }
             if (selectedItems == null || !selectedItems.Any())
             {
                 TempData["Message"] = "Vui lòng chọn ít nhất một sản phẩm để thanh toán!";
@@ -168,6 +176,15 @@ namespace old_phone.Controllers.User
         [AuthorizeCheck]
         public ActionResult BuyNow(int variant_id, int quantity = 1)
         {
+            var acc_id = Session["acc_id"] as int?;
+            var list_hotlines = db.Hotlines.Where(h => h.account_id == acc_id).ToList();
+            if (list_hotlines == null || list_hotlines.Count == 0)
+            {
+                TempData["Message"] = "Vui lòng tạo địa chỉ trước khi mua hàng!";
+                TempData["MsgType"] = "error";
+                
+                return RedirectToAction("Index","Hotlines");
+            }
             TempData["BuyNow_ID"] = variant_id;
             TempData["BuyNow_Qty"] = quantity;
             return RedirectToAction("Checkout", "Order");

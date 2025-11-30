@@ -1,4 +1,7 @@
-﻿using System;
+﻿using old_phone.Common;
+using old_phone.Models;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,9 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using old_phone.Models;
-using old_phone.Common;
-using PagedList;
+using System.Web.UI;
 
 namespace old_phone.Controllers.Manage
 {
@@ -76,14 +77,36 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManageAccounts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
         public ActionResult Create([Bind(Include = "account_id,account_first_name,account_last_name,account_email,account_gender,account_date,account_password,role_id,RememberMeToken,TokenExpiryDate")] Account account)
         {
             account.account_password = Utility.Encrypt(account.account_password);
+            var today = DateTime.Today;
+            var age = today.Year - account.account_date.Year;
+            // Nếu chưa tới sinh nhật năm nay thì trừ 1 tuổi
+            if (account.account_date.Date > today.AddYears(-age)) age--;
+
+            if (account.account_date.Date > today)
+            {
+                ViewBag.Error = "Ngày sinh không được lớn hơn ngày hiện tại.";
+                ViewBag.role_id = new SelectList(db.Roles, "role_id", "role_name", account.role_id);
+                return View();
+            }
+            if (age < 15)
+            {
+                ViewBag.Error = "Độ tuổi đăng ký tài khoản phải từ 15 tuổi";
+                ViewBag.role_id = new SelectList(db.Roles, "role_id", "role_name", account.role_id);
+                return View();
+            }
+            if (age > 100)
+            {
+                ViewBag.Error = "Độ tuổi đăng ký tài khoản quá lớn (>100)";
+                ViewBag.role_id = new SelectList(db.Roles, "role_id", "role_name", account.role_id);
+                return View();
+            }
+
             if (ModelState.IsValid)
             {
                 var accountExists = db.Accounts.FirstOrDefault(a => a.account_email == account.account_email);
@@ -92,6 +115,8 @@ namespace old_phone.Controllers.Manage
                     db.Accounts.Add(account);
                     db.SaveChanges();
                     ViewBag.role_id = new SelectList(db.Roles, "role_id", "role_name", account.role_id);
+                    TempData["Message"] = "Tạo mới tài khoản thành công!";
+                    TempData["MsgType"] = "success"; // success, danger, warning, info
                     return RedirectToAction("Index");
                 }
                 ViewBag.Error = "Email đã được sử dụng bởi tài khoản khác!";
@@ -155,10 +180,11 @@ namespace old_phone.Controllers.Manage
                 //  Lưu lại
                 db.Entry(account).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Cập nhật tài khoản thành công!";
+                TempData["MsgType"] = "success"; // success, danger, warning, info
                 return RedirectToAction("Index");
             }
             ViewBag.role_id = new SelectList(db.Roles, "role_id", "role_name", account.role_id);
-
             return View(account);
         }
 
@@ -203,6 +229,8 @@ namespace old_phone.Controllers.Manage
             // Đổi mật khẩu thành chuỗi không thể giải mã/đoán được
             account.account_password = Guid.NewGuid().ToString();
             db.SaveChanges();
+            TempData["Message"] = "(Xóa) tài khoản thành công!";
+            TempData["MsgType"] = "success"; // success, danger, warning, info
             return RedirectToAction("Index");
         }
 

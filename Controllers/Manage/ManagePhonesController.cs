@@ -68,8 +68,6 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManagePhones/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
@@ -79,6 +77,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Phones.Add(phone);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo mới điện thoại thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -104,8 +104,6 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManagePhones/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
@@ -115,6 +113,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Entry(phone).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Cập nhật điện thoại thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name", phone.product_id);
@@ -151,6 +151,8 @@ namespace old_phone.Controllers.Manage
                 {
                     db.Phones.Remove(phone);
                     db.SaveChanges();
+                    TempData["Message"] = "Xóa điện thoại thành công!";
+                    TempData["MsgType"] = "success";
                     return RedirectToAction("Index");
                 }
                 else

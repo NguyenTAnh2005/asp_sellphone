@@ -72,7 +72,17 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Mật Khẩu</label>
-                                @Html.EditorFor(model => model.account_password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+
+                                <div class="input-group">
+                                    @* Ô Input mật khẩu *@
+                                    @Html.EditorFor(model => model.account_password, new { htmlAttributes = new { @class = "form-control", type = "password", id = "passwordInput" } })
+
+                                    @* Nút Toggle *@
+                                    <button class="btn btn-primary" type="button" onclick="togglePassword()">
+                                        <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                                    </button>
+                                </div>
+
                                 @Html.ValidationMessageFor(model => model.account_password, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-6">
@@ -92,4 +102,20 @@
         </div>
     </div>
 </div>
+<script>
+    function togglePassword() {
+        var passwordInput = document.getElementById("passwordInput");
+        var toggleIcon = document.getElementById("toggleIcon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        }
+    }
+</script>
 @section Scripts { @Scripts.Render("~/bundles/jqueryval") }

@@ -46,8 +46,6 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManageCompanies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
@@ -57,6 +55,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Companies.Add(company);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo mới nhà cung cấp thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -80,8 +80,6 @@ namespace old_phone.Controllers.Manage
         }
 
         // POST: ManageCompanies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeCheck(RequiredRole = 2)]
@@ -91,6 +89,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Entry(company).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Chỉnh sửa nhà cung cấp thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -123,6 +123,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Companies.Remove(company);
                 db.SaveChanges();
+                TempData["Message"] = "Xóa nhà cung cấp thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException)

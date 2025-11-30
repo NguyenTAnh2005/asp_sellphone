@@ -128,6 +128,11 @@ namespace old_phone.Controllers.Manage
             {
                 ModelState.AddModelError("sale_end", "Ngày kết thúc khuyến mãi phải lớn hơn ngày bắt đầu.");
             }
+            var existingSale = db.Sales.FirstOrDefault(s => s.variant_id == model.variant_id);
+            if (existingSale != null)
+            {
+                ModelState.AddModelError("variant_id", "Sản phẩm này đã có chương trình khuyến mãi.");
+            }
 
             if (ModelState.IsValid)
             {

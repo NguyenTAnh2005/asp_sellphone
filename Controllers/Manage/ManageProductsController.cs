@@ -76,6 +76,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Products.Add(product);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo mới sản phẩm thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -114,6 +116,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Cập nhật sản phẩm thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             ViewBag.company_id = new SelectList(db.Companies, "company_id", "company_name", product.company_id);
@@ -148,6 +152,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Products.Remove(product);
                 db.SaveChanges();
+                TempData["Message"] = "Xóa sản phẩm thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException)

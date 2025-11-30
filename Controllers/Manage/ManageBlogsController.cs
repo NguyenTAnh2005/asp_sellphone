@@ -69,6 +69,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Blogs.Add(blog);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo bài viết thành công";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
 
@@ -103,6 +105,8 @@ namespace old_phone.Controllers.Manage
             {
                 db.Entry(blog).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Cập nhật bài viết thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             return View(blog);
@@ -133,6 +137,8 @@ namespace old_phone.Controllers.Manage
             Blog blog = db.Blogs.Find(id);
             db.Blogs.Remove(blog);
             db.SaveChanges();
+            TempData["Message"] = "Xóa bài viết thành công!";
+            TempData["MsgType"] = "success";
             return RedirectToAction("Index");
         }
 

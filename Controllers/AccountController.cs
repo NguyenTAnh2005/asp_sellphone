@@ -64,9 +64,19 @@ namespace old_phone.Controllers
                 // Nếu chưa tới sinh nhật năm nay thì trừ 1 tuổi
                 if (form_data.account_date.Date > today.AddYears(-age)) age--;
 
-                if (age < 15)
+                if (form_data.account_date.Date > today)
                 {
-                    ViewBag.Error = "Bạn phải đủ 15 tuổi mới được đăng ký tài khoản.";
+                    ViewBag.Error = "Ngày sinh không được lớn hơn ngày hiện tại.";
+                    return View(form_data); // Trả lại form giữ nguyên dữ liệu đã nhập
+                }
+                if (age < 15 )
+                {
+                    ViewBag.Error = "Độ tuổi đăng ký tài khoản phải từ 15 tuổi";
+                    return View(form_data); // Trả lại form giữ nguyên dữ liệu đã nhập
+                }
+                if (age > 100)
+                {
+                    ViewBag.Error = "Độ tuổi đăng ký tài khoản quá lớn (>100)";
                     return View(form_data); // Trả lại form giữ nguyên dữ liệu đã nhập
                 }
                 // --------------------------------

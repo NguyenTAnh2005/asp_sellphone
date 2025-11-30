@@ -108,6 +108,8 @@ namespace old_phone.Controllers.Manage
                 };
                 db.Stocks.Add(stock);
                 db.SaveChanges();
+                TempData["Message"] = "Tạo mới biến thể thành công!";
+                TempData["MsgType"] = "success";
                 return RedirectToAction("Index");
             }
             ViewBag.product_id = new SelectList(db.Products, "product_id", "product_name", model.product_id);
@@ -193,7 +195,8 @@ namespace old_phone.Controllers.Manage
 
                     // 4. Lưu thay đổi
                     db.SaveChanges();
-
+                    TempData["Message"] = "Cập nhật biến thể thành công!";
+                    TempData["MsgType"] = "success";
                     return RedirectToAction("Index");
                 }
                 else
@@ -255,6 +258,8 @@ namespace old_phone.Controllers.Manage
 
                 // C. Lưu lại thay đổi (Update) thay vì Xóa (Remove)
                 db.SaveChanges();
+                TempData["Message"] = "(Xóa) biến thể thành công!";
+                TempData["MsgType"] = "success";
             }
 
             return RedirectToAction("Index");
